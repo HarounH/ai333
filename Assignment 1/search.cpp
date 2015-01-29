@@ -9,10 +9,10 @@
 
 struct SeqNodeHeuristicCostComparator { //Used in dfbb to sort the successor nodes.
 	bool operator() ( const SeqNode& lhs , const SeqNode& rhs ) { return lhs.heuristicCost < rhs.heuristicCost; }
-}seqNodeHeuristicComparator_left;
+}seqNodeHeuristicComparatorLeft;
 
 struct SeqNodeTotalCostComparator{
-	bool operator() (SeqNode& lhs , SeqNode& rhs) { return lhs.totalCost< rhs.totalCost; }
+	bool operator() (const SeqNode& lhs , const SeqNode& rhs) { return lhs.totalCost < rhs.totalCost; }
 };
 //Not passing by reference. Can be changed if needed
 SeqNode dfs(SeqProblem& problem)  { //Uninformed search.
@@ -72,7 +72,7 @@ SeqNode dfbb(SeqProblem& problem) { //Informed search
 			problem.getSuccessors(node , children);
 
 			//Sort children by their heuristic value. Only heuristic value because looking into the future.
-			std::sort(children.begin() , children.end() , seqNodeHeuristicComparator_left);
+			std::sort(children.begin() , children.end() , seqNodeHeuristicComparatorLeft);
 
 			for(int i = 0; i<children.size(); i++) {
 				if( children[i].totalCost < optimalSeqNode.totalCost ) {
@@ -84,7 +84,7 @@ SeqNode dfbb(SeqProblem& problem) { //Informed search
 	return optimalSeqNode;
 }
 
-SeqNode astarsearch(SeqProblem& problem) {
+SeqNode aStarSearch(SeqProblem& problem) {
 	SeqNode optimalSeqNode;
 		optimalSeqNode.totalCost = BIG_DOUBLE; //BIG_DOUBLE is the numeric limit of double
 		//Follows total cost contour.
@@ -110,7 +110,7 @@ SeqNode astarsearch(SeqProblem& problem) {
 	return optimalSeqNode;
 }
 
-SeqNode dfbb_with_greedyBound( SeqProblem& problem) {
+SeqNode dfbbWithGreedyBound( SeqProblem& problem) {
 	SeqNode optimalSeqNode;
 		optimalSeqNode.heuristicCost = BIG_DOUBLE; 	//BIG_DOUBLE is the numeric limit
 	optimalSeqNode.totalCost = BIG_DOUBLE;			//BIG_DOUBLE is the numeric limit
