@@ -8,7 +8,7 @@
 #define BIG_DOUBLE std::numeric_limits<double>::max()
 
 struct SeqNodeHeuristicCostComparator { //Used in dfbb to sort the successor nodes.
-	bool operator() ( const SeqNode& lhs , const SeqNode& rhs ) { return lhs.heuristicCost < rhs.heuristicCost; }
+	bool operator() ( const SeqNode& lhs , const SeqNode& rhs ) { return lhs.heuristicCost > rhs.heuristicCost; }
 }seqNodeHeuristicComparatorLeft;
 
 struct SeqNodeTotalCostComparator{
