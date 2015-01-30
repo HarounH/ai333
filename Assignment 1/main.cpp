@@ -15,3 +15,8 @@ int main(int argc, char** argv) {
 	SeqNode n = aStarSearch(s);
 	output(n);
 }
+
+/*
+To compile write 
+g++ main.cpp
+*/
