@@ -12,7 +12,7 @@ struct SeqNodeHeuristicCostComparator { //Used in dfbb to sort the successor nod
 }seqNodeHeuristicComparatorLeft;
 
 struct SeqNodeTotalCostComparator{
-	bool operator() (const SeqNode& lhs , const SeqNode& rhs) { return lhs.totalCost < rhs.totalCost; }
+	bool operator() (const SeqNode& lhs , const SeqNode& rhs) { return lhs.totalCost > rhs.totalCost; }
 };
 //Not passing by reference. Can be changed if needed
 SeqNode dfs(SeqProblem& problem)  { //Uninformed search.
@@ -22,7 +22,7 @@ SeqNode dfs(SeqProblem& problem)  { //Uninformed search.
 		optimalSeqNode.totalCost = BIG_DOUBLE; 	//BIG_DOUBLE has been macro-defined as numeric limits.
 	//double bound; Not necessary here
 	stack<SeqNode> fringe;
-		fringe.push(initialState);
+		fringe.push(problem.initialState);
 
 	while(!fringe.empty()) {
 		//Optimization problem has no "goal state end."
@@ -88,7 +88,7 @@ SeqNode aStarSearch(SeqProblem& problem) {
 	SeqNode optimalSeqNode;
 		optimalSeqNode.totalCost = BIG_DOUBLE; //BIG_DOUBLE is the numeric limit of double
 		//Follows total cost contour.
-	std::priority_queue<SeqNode , SeqNodeTotalCostComparator> fringe;
+	std::priority_queue<SeqNode, vector<SeqNode>, SeqNodeTotalCostComparator> fringe;
 		fringe.push(problem.initialState);
 
 	while( !fringe.empty() ) {
@@ -98,6 +98,7 @@ SeqNode aStarSearch(SeqProblem& problem) {
 			if (node.totalCost < optimalSeqNode.totalCost) {
 				optimalSeqNode = node;
 			}
+			break;
 		}
 		else {
 			vector<SeqNode> children;
@@ -115,7 +116,7 @@ SeqNode dfbbWithGreedyBound( SeqProblem& problem) {
 		optimalSeqNode.heuristicCost = BIG_DOUBLE; 	//BIG_DOUBLE is the numeric limit
 	optimalSeqNode.totalCost = BIG_DOUBLE;			//BIG_DOUBLE is the numeric limit
 
-	std::priority_queue<SeqNode , SeqNodeHeuristicCostComparator> fringe;
+	std::priority_queue<SeqNode, vector<SeqNode>, SeqNodeHeuristicCostComparator> fringe;
 		fringe.push(problem.initialState);
 
 	while(!fringe.empty()) {
