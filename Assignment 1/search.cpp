@@ -54,13 +54,14 @@ SeqNode dfbb(SeqProblem& problem) { //Informed search
 		optimalSeqNode.totalCost = BIG_DOUBLE; //BIG_DOUBLE is the numeric limit of double
 
 	// ############# BOUND is the totalCost of the optimalSeqNode;
-
+		int n = 0;
 	stack<SeqNode> fringe;
 		fringe.push(problem.initialState);
 
 	while( !fringe.empty() ) {
 		SeqNode  node = fringe.top();
 			fringe.pop();
+			//cout<<node.totalCost<<"\n";
 		if ( problem.goalTest(node) ) {
 			if( node.totalCost < optimalSeqNode.totalCost ) {
 				optimalSeqNode = node;
@@ -76,6 +77,7 @@ SeqNode dfbb(SeqProblem& problem) { //Informed search
 
 			for(int i = 0; i<children.size(); i++) {
 				if( children[i].totalCost < optimalSeqNode.totalCost ) {
+					n++;
 					fringe.push(children[i]);
 				}
 			}
@@ -90,20 +92,23 @@ SeqNode aStarSearch(SeqProblem& problem) {
 		//Follows total cost contour.
 	std::priority_queue<SeqNode, vector<SeqNode>, SeqNodeTotalCostComparator> fringe;
 		fringe.push(problem.initialState);
-
+		long int n = 0;
 	while( !fringe.empty() ) {
 		SeqNode node = fringe.top();
 			fringe.pop(); //GIVE ME AN EXTRACT FUNCTION DAMMIT.
+			//cout<<node.totalCost<<"\n";
 		if ( problem.goalTest(node) ) {
 			if (node.totalCost < optimalSeqNode.totalCost) {
 				optimalSeqNode = node;
 			}
+			//cout<<n<<"\n"; 
 			break;
 		}
 		else {
 			vector<SeqNode> children;
 			problem.getSuccessors( node , children );
 			for(int i=0; i<children.size(); ++i) {
+				n++;
 				fringe.push(children[i]);
 			}
 		}

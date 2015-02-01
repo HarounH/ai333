@@ -19,11 +19,13 @@ void input(SeqProblem& p)
 	cin >> p.k;
 	p.sequences.resize(p.k);
 	p.stringLengths.resize(p.k);
+	p.sumOfLengths = 0;
 	for(int i = 0; i < p.k; ++i)
 	{
 		cin >> s;
 		p.sequences[i] = s;
 		p.stringLengths[i] = s.size();
+		p.sumOfLengths += s.size();
 	}
 	cin >> p.CC;
 	p.MC.resize(256);
@@ -44,4 +46,5 @@ void output(SeqNode& n)
 {
 	for(int i = 0; i < n.auxData.size(); ++i)
 		cout<<n.auxData[i]<<"\n";
+	cout<<n.totalCost<<"\n";
 }

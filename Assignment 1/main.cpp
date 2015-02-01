@@ -2,6 +2,7 @@
 #include "InputOutput.cpp"
 #include "search.cpp"
 #include <algorithm>
+#include <ctime>
 
 int main(int argc, char** argv) {
 	SeqProblem s;
@@ -12,8 +13,17 @@ int main(int argc, char** argv) {
 	s.initialState.totalCost = 0;
 	s.initialState.auxData.resize(s.k);
 	copy(s.sequences.begin(), s.sequences.end(), s.initialState.auxData.begin());
+	s.buildHeuristicTable();
+	//clock_t t1 = clock();
 	SeqNode n = aStarSearch(s);
+	//clock_t t2 = clock() - t1;
 	output(n);
+	//cout<<t2<<"\n";
+	//t1 = clock();
+	// n = dfbbWithGreedyBound(s);
+// 	clock_t t3 = clock() - t1;
+// 	output(n);
+// 	cout<<t3<<"\n";
 }
 
 /*

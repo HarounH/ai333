@@ -24,18 +24,89 @@ public:
 	vector<string> sequences;
 	vector<int> stringLengths;
 	vector<char> alphabet;
+	int sumOfLengths;
+	vector<vector<vector<vector<double> > > > A; //lookup table
 	SeqNode initialState;
 	void getSuccessors(SeqNode& n, vector<SeqNode>& successors);
 	bool goalTest(SeqNode& n);
-	double pathCost(SeqNode& s, SeqNode& t);
+	void buildHeuristicTable();
 };
 
 
 class SearchAgent {
 public:
-	double heuristicFunc(SeqProblem& p, SeqNode& n)
+	/*
+	//
+	Equivalent to uniform cost search.
+	//
+	*/
+	double zeroHeuristicFunc(SeqProblem& p, SeqNode& n)
 	{
-		return 0;
+		return 0.0;
+	}
+	/*
+	//
+	This is the current best one!
+	//
+	*/
+	double dpHeuristicFunc(SeqProblem& p, SeqNode& n)
+	{
+		double cost = 0;
+		int max = 0, maxIndex = 0;
+		for(int i = 0; i < p.k; i++)
+		{
+			for(int j = i + 1; j < p.k; j++)
+				cost += p.A[i][j-i-1][n.position[i]][n.position[j]];
+		}
+		//cout<<cost<<"\n";
+		return cost + dashHeuristicFunc(p, n);
+	}
+	/*
+	//
+	Very naive heuristic.
+	//
+	*/
+	double dashHeuristicFunc(SeqProblem&p, SeqNode& n)
+	{
+		double cost = 0;
+		int max = 0, maxIndex = 0;
+		for(int i = 0; i < p.k; i++)
+		{
+			if(n.auxData[i].size() > max)
+			{
+				max = n.auxData[i].size();
+				maxIndex = i;
+			}
+		}
+		for(int i = 0; i < p.k; i++)
+		{
+				cost += p.CC * (n.auxData[maxIndex].size() - n.auxData[i].size());
+		}
+		return cost;
+	}
+	/*
+	//
+	Experimental. Not good, not consistent either.
+	//
+	*/
+	double dashMinMatchHeuristicFunc(SeqProblem& p, SeqNode& n)
+	{
+		double cost = 0;
+		int max = 0, maxIndex = 0;
+		for(int i = 0; i < p.k; i++)
+		{
+			if(n.auxData[i].size() > max)
+			{
+				max = n.auxData[i].size();
+				maxIndex = i;
+			}
+		}
+		for(int i = 0; i < p.k; i++)
+		{
+				cost += p.CC * (n.auxData[maxIndex].size() - n.auxData[i].size());
+				cost += (p.k - i - 1) * (p.stringLengths[i] - n.position[i]);
+		}
+		return cost;
 	}
 };
 
@@ -56,10 +127,43 @@ bool SeqProblem::goalTest(SeqNode& n)
 	return true;
 }
 
+//build the heuristic table
+void SeqProblem::buildHeuristicTable()
+{
+	A.resize(k);
+	for(int i = 0; i < k; i++)
+	{
+		A[i].resize(k - i - 1);
+		for(int j = i + 1; j < k; j++)
+		{
+			int ind = j - i - 1;
+			A[i][ind].resize(stringLengths[i] + 1);
+			for(int l = stringLengths[i]; l >= 0; l--)
+			{
+				A[i][ind][l].resize(stringLengths[j] + 1);
+				A[i][ind][l][stringLengths[j]] = (stringLengths[i] - l) * CC;
+			}
+			for(int l = stringLengths[j]; l >= 0; l--)
+			{
+				A[i][ind][stringLengths[i]][l] = (stringLengths[j] - l) * CC;
+			}
+			for(int l = stringLengths[i] - 1; l >= 0; l--)
+			{
+				for(int m = stringLengths[j] - 1; m >= 0; m--)
+				{
+					int x = A[i][ind][l+1][m+1] + MC[(int) sequences[i][l]][(int) sequences[j][m]];
+					int y = A[i][ind][l+1][m] + MC[(int) sequences[i][l]][(int)'-'];
+					int z = A[i][ind][l][m+1] + MC[(int)'-'][(int) sequences[j][m]];
+					A[i][ind][l][m] = min(min(x, y), z);
+				}
+			}
+		}
+	}
+}
 
 /*
 This has quite a bit of copying.
-Working on it.
+To be improved.
 */
 void SeqProblem::getSuccessors(SeqNode& n, vector<SeqNode>& successors)
 {
@@ -108,6 +212,8 @@ void SeqProblem::getSuccessors(SeqNode& n, vector<SeqNode>& successors)
 					s.auxData[y].insert(s.auxData[y].begin() + s.position[y], '-');
 				else
 					s.auxData[y].push_back('-');
+				if(s.auxData[y].size() > sumOfLengths)
+					invalid = true;
 			}
 			for(int z = y + 1; z < k; z++)
 			{
@@ -120,9 +226,11 @@ void SeqProblem::getSuccessors(SeqNode& n, vector<SeqNode>& successors)
 					s.currentCost += MC[(int) sequences[y][s.position[y] - 1]][(int) sequences[z][s.position[z] - 1]];
 			}
 		}
+		if(invalid)
+			continue;
 		s.currentCost += n.currentCost;
 		SearchAgent sa;
-		s.heuristicCost = sa.heuristicFunc(*this, s);
+		s.heuristicCost = sa.dpHeuristicFunc(*this, s);
 		s.totalCost = s.currentCost + s.heuristicCost;
 		successors.push_back(s);
 	}
