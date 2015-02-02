@@ -65,7 +65,6 @@ SeqNode dfbb(SeqProblem& problem) { //Informed search
 		if ( problem.goalTest(node) ) {
 			if( node.totalCost < optimalSeqNode.totalCost ) {
 				optimalSeqNode = node;
-				cout<<node.totalCost<<"\n";
 			}
 		}
 		else {
