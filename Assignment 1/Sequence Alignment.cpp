@@ -25,7 +25,7 @@ public:
 	vector<int> stringLengths;
 	vector<char> alphabet;
 	int sumOfLengths;
-	vector<vector<vector<vector<double> > > > A; //lookup table
+	vector<vector<vector<vector<pair<double, int> > > > > A; //lookup table
 	SeqNode initialState;
 	void getSuccessors(SeqNode& n, vector<SeqNode>& successors);
 	bool goalTest(SeqNode& n);
@@ -56,10 +56,10 @@ public:
 		for(int i = 0; i < p.k; i++)
 		{
 			for(int j = i + 1; j < p.k; j++)
-				cost += p.A[i][j-i-1][n.position[i]][n.position[j]];
+				cost += p.A[i][j-i-1][n.position[i]][n.position[j]].first - p.CC * p.A[i][j-i-1][n.position[i]][n.position[j]].second;
 		}
 		//cout<<cost<<"\n";
-		return cost + dashHeuristicFunc(p, n);
+		return cost + dashHeuristicFunc(p, n);			
 	}
 	/*
 	//
@@ -116,13 +116,13 @@ bool SeqProblem::goalTest(SeqNode& n)
 	{
 		if (n.position[i] != stringLengths[i])
 			return false;
-		for (int j = i + 1; j < stringLengths.size(); j++)
-		{
-			if (n.position[j] != stringLengths[j])
-				return false;
-			if (n.auxData[i].size() != n.auxData[j].size())
-				return false;
-		}
+		// for (int j = i + 1; j < stringLengths.size(); j++)
+// 		{
+// 			if (n.position[j] != stringLengths[j])
+// 				return false;
+// 			if (n.auxData[i].size() != n.auxData[j].size())
+// 				return false;
+// 		}
 	}
 	return true;
 }
@@ -141,22 +141,32 @@ void SeqProblem::buildHeuristicTable()
 			for(int l = stringLengths[i]; l >= 0; l--)
 			{
 				A[i][ind][l].resize(stringLengths[j] + 1);
-				A[i][ind][l][stringLengths[j]] = (stringLengths[i] - l) * CC;
+				A[i][ind][l][stringLengths[j]].first = (stringLengths[i] - l) * CC;
+				A[i][ind][l][stringLengths[j]].second = stringLengths[i] - l;
 			}
 			for(int l = stringLengths[j]; l >= 0; l--)
 			{
-				A[i][ind][stringLengths[i]][l] = (stringLengths[j] - l) * CC;
+				A[i][ind][stringLengths[i]][l].first = (stringLengths[j] - l) * CC;
+				A[i][ind][stringLengths[i]][l].first = stringLengths[j] - l;
 			}
 			for(int l = stringLengths[i] - 1; l >= 0; l--)
 			{
 				for(int m = stringLengths[j] - 1; m >= 0; m--)
 				{
-					int x = A[i][ind][l+1][m+1] + MC[(int) sequences[i][l]][(int) sequences[j][m]];
-					int y = A[i][ind][l+1][m] + MC[(int) sequences[i][l]][(int)'-'];
-					int z = A[i][ind][l][m+1] + MC[(int)'-'][(int) sequences[j][m]];
-					A[i][ind][l][m] = min(min(x, y), z);
+					int x = A[i][ind][l+1][m+1].first + MC[(int) sequences[i][l]][(int) sequences[j][m]];
+					int y = A[i][ind][l+1][m].first + MC[(int) sequences[i][l]][(int)'-'] + CC;
+					int z = A[i][ind][l][m+1].first + MC[(int)'-'][(int) sequences[j][m]] + CC;
+					int less = min(min(x, y), z);
+					if(less == x)
+						A[i][ind][l][m].second = A[i][ind][l+1][m+1].second;
+					else if(less == y)
+						A[i][ind][l][m].second = A[i][ind][l+1][m].second + 1;
+					else if(less == z)
+						A[i][ind][l][m].second = A[i][ind][l][m+1].second + 1;
+					A[i][ind][l][m].first = less;
 				}
 			}
+			//cout<<A[i][ind][0][0]<<"\n";
 		}
 	}
 }
@@ -188,6 +198,7 @@ void SeqProblem::getSuccessors(SeqNode& n, vector<SeqNode>& successors)
 		int tupleIndex = 0;
 		s.auxData.resize(k);
 		copy(n.auxData.begin(), n.auxData.end(), s.auxData.begin());
+		copy(n.position.begin(), n.position.end(), s.position.begin());
 		while (j != 0)
 		{
 			int bit = j & 1;

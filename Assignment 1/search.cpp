@@ -65,7 +65,7 @@ SeqNode dfbb(SeqProblem& problem) { //Informed search
 		if ( problem.goalTest(node) ) {
 			if( node.totalCost < optimalSeqNode.totalCost ) {
 				optimalSeqNode = node;
-					//bound = node.totalCost; //Update Bound.
+				cout<<node.totalCost<<"\n";
 			}
 		}
 		else {
@@ -93,16 +93,15 @@ SeqNode aStarSearch(SeqProblem& problem) {
 	std::priority_queue<SeqNode, vector<SeqNode>, SeqNodeTotalCostComparator> fringe;
 		fringe.push(problem.initialState);
 		long int n = 0;
+		int prev = 0;
 	while( !fringe.empty() ) {
 		SeqNode node = fringe.top();
 			fringe.pop(); //GIVE ME AN EXTRACT FUNCTION DAMMIT.
-			//cout<<node.totalCost<<"\n";
 		if ( problem.goalTest(node) ) {
 			if (node.totalCost < optimalSeqNode.totalCost) {
 				optimalSeqNode = node;
 			}
 			//cout<<n<<"\n"; 
-			break;
 		}
 		else {
 			vector<SeqNode> children;

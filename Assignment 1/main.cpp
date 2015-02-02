@@ -15,14 +15,14 @@ int main(int argc, char** argv) {
 	copy(s.sequences.begin(), s.sequences.end(), s.initialState.auxData.begin());
 	s.buildHeuristicTable();
 	//clock_t t1 = clock();
-	SeqNode n = aStarSearch(s);
+	//SeqNode n = aStarSearch(s);
 	//clock_t t2 = clock() - t1;
-	output(n);
+	//output(n);
 	//cout<<t2<<"\n";
 	//t1 = clock();
-	// n = dfbbWithGreedyBound(s);
+	SeqNode n = dfbb(s);
 // 	clock_t t3 = clock() - t1;
-// 	output(n);
+ 	output(n);
 // 	cout<<t3<<"\n";
 }
 
