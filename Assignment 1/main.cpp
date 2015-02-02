@@ -1,7 +1,7 @@
 #include "Sequence Alignment.cpp"
 #include "InputOutput.cpp"
-#include "search.cpp"
 #include <algorithm>
+#include "search.cpp"
 #include <ctime>
 
 int main(int argc, char** argv) {

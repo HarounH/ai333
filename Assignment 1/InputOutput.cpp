@@ -46,5 +46,4 @@ void output(SeqNode& n)
 {
 	for(int i = 0; i < n.auxData.size(); ++i)
 		cout<<n.auxData[i]<<"\n";
-	cout<<n.totalCost<<"\n";
 }
