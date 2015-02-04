@@ -5,7 +5,7 @@
 #include <deque>
 #include <string>
 #include <iostream>
-#include <tr1/unordered_map>
+#include <unordered_map>
 #include <random>
 
 using namespace std;
@@ -34,7 +34,7 @@ public:
 	//Alphabet Related
 	int aSize;
 	vector<char> alphabet;
-	tr1::unordered_map< char , int > charToInt;
+	unordered_map< char , int > charToInt;
 	//Sequence Related
 	int k;
 	vector<string> sequences; //Input sequences
@@ -44,8 +44,8 @@ public:
 	//Misc Functions
 	void print();
 	//Initialization Functions
-	void initialize(INIT_TYPE initMode , int numStates=1); //Initializes into Problem::initialState.
-	void initializeInto(INIT_TYPE initMode , int numStates=1 , SeqState& state);
+	void initialize(INIT_TYPE initMode , int numStates); //Initializes into Problem::initialState.
+	void initializeInto(INIT_TYPE initMode , SeqState& state, int numStates);
 		void randomInit();
 		void randomInit(int x); //Generates x random states.		
 		void geneticInit();
@@ -53,7 +53,7 @@ public:
 	void getNBD(SeqState& n , vector<SeqState>& nbd); //NeighBourhooD - NBD
 	double evalCost(SeqState& state);
 };
-
+//Misc Functions
 void SeqProblem::print() {
 	cout << "Clock time is : \t " << clockTime << "\n";
 	cout << "CC is 			 \t " << CC << "\n";
@@ -78,5 +78,21 @@ void SeqProblem::print() {
 
 void SeqState::print() {
 	return;
+}
+
+void SeqProblem::initialize(INIT_TYPE initMode , int numStates = 1) {
+	return; //TODO
+}
+
+void SeqProblem::initializeInto(INIT_TYPE initMode , SeqState& state, int numStates=1) {
+	return; //TODO
+}
+
+void SeqProblem::getNBD(SeqState& state , vector<SeqState>& nbd) {
+	return; //TODO
+}
+
+double evalCost(SeqState& state) {
+	return 0.0; //TODO
 }
 #endif

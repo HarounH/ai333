@@ -1,7 +1,6 @@
 #ifndef SUB_OPT_SEARCH_CPP
 	#define SUB_OPT_SEARCH_CPP
 
-#include "formulation.cpp"
 #include <random> //...for simulated annealing.
 
 #define BIG_DOUBLE std::numeric_limits<double>::max()
@@ -39,6 +38,7 @@ Restarts but does not time itself.
 */
 SeqState& greedyHillClimb_nRestarts_untimed(SeqProblem& p , int n) {
 	SeqState best = p.initialState;
+	SeqState prevBest = p.initialState;
 	int restarts = n;
 	while( --restarts ) {
 		while(true) {
@@ -64,7 +64,7 @@ SeqState& greedyHillClimb_nRestarts_untimed(SeqProblem& p , int n) {
 			}
 		}
 		prevBest = best;
-		p.initializeInto(RANDOM , 1 , best); //Generate 1 Random Start. ALTER THIS for better greedyhillClimb.
+		p.initializeInto(RANDOM , best , 1); //Generate 1 Random Start. ALTER THIS for better greedyhillClimb.
 
 	}
 	return (( best.cost < prevBest.cost )?( best ):( prevBest ));
@@ -78,10 +78,10 @@ Need some way of evaluation TIME_BUFFER. It allows for the program to print stuf
 /*
 Greedy Hill Climb with no restarts but it is timed. Theoretically runs into shoulders etc and treats it as optimal.
 */
-SeqState& greedyHillClimb_NoRestarts_timed(SeqProblem& p , clock_t& startTime) {
+SeqState& greedyHillClimb_NoRestarts_timed(SeqProblem& p , clock_t& start) {
 	clock_t present;
 	present = clock();
-	SeqNode best  = p.initialState;
+	SeqState best  = p.initialState;
 	while( ((float)present/CLOCKS_PER_SEC) + TIME_BUFFER < ((float)start/CLOCKS_PER_SEC) + p.clockTime) {
 		vector<SeqState> nbd;
 		p.getNBD(best , nbd);
@@ -106,11 +106,11 @@ SeqState& greedyHillClimb_NoRestarts_timed(SeqProblem& p , clock_t& startTime) {
 /*
 Greedy Hill Climb with infinite restarts if time permits.
 */
-SeqState& greedyHillClimb_infRestarts_timed(SeqProblem& p , clock_t& startTime) {
+SeqState& greedyHillClimb_infRestarts_timed(SeqProblem& p , clock_t& start) {
 	clock_t present;
 	present = clock();
-	SeqNode& best = p.initialState;		//...Extra copy.
-	SeqNode& prevBest = p.initialState; //...Extra copy.
+	SeqState& best = p.initialState;		//...Extra copy.
+	SeqState& prevBest = p.initialState; //...Extra copy.
 	while( ((float)present/CLOCKS_PER_SEC) + TIME_BUFFER < ((float)start/CLOCKS_PER_SEC) + p.clockTime) {
 		while(true && ((float)present/CLOCKS_PER_SEC) + TIME_BUFFER < ((float)start/CLOCKS_PER_SEC) + p.clockTime ) { //You don't want to get caught in this.
 			vector<SeqState> nbd;
@@ -136,7 +136,7 @@ SeqState& greedyHillClimb_infRestarts_timed(SeqProblem& p , clock_t& startTime) 
 			present = clock();
 		}
 		prevBest = best;
-		p.initializeInto(RANDOM , 1 , best);
+		p.initializeInto(RANDOM , best , 1);
 	}
 	return (( best.cost < prevBest.cost )?( best ):( prevBest ));
 }
