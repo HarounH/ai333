@@ -56,7 +56,7 @@ public:
 		for(int i = 0; i < p.k; i++)
 		{
 			for(int j = i + 1; j < p.k; j++)
-				cost += p.A[i][j-i-1][n.position[i]][n.position[j]].first - p.CC * p.A[i][j-i-1][n.position[i]][n.position[j]].second;
+				cost += p.A[i][j-i-1][n.position[i]][n.position[j]].first;// - p.CC * p.A[i][j-i-1][n.position[i]][n.position[j]].second;
 		}
 		//cout<<cost<<"\n";
 		return cost + dashHeuristicFunc(p, n);			
@@ -131,6 +131,7 @@ bool SeqProblem::goalTest(SeqNode& n)
 void SeqProblem::buildHeuristicTable()
 {
 	A.resize(k);
+	int CCmin = 0;
 	for(int i = 0; i < k; i++)
 	{
 		A[i].resize(k - i - 1);
@@ -138,24 +139,27 @@ void SeqProblem::buildHeuristicTable()
 		{
 			int ind = j - i - 1;
 			A[i][ind].resize(stringLengths[i] + 1);
-			for(int l = stringLengths[i]; l >= 0; l--)
+			A[i][ind][stringLengths[i]].resize(stringLengths[j] + 1);
+			A[i][ind][stringLengths[i]][stringLengths[j]].first = 0;
+			A[i][ind][stringLengths[i]][stringLengths[j]].second = 0;
+			for(int l = stringLengths[i] - 1; l >= 0; l--)
 			{
 				A[i][ind][l].resize(stringLengths[j] + 1);
-				A[i][ind][l][stringLengths[j]].first = (stringLengths[i] - l) * CC;
+				A[i][ind][l][stringLengths[j]].first = A[i][ind][l+1][stringLengths[j]].first + MC[(int) sequences[i][l]][(int)'-'] + CCmin;
 				A[i][ind][l][stringLengths[j]].second = stringLengths[i] - l;
 			}
-			for(int l = stringLengths[j]; l >= 0; l--)
+			for(int l = stringLengths[j] - 1; l >= 0; l--)
 			{
-				A[i][ind][stringLengths[i]][l].first = (stringLengths[j] - l) * CC;
-				A[i][ind][stringLengths[i]][l].first = stringLengths[j] - l;
+				A[i][ind][stringLengths[i]][l].first = A[i][ind][stringLengths[i]][l+1].first + MC[(int)'-'][(int) sequences[j][l]] + CCmin;
+				A[i][ind][stringLengths[i]][l].second = stringLengths[j] - l;
 			}
 			for(int l = stringLengths[i] - 1; l >= 0; l--)
 			{
 				for(int m = stringLengths[j] - 1; m >= 0; m--)
 				{
 					int x = A[i][ind][l+1][m+1].first + MC[(int) sequences[i][l]][(int) sequences[j][m]];
-					int y = A[i][ind][l+1][m].first + MC[(int) sequences[i][l]][(int)'-'] + CC;
-					int z = A[i][ind][l][m+1].first + MC[(int)'-'][(int) sequences[j][m]] + CC;
+					int y = A[i][ind][l+1][m].first + MC[(int) sequences[i][l]][(int)'-'] + CCmin;
+					int z = A[i][ind][l][m+1].first + MC[(int)'-'][(int) sequences[j][m]] + CCmin;
 					int less = min(min(x, y), z);
 					if(less == x)
 						A[i][ind][l][m].second = A[i][ind][l+1][m+1].second;
@@ -166,7 +170,6 @@ void SeqProblem::buildHeuristicTable()
 					A[i][ind][l][m].first = less;
 				}
 			}
-			//cout<<A[i][ind][0][0]<<"\n";
 		}
 	}
 }
@@ -192,7 +195,7 @@ void SeqProblem::getSuccessors(SeqNode& n, vector<SeqNode>& successors)
 		SeqNode s;
 		s.currentCost = 0;
 		s.position.resize(k);
-		vector<int> tuple(k);
+		vector<int> tuple(k, 0);
 		invalid = false;
 		int j = i;
 		int tupleIndex = 0;
@@ -220,7 +223,7 @@ void SeqProblem::getSuccessors(SeqNode& n, vector<SeqNode>& successors)
 			{
 				s.currentCost += CC;
 				if(s.position[y] < stringLengths[y])
-					s.auxData[y].insert(s.auxData[y].begin() + s.position[y], '-');
+					s.auxData[y].insert(s.auxData[y].begin() + (int) s.auxData[y].size() - stringLengths[y] + s.position[y], '-');
 				else
 					s.auxData[y].push_back('-');
 				if(s.auxData[y].size() > sumOfLengths)

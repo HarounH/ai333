@@ -32,7 +32,8 @@ void input(SeqProblem& p)
 	for(int i = 0; i < p.aSize + 1; ++i)
 	{
 		int y = (int) p.alphabet[i];
-		p.MC[y].resize(256);
+		if(p.MC[y].empty())
+			p.MC[y].resize(256);
 		for(int j = 0; j < p.aSize + 1; ++j)
 		{
 			int z = (int) p.alphabet[j];

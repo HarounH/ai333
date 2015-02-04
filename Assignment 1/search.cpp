@@ -13,7 +13,7 @@ struct SeqNodeHeuristicCostComparator { //Used in dfbb to sort the successor nod
 
 struct SeqNodeTotalCostComparator{
 	bool operator() (const SeqNode& lhs , const SeqNode& rhs) { return lhs.totalCost > rhs.totalCost; }
-};
+}seqNodeTotalCostComparatorLeft;
 //Not passing by reference. Can be changed if needed
 SeqNode dfs(SeqProblem& problem)  { //Uninformed search.
 
@@ -66,22 +66,24 @@ SeqNode dfbb(SeqProblem& problem) { //Informed search
 			if( node.totalCost < optimalSeqNode.totalCost ) {
 				optimalSeqNode = node;
 			}
+			cout<<node.totalCost<<"\n";
+			cout<<n<<"\n";
 		}
 		else {
 			vector<SeqNode> children;
 			problem.getSuccessors(node , children);
 
 			//Sort children by their heuristic value. Only heuristic value because looking into the future.
-			std::sort(children.begin() , children.end() , seqNodeHeuristicComparatorLeft);
-
+			std::sort(children.begin() , children.end() , seqNodeTotalCostComparatorLeft);
 			for(int i = 0; i<children.size(); i++) {
+				n++;
 				if( children[i].totalCost < optimalSeqNode.totalCost ) {
-					n++;
 					fringe.push(children[i]);
 				}
 			}
 		}
 	}
+	cout<<n<<"\n";
 	return optimalSeqNode;
 }
 
@@ -100,7 +102,6 @@ SeqNode aStarSearch(SeqProblem& problem) {
 			if (node.totalCost < optimalSeqNode.totalCost) {
 				optimalSeqNode = node;
 			}
-			//cout<<n<<"\n"; 
 		}
 		else {
 			vector<SeqNode> children;
