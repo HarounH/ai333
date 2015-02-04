@@ -1,7 +1,9 @@
 #include <iostream>
 #include <vector>
 #include "formulation.cpp"
+#include <limits>
 
+#define BIG_INT std::numeric_limits<int>::max()
 using namespace std;
 
 void input(SeqProblem& p)
@@ -23,12 +25,15 @@ void input(SeqProblem& p)
 	p.sequences.resize(p.k);
 	p.stringLengths.resize(p.k);
 	p.sumOfLengths = 0;
+	p.minimumFinalLength = BIG_INT; //Defined above.
 	for(int i = 0; i < p.k; ++i)
 	{
 		cin >> s;
 		p.sequences[i] = s;
 		p.stringLengths[i] = s.size();
 		p.sumOfLengths += s.size();
+		if ( p.minimumFinalLength > s.size())
+			p.minimumFinalLength = s.size();
 	}
 	cin >> p.CC;
 	p.MC.resize(p.aSize+1);
