@@ -9,6 +9,7 @@ int main(int argc, char** argv) {
 	start = clock();
 	SeqProblem s;
 	input(s);
-	s.print();
+	s.initialize(RANDOM);
+	s.printState(s.initialState);
 	return 1;
 }

@@ -23,12 +23,12 @@ int main(int argc , char** argv) { //generates a file of name argv[1]
 	writer << alphabetsize << "\n";
 
 	//Write alphabets
-		for(int i = 'A' ; (i<= 'Z') && ((i-'A')< alphabetsize-1 ); ++i) {
+		for(int i = 'A' ; ((i<= (int)'Z') && ((i-'A')< alphabetsize-1 ) ); ++i) {
 			writer << (char)i << ", ";
 
 		}
 		if( alphabetsize > 26) {	
-			for(int i = 'a' ; (i<= 'z') && ((i-'a')< alphabetsize-26-1 ); ++i) {
+			for(int i = 'a' ; ((i<= (int)'z') && ((i-'a')< alphabetsize-26-1 )); ++i) {
 				writer << (char)i << ", ";
 			}
 		}
@@ -47,8 +47,8 @@ int main(int argc , char** argv) { //generates a file of name argv[1]
 		int length = minlength + rand()%(maxlength-minlength);
 		if (alphabetsize>26) {
 			for(int i=0; i<length; ++i) {
-				int offset = rand()%52;
-				if( offset>25 ) {
+				int offset = rand()%(2*alphabetsize);
+				if( offset<= alphabetsize/2 ) {
 					char c = 'A' + offset;
 					writer << c;
 				} else {
@@ -58,7 +58,7 @@ int main(int argc , char** argv) { //generates a file of name argv[1]
 			}
 		} else {
 			for(int i=0; i<length; ++i) {
-				int offset = rand()%26;
+				int offset = rand()%alphabetsize;
 				char c = 'A' + offset;
 				writer << c;
 			}
