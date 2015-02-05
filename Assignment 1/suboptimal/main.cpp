@@ -10,8 +10,6 @@ int main(int argc, char** argv) {
 	SeqProblem s;
 	input(s);
 	s.initialize(RANDOM);
-	vector<SeqState> testNBD;
-	s.getNBD(s.initialState , testNBD);
-	for(int i=0; i<testNBD.size();++i) s.printState(testNBD[i]);
+	s.printState(greedyHillClimb_NoRestarts_untimed(s));
 	return 1;
 }

@@ -13,6 +13,8 @@ Does not handle shoulders, pits, plateaus or ANY of that.
 */
 SeqState greedyHillClimb_NoRestarts_untimed(SeqProblem& p) {
 	SeqState best = p.initialState; //Copy cost.
+	cout << "hi \t The best cost is : \t " << best.cost << "\n";
+
 	while(true) {
 		vector<SeqState> nbd;
 		p.getNBD(best , nbd);
