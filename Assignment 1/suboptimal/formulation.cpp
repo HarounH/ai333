@@ -50,7 +50,6 @@ void SeqProblem::printState(const SeqState& state) { //Mostly trivial Code to pr
 } //QC passed -H
 
 void SeqProblem::initialize(INIT_TYPE initMode) {
-	std::random_device rd;
 	std::mt19937 engine((std::random_device())());
 	uniform_int_distribution<int> initializer(0, (int)(minimumFinalLength / 5));
 	if(initMode == RANDOM)
@@ -209,8 +208,7 @@ void SeqProblem::getNBD_singleDashMove(const SeqState& state , vector<SeqState>&
 	
 	//Code that handles neighbours of varying length.
 	//Random distribution devices from c++11 's  random class.
-	std::random_device rd;
-	std::mt19937 engine(rd()); //Some cool mersenne twister algorithm
+	std::mt19937 engine((std::random_device())()); //Some cool mersenne twister algorithm
 	
 	for(int i = 0; i<LONGER_LENGTH_CHILDREN; ++i) { //Vary these parameters to decide how many longer length children are wanted
 		SeqState child = state;
