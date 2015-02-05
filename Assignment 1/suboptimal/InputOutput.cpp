@@ -50,7 +50,7 @@ void input(SeqProblem& p)
 	cin >> s;
 } //Works.
 
-void output(SeqState& n)
+void output(SeqProblem& p , SeqState& n)
 {
-	n.print();
+	p.printState(n);
 } //Should work.
