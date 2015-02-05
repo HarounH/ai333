@@ -14,23 +14,24 @@ Does not handle shoulders, pits, plateaus or ANY of that.
 SeqState greedyHillClimb_NoRestarts_untimed(SeqProblem& p) {
 	SeqState best = p.initialState; //Copy cost.
 	cout << "hi \t The best cost is : \t " << best.cost << "\n";
-
 	while(true) {
 		vector<SeqState> nbd;
 		p.getNBD(best , nbd);
 		//Find minimum of the neigbhours.
-		int minIDX;
+		int minIDX = 0;
 		double minCost = BIG_DOUBLE; //Defined as numeric limit.
-		for(int i = 0; i<nbd.size();++i) {
+		for(int i = 0; i<nbd.size() ; ++i) {
+			if ( nbd[i].cost < 0) p.printState(nbd[i]);
 			if (nbd[i].cost < minCost) {
 				minCost = nbd[i].cost;
 				minIDX = i;
 			}
 		} //Minimum found at i.
-		if( best.cost < minCost )
+		if( best.cost < minCost ) {
 			break;
-		else
+		} else {
 			best = nbd[minIDX]; //New best.
+		}
 	}
 	return best;
 }
@@ -66,6 +67,7 @@ SeqState greedyHillClimb_nRestarts_untimed(SeqProblem& p , int n) {
 			}
 		}
 		prevBest = best;
+		cout << "\n" << prevBest.cost << "\n";
 		p.initializeInto(RANDOM , best); //Generate 1 Random Start. ALTER THIS for better greedyhillClimb.
 
 	}

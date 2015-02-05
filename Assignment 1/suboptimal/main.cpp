@@ -10,6 +10,7 @@ int main(int argc, char** argv) {
 	SeqProblem s;
 	input(s);
 	s.initialize(RANDOM);
-	s.printState(greedyHillClimb_NoRestarts_untimed(s));
+	vector<SeqState> nbd;
+	s.printState(greedyHillClimb_nRestarts_untimed(s , 100));
 	return 1;
 }
