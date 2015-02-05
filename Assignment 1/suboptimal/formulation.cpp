@@ -2,7 +2,7 @@
 	#define FORMULATION_CPP
 
 #include "formulation.h"
-
+#include <iterator>
 
 //Misc Functions
 void SeqProblem::print() { //Trivial Code to print the problem out.
@@ -24,15 +24,17 @@ void SeqProblem::print() { //Trivial Code to print the problem out.
 	return;
 } //QC passed -H
 
-void SeqProblem::printState(SeqState& state) { //Mostly trivial Code to print out the strings associated with state
+void SeqProblem::printState(const SeqState& state) { //Mostly trivial Code to print out the strings associated with state
 	for(int stringIDX = 0; stringIDX < k; ++stringIDX) {
 		//prints out the strings.
 		int ctr = 0; //Counts how many positions have been parsed.
 		//Pointers to the dash/sequence thingies			
 		int dctr = 0; //number of dashes read.
 		int cctr = 0; //Number of characters read.
+		copy(state.dashPos[stringIDX].begin(),state.dashPos[stringIDX].end(), ostream_iterator<int>(cout, " "));
+		cout<<"\n"; 	
 		while( ctr < state.length ) {
-			if ( state.dashPos[stringIDX][dctr] + dctr == ctr) {
+			if ( (dctr<state.dashPos[stringIDX].size()) && (state.dashPos[stringIDX][dctr] + dctr == ctr)) {
 				cout << '-';
 				++dctr;
 			} else {
@@ -123,11 +125,11 @@ void SeqProblem::randomInit(vector<int>& vec, int x, int start, int end)
 	sort(vec.begin(), vec.end());
 } //QC Not passed - is it not random? Or is it just sad?
 
-void SeqProblem::getNBD(SeqState& state , vector<SeqState>& nbd) {
+void SeqProblem::getNBD(const SeqState& state , vector<SeqState>& nbd) {
 	getNBD_singleDashMove(state , nbd); //Change According to will
 }
 
-void SeqProblem::getNBD_singleDashMove(SeqState& state , vector<SeqState>& nbd) {
+void SeqProblem::getNBD_singleDashMove(const SeqState& state , vector<SeqState>& nbd) {
 	//One neighbour per dash per string. , big-O(k*n*n) neighbours are generated here.
 	for(int stringIDX = 0; stringIDX < k ; ++stringIDX) {
 		//For each string in the state, generate children by moving each dash randomly. and one more dash by one length more and one length less.
@@ -231,29 +233,20 @@ void SeqProblem::getNBD_singleDashMove(SeqState& state , vector<SeqState>& nbd) 
 	if( state.length > minimumFinalLength ) {
 		for(int i = 0; i< SHORTER_LENGTH_CHILDREN ; ++i) { //Vary these parameters to decide how many shorter length children are wanted.
 			SeqState child = state;
-			printState(child);
 			for (int stringIDX = 0; stringIDX < k ; ++stringIDX) {
 				//Remove a dash.	
 				//ASSERT : for all stringIDX , dashPos[stringIDX].size()>=1				
-				child.dashPos[stringIDX].pop_back();				
+				child.dashPos[stringIDX].pop_back();
 			}
 			--child.length;
 			child.cost = evalCost(child);
-			cout << "\n dashPos \n";
-			for(int id = 0; id<k; ++id) {
-				for(int t=0; t < (child.dashPos[id]).size() ; ++t){
-					cout << child.dashPos[id][t] << " "; 
-				}
-				cout << "\n";
-			}
-			printState(child);
 			nbd.push_back(child);
 		}
 	}
 }
 
 
-double SeqProblem::evalCost(SeqState& state) {
+double SeqProblem::evalCost(const SeqState& state) {
 	double cost = 0.0;
 	/*
 	Following algorithm :
@@ -273,7 +266,7 @@ double SeqProblem::evalCost(SeqState& state) {
 			while ( ctr < state.length ) {
 				//StringIDX_1 's character is calculated here.
 				char s1 , s2; //s1 and s2 are the 
-				if ( state.dashPos[stringIDX_1][dashIDX_1] + dashIDX_1== ctr ) {
+				if ( (dashIDX_1 < state.dashPos[stringIDX_1].size()) && (state.dashPos[stringIDX_1][dashIDX_1] + dashIDX_1== ctr )) {
 					//String_IDX1 has a '-' at this position.
 					s1 = '-';
 					cost += CC;
@@ -284,7 +277,7 @@ double SeqProblem::evalCost(SeqState& state) {
 				}
 
 				//StringIDX_2 's character is calculated here.
-				if ( state.dashPos[stringIDX_2][dashIDX_2] + dashIDX_2== ctr) {
+				if ( (dashIDX_2< state.dashPos[stringIDX_2].size()) && (state.dashPos[stringIDX_2][dashIDX_2] + dashIDX_2== ctr)) {
 					//String_IDX2 has a '-' at this position
 					s2 = '-';
 					cost += CC;
@@ -301,7 +294,7 @@ double SeqProblem::evalCost(SeqState& state) {
 	return cost;
 } // Akshay QC : 
 
-void SeqProblem::setChildCost_singleDash(SeqState& parent , SeqState& child , int stringIDX_1) { //Children are genereated by moving a dash around for one string.
+void SeqProblem::setChildCost_singleDash(const SeqState& parent ,  SeqState& child , int stringIDX_1) { //Children are genereated by moving a dash around for one string.
 	
 	double deltaCost = 0.0;
 	for(int stringIDX_2 = 0; stringIDX_2 < k ; ++stringIDX_2) {
@@ -318,7 +311,7 @@ void SeqProblem::setChildCost_singleDash(SeqState& parent , SeqState& child , in
 				//StringIDX_1 's character is calculated here.
 				//Parent Cost
 					char s1 , s2; //s1 and s2 are the 
-					if ( parent.dashPos[stringIDX_1][dashIDX_1] + dashIDX_1 == ctr ) {
+					if ( (dashIDX_1<parent.dashPos[stringIDX_1].size() ) && (parent.dashPos[stringIDX_1][dashIDX_1] + dashIDX_1 == ctr)) {
 						//String_IDX1 has a '-' at this position.
 						s1 = '-';
 						deltaCost -= CC; //CC doesnt actually need to be evaluated , but alright.
@@ -329,7 +322,7 @@ void SeqProblem::setChildCost_singleDash(SeqState& parent , SeqState& child , in
 					}
 
 					//StringIDX_2 's character is calculated here.
-					if ( parent.dashPos[stringIDX_2][dashIDX_2] + dashIDX_2 == ctr) {
+					if ( (dashIDX_2 < parent.dashPos[stringIDX_2].size() ) && (parent.dashPos[stringIDX_2][dashIDX_2] + dashIDX_2 == ctr)) {
 						//String_IDX2 has a '-' at this position
 						s2 = '-';
 						deltaCost -= CC;
@@ -342,7 +335,7 @@ void SeqProblem::setChildCost_singleDash(SeqState& parent , SeqState& child , in
 				
 				//ChildCost.
 					char c1 , c2;
-					if ( child.dashPos[stringIDX_1][dashIDX_1] + dashIDX_1 == ctr ) {
+					if ( (dashIDX_1< child.dashPos[stringIDX_1].size() ) && (child.dashPos[stringIDX_1][dashIDX_1] + dashIDX_1 == ctr)) {
 						//String_IDX1 has a '-' at this position.
 						s1 = '-';
 						deltaCost += CC;
@@ -353,7 +346,7 @@ void SeqProblem::setChildCost_singleDash(SeqState& parent , SeqState& child , in
 					}
 
 					//StringIDX_2 's character is calculated here.
-					if ( child.dashPos[stringIDX_2][dashIDX_2] + dashIDX_2 == ctr) {
+					if ( (dashIDX_2<child.dashPos[stringIDX_2].size()) && (child.dashPos[stringIDX_2][dashIDX_2] + dashIDX_2 == ctr)) {
 						//String_IDX2 has a '-' at this position
 						s2 = '-';
 						deltaCost += CC;

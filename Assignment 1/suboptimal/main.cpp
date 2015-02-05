@@ -12,5 +12,6 @@ int main(int argc, char** argv) {
 	s.initialize(RANDOM);
 	vector<SeqState> testNBD;
 	s.getNBD(s.initialState , testNBD);
+	for(int i=0; i<testNBD.size();++i) s.printState(testNBD[i]);
 	return 1;
 }

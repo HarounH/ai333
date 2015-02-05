@@ -9,7 +9,7 @@ using namespace std;
 int alphabetsize= 	4;
 int numseq		=	5;
 int cc			=	3;
-int maxlength 	= 	10;
+int maxlength 	= 	20;
 int minlength   =   5;
 int maxcost		= 	10;
 float _time 	= 	10.0;

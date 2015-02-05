@@ -27,11 +27,11 @@ public:
 		//dashPos[i] is the number of sequence character's before the ith dash. ab-cd would have dashpos = [2].
 
 	//Comparision stuff, just in case its needed.
-	bool operator>=(const SeqState& rhs) {return cost >= rhs.cost; }
-	bool operator<=(const SeqState& rhs) {return cost <= rhs.cost; } //Just use the correct heap.
-	bool operator==(const SeqState& rhs) {return cost == rhs.cost; }
-	bool operator>(const SeqState& rhs) {return cost >  rhs.cost; }
-	bool operator<(const SeqState& rhs) {return cost <  rhs.cost; }
+	bool operator>=(const SeqState& rhs) const {return cost >= rhs.cost; }
+	bool operator<=(const SeqState& rhs) const {return cost <= rhs.cost; } //Just use the correct heap.
+	bool operator==(const SeqState& rhs) const {return cost == rhs.cost; }
+	bool operator>(const SeqState& rhs) const {return cost >  rhs.cost; }
+	bool operator<(const SeqState& rhs) const {return cost <  rhs.cost; }
 };
 
 class SeqProblem {
@@ -54,7 +54,7 @@ public:
 	vector<SeqState> initialStates;
 	//Misc Functions
 	void print();
-	void printState(SeqState& state);
+	void printState(const SeqState& state);
 	//Initialization Functions
 	void initialize(INIT_TYPE initMode); 						//Initializes into Problem::initialState.
 	void initialize(INIT_TYPE initMode, int numStates);
@@ -62,9 +62,9 @@ public:
 	void initializeInto(INIT_TYPE initMode , vector<SeqState>& states, int numStates); 	//Initialize into state 
 	void randomInit(vector<int>& vec, int x, int start, int end);		//Randomly fill vector with x values between start and end
 	//Functions required by search.
-	void getNBD(SeqState& n , vector<SeqState>& nbd); //NeighBourhooD - NBD
-		void getNBD_singleDashMove(SeqState& n , vector<SeqState>& nbd);
-	double evalCost(SeqState& state);
-	void setChildCost_singleDash(SeqState& parent , SeqState& child , int stringIDX_1);
+	void getNBD(const SeqState& n , vector<SeqState>& nbd); //NeighBourhooD - NBD
+		void getNBD_singleDashMove(const SeqState& n , vector<SeqState>& nbd);
+	double evalCost(const SeqState& state);
+	void setChildCost_singleDash(const SeqState& parent ,  SeqState& child , int stringIDX_1);
 };
 #endif
