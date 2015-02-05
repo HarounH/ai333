@@ -43,12 +43,79 @@ void SeqProblem::printState(SeqState& state) { //Mostly trivial Code to print ou
 	return;
 }
 
-void SeqProblem::initialize(INIT_TYPE initMode , int numStates = 1) {
-	return; //TODO
+void SeqProblem::initialize(INIT_TYPE initMode) {
+	std::random_device rd;
+	std::mt19937 engine(rd());
+	uniform_int_distribution<int> initializer(0, (int)(minimumFinalLength / 5));
+	if(initMode == RANDOM)
+	{
+		initialState.dashPos.resize(k);
+		initialState.length = minimumFinalLength + initializer(engine);
+		for(int i = 0; i < k; i++)
+			randomInit(initialState.dashPos[i], initialState.length - (int)sequences[i].size(), 0, (int)sequences[i].size());
+		initialState.cost = evalCost(initialState);
+	}
 }
 
-void SeqProblem::initializeInto(INIT_TYPE initMode , SeqState& state, int numStates=1) {
-	return; //TODO
+void SeqProblem::initialize(INIT_TYPE initMode, int numStates) {
+	initialStates.resize(numStates);
+	std::random_device rd;
+	std::mt19937 engine(rd());
+	uniform_int_distribution<int> initializer(0, (int)(minimumFinalLength / 5));
+	if(initMode == RANDOM)
+	{
+		for(int i = 0; i < numStates; i++)
+		{
+			initialStates[i].length = minimumFinalLength + initializer(engine);
+			initialStates[i].dashPos.resize(k);
+			for(int j = 0; j < k; i++)
+				randomInit(initialStates[i].dashPos[j], initialStates[i].length - (int)sequences[j].size(), 0, (int)sequences[j].size());
+			initialState.cost = evalCost(initialState);
+		}
+	}
+}
+
+void SeqProblem::initializeInto(INIT_TYPE initMode , SeqState& state) {
+	std::random_device rd;
+	std::mt19937 engine(rd());
+	uniform_int_distribution<int> initializer(0, (int)(minimumFinalLength / 5));
+	if(initMode == RANDOM)
+	{
+		state.length = minimumFinalLength + initializer(length);
+		state.dashPos.resize(k);
+		for(int i = 0; i < k; i++)
+			randomInit(state.dashPos[i], state.length - (int)sequences[i].size(), 0, (int)sequences[i].size());
+		state.cost = evalCost(state);
+	}
+}
+
+void SeqProblem::initializeInto(INIT_TYPE initMode, vector<SeqState>& states, int numStates) {
+	states.resize(numStates);
+	std::random_device rd;
+	std::mt19937 engine(rd());
+	uniform_int_distribution<int> initializer(0, (int)(minimumFinalLength / 5));
+	if(initMode == RANDOM)
+	{
+		for(int i = 0; i < numStates; i++)
+		{
+			states[i].length = minimumFinalLength + initializer(engine);
+			states[i].dashPos.resize(k);
+			for(int j = 0; j < k; i++)
+				randomInit(states[i].dashPos[j], states[i].length - (int)sequences[j].size(), 0, (int)sequences[j].size());
+			initialState.cost = evalCost(initialState);
+		}
+	}
+}
+
+void SeqProblem::randomInit(vector<int>& vec, int x, int start, int end)
+{
+	std::random_device rd;
+	std::mt19937 engine(rd());
+	uniform_int_distribution<int>(start, end) initializer;
+	vec.resize(x);
+	for(int i = 0; i < x; i++)
+		vec[i] = initializer(engine);
+	sort(vec.begin(), vec.end();
 }
 
 void SeqProblem::getNBD(SeqState& state , vector<SeqState>& nbd) {

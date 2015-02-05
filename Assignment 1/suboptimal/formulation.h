@@ -50,14 +50,16 @@ public:
 	int sumOfLengths;
 	int minimumFinalLength;
 	SeqState initialState;
+	vector<SeqState> initialStates;
 	//Misc Functions
 	void print();
 	void printState(SeqState& state);
 	//Initialization Functions
-	void initialize(INIT_TYPE initMode , int numStates); 						//Initializes into Problem::initialState.
-	void initializeInto(INIT_TYPE initMode , SeqState& state, int numStates); 	//Initialize into state 
-		void randomInit();		//Generate One state randomly
-		void randomInit(int x); //Generates x random states.		
+	void initialize(INIT_TYPE initMode); 						//Initializes into Problem::initialState.
+	void initialize(INIT_TYPE initMode, int numStates);
+	void initializeInto(INIT_TYPE initMode , SeqState& state); 	//Initialize into state 
+	void initializeInto(INIT_TYPE initMode , vector<SeqState>& states, int numStates); 	//Initialize into state 
+	void randomInit(vector<int>& vec, int x, int start, int end);		//Randomly fill vector with x values between start and end
 	//Functions required by search.
 	void getNBD(SeqState& n , vector<SeqState>& nbd); //NeighBourhooD - NBD
 		void getNBD_singleDashMove(SeqState& n , vector<SeqState>& nbd);
