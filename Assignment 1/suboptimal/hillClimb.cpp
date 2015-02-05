@@ -11,7 +11,7 @@
 /*
 Does not handle shoulders, pits, plateaus or ANY of that.
 */
-SeqState& greedyHillClimb_NoRestarts_untimed(SeqProblem& p) {
+SeqState greedyHillClimb_NoRestarts_untimed(SeqProblem& p) {
 	SeqState best = p.initialState; //Copy cost.
 	while(true) {
 		vector<SeqState> nbd;
@@ -36,7 +36,7 @@ SeqState& greedyHillClimb_NoRestarts_untimed(SeqProblem& p) {
 /*
 Restarts but does not time itself.
 */
-SeqState& greedyHillClimb_nRestarts_untimed(SeqProblem& p , int n) {
+SeqState greedyHillClimb_nRestarts_untimed(SeqProblem& p , int n) {
 	SeqState best = p.initialState;
 	SeqState prevBest = p.initialState;
 	int restarts = n;
@@ -64,7 +64,7 @@ SeqState& greedyHillClimb_nRestarts_untimed(SeqProblem& p , int n) {
 			}
 		}
 		prevBest = best;
-		p.initializeInto(RANDOM , best , 1); //Generate 1 Random Start. ALTER THIS for better greedyhillClimb.
+		p.initializeInto(RANDOM , best); //Generate 1 Random Start. ALTER THIS for better greedyhillClimb.
 
 	}
 	return (( best.cost < prevBest.cost )?( best ):( prevBest ));
@@ -78,7 +78,7 @@ Need some way of evaluation TIME_BUFFER. It allows for the program to print stuf
 /*
 Greedy Hill Climb with no restarts but it is timed. Theoretically runs into shoulders etc and treats it as optimal.
 */
-SeqState& greedyHillClimb_NoRestarts_timed(SeqProblem& p , clock_t& start) {
+SeqState greedyHillClimb_NoRestarts_timed(SeqProblem& p , clock_t& start) {
 	clock_t present;
 	present = clock();
 	SeqState best  = p.initialState;
@@ -106,7 +106,7 @@ SeqState& greedyHillClimb_NoRestarts_timed(SeqProblem& p , clock_t& start) {
 /*
 Greedy Hill Climb with infinite restarts if time permits.
 */
-SeqState& greedyHillClimb_infRestarts_timed(SeqProblem& p , clock_t& start) {
+SeqState greedyHillClimb_infRestarts_timed(SeqProblem& p , clock_t& start) {
 	clock_t present;
 	present = clock();
 	SeqState& best = p.initialState;		//...Extra copy.
@@ -136,7 +136,7 @@ SeqState& greedyHillClimb_infRestarts_timed(SeqProblem& p , clock_t& start) {
 			present = clock();
 		}
 		prevBest = best;
-		p.initializeInto(RANDOM , best , 1);
+		p.initializeInto(RANDOM , best);
 	}
 	return (( best.cost < prevBest.cost )?( best ):( prevBest ));
 }

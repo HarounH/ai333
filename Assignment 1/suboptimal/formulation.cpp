@@ -81,7 +81,7 @@ void SeqProblem::initializeInto(INIT_TYPE initMode , SeqState& state) {
 	uniform_int_distribution<int> initializer(0, (int)(minimumFinalLength / 5));
 	if(initMode == RANDOM)
 	{
-		state.length = minimumFinalLength + initializer(length);
+		state.length = minimumFinalLength + initializer(engine);
 		state.dashPos.resize(k);
 		for(int i = 0; i < k; i++)
 			randomInit(state.dashPos[i], state.length - (int)sequences[i].size(), 0, (int)sequences[i].size());
@@ -111,11 +111,11 @@ void SeqProblem::randomInit(vector<int>& vec, int x, int start, int end)
 {
 	std::random_device rd;
 	std::mt19937 engine(rd());
-	uniform_int_distribution<int>(start, end) initializer;
+	uniform_int_distribution<int> initializer(start, end);
 	vec.resize(x);
 	for(int i = 0; i < x; i++)
 		vec[i] = initializer(engine);
-	sort(vec.begin(), vec.end();
+	sort(vec.begin(), vec.end());
 }
 
 void SeqProblem::getNBD(SeqState& state , vector<SeqState>& nbd) {
@@ -156,8 +156,8 @@ void SeqProblem::getNBD_singleDashMove(SeqState& state , vector<SeqState>& nbd) 
 					} else {
 						//Swap to restore invariant.
 						int temp = child.dashPos[stringIDX][di];
-						child.dashPos[stringIDX][di] = child.dashPos[stringIDX][d-1];
-						child.dashPos[stringIDX][d-1] = temp;  
+						child.dashPos[stringIDX][di] = child.dashPos[stringIDX][di-1];
+						child.dashPos[stringIDX][di-1] = temp;  
 					}
 				}
 				//std::sort(child.dashPos[stringIDX]); //Possibly slowing us down.
@@ -192,8 +192,8 @@ void SeqProblem::getNBD_singleDashMove(SeqState& state , vector<SeqState>& nbd) 
 					} else {
 						//Swap to restore invariant.
 						int temp = child.dashPos[stringIDX][di];
-						child.dashPos[stringIDX][di] = child.dashPos[stringIDX][d-1];
-						child.dashPos[stringIDX][d-1] = temp;  
+						child.dashPos[stringIDX][di] = child.dashPos[stringIDX][di-1];
+						child.dashPos[stringIDX][di-1] = temp;  
 					}
 				}
 				//std::sort(child.dashPos[stringIDX]); //Possibly slowing us down.
@@ -214,7 +214,7 @@ void SeqProblem::getNBD_singleDashMove(SeqState& state , vector<SeqState>& nbd) 
 		for( int stringIDX = 0; stringIDX < k ; ++stringIDX) {
 			//insert a random dash.
 			//uniform_int_distrib's are lightweight.
-			int pos = std::uniform_int_distribution<int>{0 , stringLengths[stringIDX]}(engine); //engine is the mt19937 random number generator engine.
+			int pos = std::uniform_int_distribution<int>(0 , stringLengths[stringIDX])(engine); //engine is the mt19937 random number generator engine.
 			child.dashPos[stringIDX].push_back(pos);
 			std::sort(child.dashPos[stringIDX].begin() , child.dashPos[stringIDX].end()); //Necessary to keep it sorted.		
 		} 
@@ -248,8 +248,8 @@ double SeqProblem::evalCost(SeqState& state) {
 		It can be calculated easily without copying and inserting and stuff.
 		maintain 5 pointers, two for the dashes , two for the sequences and one for the length processed. Repeat this for every pair.
 	*/
-	for( stringIDX_1 = 0; stringIDX_1 < k; ++stringIDX_1) {
-		for( stringIDX_2 = stringIDX_1+1 ; stringIDX_2 < k; ++stringIDX_2) {
+	for( int stringIDX_1 = 0; stringIDX_1 < k; ++stringIDX_1) {
+		for( int stringIDX_2 = stringIDX_1 + 1 ; stringIDX_2 < k; ++stringIDX_2) {
 			int ctr = 0; //Counts how many positions have been parsed.
 			//Pointers to the dash/sequence thingies			
 			int dashIDX_1 	= 0;	
@@ -287,10 +287,10 @@ double SeqProblem::evalCost(SeqState& state) {
 	return cost;
 } // Akshay QC : 
 
-void SeqProblem::setChildCost_singleDash(SeqState& parent , SeqState& child , int stringIDX) {
+void SeqProblem::setChildCost_singleDash(SeqState& parent , SeqState& child , int stringIDX_1) {
 	double deltaCost = 0.0;
-	for(stringIDX_2 = 0; stringIDX_2 < k ; ++stringIDX_2) {
-		if ( stringIDX_2 == stringIDX )
+	for(int stringIDX_2 = 0; stringIDX_2 < k ; ++stringIDX_2) {
+		if ( stringIDX_2 == stringIDX_1 )
 			continue;
 		else {
 			int ctr = 0; //Counts how many positions have been parsed.

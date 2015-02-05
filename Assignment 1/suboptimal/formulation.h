@@ -64,6 +64,6 @@ public:
 	void getNBD(SeqState& n , vector<SeqState>& nbd); //NeighBourhooD - NBD
 		void getNBD_singleDashMove(SeqState& n , vector<SeqState>& nbd);
 	double evalCost(SeqState& state);
-	void setChildCost_singleDash(SeqState& parent , SeqState& child , int stringIDX);
+	void setChildCost_singleDash(SeqState& parent , SeqState& child , int stringIDX_1);
 };
 #endif
