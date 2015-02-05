@@ -6,8 +6,8 @@
 
 using namespace std;
 
-int alphabetsize= 	3;
-int numseq		=	2;
+int alphabetsize= 	4;
+int numseq		=	5;
 int cc			=	3;
 int maxlength 	= 	10;
 int minlength   =   5;

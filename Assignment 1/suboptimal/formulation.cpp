@@ -20,28 +20,32 @@ void SeqProblem::print() { //Trivial Code to print the problem out.
 	for(int i = 0; i<k ; ++i) {
 		cout << stringLengths[i] << "\t" << sequences[i] << "\n";
 	}
+	cout << "minimum final length is : " << minimumFinalLength << "\n";
 	return;
-}
+} //QC passed -H
 
 void SeqProblem::printState(SeqState& state) { //Mostly trivial Code to print out the strings associated with state
 	for(int stringIDX = 0; stringIDX < k; ++stringIDX) {
+		//prints out the strings.
 		int ctr = 0; //Counts how many positions have been parsed.
 		//Pointers to the dash/sequence thingies			
 		int dctr = 0; //number of dashes read.
 		int cctr = 0; //Number of characters read.
 		while( ctr < state.length ) {
-			if ( state.dashPos[stringIDX][dctr] + cctr == ctr) {
+			if ( state.dashPos[stringIDX][dctr] + dctr == ctr) {
 				cout << '-';
 				++dctr;
 			} else {
 				cout << sequences[stringIDX][cctr];
 				++cctr;
 			}
+			++ctr;
 		}
-		cout << "\n"; //One string printed.
+		cout << "\n";
+		//cout << "\n The cost is : " << state.cost << "\n"; //Cost printed. use it to test evalCost.
 	}
 	return;
-}
+} //QC passed -H
 
 void SeqProblem::initialize(INIT_TYPE initMode) {
 	std::random_device rd;
@@ -51,11 +55,12 @@ void SeqProblem::initialize(INIT_TYPE initMode) {
 	{
 		initialState.dashPos.resize(k);
 		initialState.length = minimumFinalLength + initializer(engine);
-		for(int i = 0; i < k; i++)
-			randomInit(initialState.dashPos[i], initialState.length - (int)sequences[i].size(), 0, (int)sequences[i].size());
+		for(int i = 0; i < k; i++) {
+			randomInit(initialState.dashPos[i], initialState.length - sequences[i].size(), 0, sequences[i].size());
+		}
 		initialState.cost = evalCost(initialState);
 	}
-}
+} //QC depends on randomInit
 
 void SeqProblem::initialize(INIT_TYPE initMode, int numStates) {
 	initialStates.resize(numStates);
@@ -116,7 +121,7 @@ void SeqProblem::randomInit(vector<int>& vec, int x, int start, int end)
 	for(int i = 0; i < x; i++)
 		vec[i] = initializer(engine);
 	sort(vec.begin(), vec.end());
-}
+} //QC Not passed - is it not random? Or is it just sad?
 
 void SeqProblem::getNBD(SeqState& state , vector<SeqState>& nbd) {
 	getNBD_singleDashMove(state , nbd); //Change According to will
@@ -226,13 +231,22 @@ void SeqProblem::getNBD_singleDashMove(SeqState& state , vector<SeqState>& nbd) 
 	if( state.length > minimumFinalLength ) {
 		for(int i = 0; i< SHORTER_LENGTH_CHILDREN ; ++i) { //Vary these parameters to decide how many shorter length children are wanted.
 			SeqState child = state;
+			printState(child);
 			for (int stringIDX = 0; stringIDX < k ; ++stringIDX) {
 				//Remove a dash.	
-				//ASSERT : for all stringIDX , dashPos[stringIDX].size()>=1
-				child.dashPos[stringIDX].pop_back();
+				//ASSERT : for all stringIDX , dashPos[stringIDX].size()>=1				
+				child.dashPos[stringIDX].pop_back();				
 			}
 			--child.length;
 			child.cost = evalCost(child);
+			cout << "\n dashPos \n";
+			for(int id = 0; id<k; ++id) {
+				for(int t=0; t < (child.dashPos[id]).size() ; ++t){
+					cout << child.dashPos[id][t] << " "; 
+				}
+				cout << "\n";
+			}
+			printState(child);
 			nbd.push_back(child);
 		}
 	}
@@ -287,7 +301,8 @@ double SeqProblem::evalCost(SeqState& state) {
 	return cost;
 } // Akshay QC : 
 
-void SeqProblem::setChildCost_singleDash(SeqState& parent , SeqState& child , int stringIDX_1) {
+void SeqProblem::setChildCost_singleDash(SeqState& parent , SeqState& child , int stringIDX_1) { //Children are genereated by moving a dash around for one string.
+	
 	double deltaCost = 0.0;
 	for(int stringIDX_2 = 0; stringIDX_2 < k ; ++stringIDX_2) {
 		if ( stringIDX_2 == stringIDX_1 )
@@ -306,7 +321,7 @@ void SeqProblem::setChildCost_singleDash(SeqState& parent , SeqState& child , in
 					if ( parent.dashPos[stringIDX_1][dashIDX_1] + dashIDX_1 == ctr ) {
 						//String_IDX1 has a '-' at this position.
 						s1 = '-';
-						deltaCost -= CC;
+						deltaCost -= CC; //CC doesnt actually need to be evaluated , but alright.
 						++dashIDX_1;
 					} else {
 						s1 = sequences[stringIDX_1][seqIDX_1];

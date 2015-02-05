@@ -10,6 +10,7 @@ int main(int argc, char** argv) {
 	SeqProblem s;
 	input(s);
 	s.initialize(RANDOM);
-	s.printState(s.initialState);
+	vector<SeqState> testNBD;
+	s.getNBD(s.initialState , testNBD);
 	return 1;
 }

@@ -3,7 +3,7 @@
 #include "formulation.cpp"
 #include <limits>
 
-#define BIG_INT std::numeric_limits<int>::max()
+#define SMALL_INT std::numeric_limits<int>::min()
 using namespace std;
 
 void input(SeqProblem& p)
@@ -25,15 +25,16 @@ void input(SeqProblem& p)
 	p.sequences.resize(p.k);
 	p.stringLengths.resize(p.k);
 	p.sumOfLengths = 0;
-	p.minimumFinalLength = BIG_INT; //Defined above.
+	p.minimumFinalLength = 0; //Starts at zero and works its way up. It is also the length of the longest sequence.
 	for(int i = 0; i < p.k; ++i)
 	{
 		cin >> s;
 		p.sequences[i] = s;
 		p.stringLengths[i] = s.size();
 		p.sumOfLengths += s.size();
-		if ( p.minimumFinalLength > s.size())
+		if ( p.minimumFinalLength < s.size() ) {
 			p.minimumFinalLength = s.size();
+		}
 	}
 	cin >> p.CC;
 	p.MC.resize(p.aSize+1);
