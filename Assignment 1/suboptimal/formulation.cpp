@@ -210,6 +210,7 @@ void SeqProblem::getNBD_singleDashMove(SeqState& state , vector<SeqState>& nbd) 
 			child.dashPos[stringIDX].push_back(pos);
 			std::sort(child.dashPos[stringIDX].begin() , child.dashPos[stringIDX].end()); //Necessary to keep it sorted.		
 		} 
+		++child.length;
 		nbd.push_back(child); //Generates one random child of larger length.
 	}
 	//Remove a dash from the child only if possible.
@@ -221,6 +222,7 @@ void SeqProblem::getNBD_singleDashMove(SeqState& state , vector<SeqState>& nbd) 
 				//ASSERT : for all stringIDX , dashPos[stringIDX].size()>=1
 				child.dashPos[stringIDX].pop_back();
 			}
+			--child.length;
 			nbd.push_back(child);
 		}
 	}
