@@ -74,7 +74,7 @@ SeqNode dfbb(SeqProblem& problem) { //Informed search
 			problem.getSuccessors(node , children);
 
 			//Sort children by their heuristic value. Only heuristic value because looking into the future.
-			std::sort(children.begin() , children.end() , seqNodeTotalCostComparatorLeft);
+			std::stable_sort(children.begin() , children.end() , seqNodeTotalCostComparatorLeft);
 			for(int i = 0; i<children.size(); i++) {
 				n++;
 				if( children[i].totalCost < optimalSeqNode.totalCost ) {
