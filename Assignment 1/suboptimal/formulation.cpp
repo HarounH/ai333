@@ -50,8 +50,8 @@ void SeqProblem::printState(const SeqState& state) { //Mostly trivial Code to pr
 } //QC passed -H
 
 void SeqProblem::initialize(INIT_TYPE initMode) {
-	std::random_device rd;
-	std::mt19937 engine(rd());
+	// std::random_device rd;
+	// std::mt19937 engine(rd());
 	uniform_int_distribution<int> initializer(0, (int)(minimumFinalLength / 5));
 	if(initMode == RANDOM)
 	{
@@ -66,8 +66,8 @@ void SeqProblem::initialize(INIT_TYPE initMode) {
 
 void SeqProblem::initialize(INIT_TYPE initMode, int numStates) {
 	initialStates.resize(numStates);
-	std::random_device rd;
-	std::mt19937 engine(rd());
+	// std::random_device rd;
+	// std::mt19937 engine(rd());
 	uniform_int_distribution<int> initializer(0, (int)(minimumFinalLength / 5));
 	if(initMode == RANDOM)
 	{
@@ -83,8 +83,8 @@ void SeqProblem::initialize(INIT_TYPE initMode, int numStates) {
 }
 
 void SeqProblem::initializeInto(INIT_TYPE initMode , SeqState& state) {
-	std::random_device rd;
-	std::mt19937 engine(rd());
+	// std::random_device rd;
+	// std::mt19937 engine(rd());
 	uniform_int_distribution<> initializer(0, (int)(minimumFinalLength / 5));
 	if(initMode == RANDOM)
 	{
@@ -98,8 +98,8 @@ void SeqProblem::initializeInto(INIT_TYPE initMode , SeqState& state) {
 
 void SeqProblem::initializeInto(INIT_TYPE initMode, vector<SeqState>& states, int numStates) {
 	states.resize(numStates);
-	std::random_device rd;
-	std::mt19937 engine(rd());
+	// std::random_device rd;
+	// std::mt19937 engine(rd());
 	uniform_int_distribution<int> initializer(0, (int)(minimumFinalLength / 5));
 	if(initMode == RANDOM)
 	{
@@ -116,8 +116,8 @@ void SeqProblem::initializeInto(INIT_TYPE initMode, vector<SeqState>& states, in
 
 void SeqProblem::randomInit(vector<int>& vec, int x, int start, int end)
 {
-	std::random_device rd;
-	std::mt19937 engine(rd());
+	// std::random_device rd;
+	// std::mt19937 engine(rd());
 	uniform_int_distribution<int> initializer(start, end);
 	vec.resize(x);
 	for(int i = 0; i < x; i++)
@@ -216,8 +216,8 @@ void SeqProblem::getNBD_singleDashMove(const SeqState& state , vector<SeqState>&
 	
 	//Code that handles neighbours of varying length.
 	//Random distribution devices from c++11 's  random class.
-	std::random_device rd;
-	std::mt19937 engine(rd());
+	// std::random_device rd;
+	// std::mt19937 engine(rd());
 
 	for(int i = 0; i<longerLengthChildren; ++i) { //Vary these parameters to decide how many longer length children are wanted
 		SeqState child = state;

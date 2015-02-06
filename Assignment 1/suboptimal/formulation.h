@@ -1,4 +1,4 @@
-#ifndef FORMULATION_H
+#::ifndef FORMULATION_H
 	#define FORMULATION_H
 
 #include <vector>
@@ -54,6 +54,8 @@ public:
 	int minimumFinalLength;
 	SeqState initialState;
 	vector<SeqState> initialStates;
+	std::random_device rd;
+	std::mt19937 engine;
 	//Misc Functions
 	void print();
 	void printState(const SeqState& state);
@@ -69,4 +71,7 @@ public:
 	double evalCost(const SeqState& state);
 	void setChildCost_singleDash(const SeqState& parent ,  SeqState& child , int stringIDX_1);
 };
+
+SeqProblem::SeqProblem() : engine(rd())
+{}
 #endif
