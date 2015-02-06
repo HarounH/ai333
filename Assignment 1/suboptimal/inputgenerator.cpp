@@ -8,10 +8,11 @@ using namespace std;
 
 int alphabetsize= 	4;
 int numseq		=	5;
-int cc			=	3;
-int maxlength 	= 	20;
+int cc			=	2;
+int maxlength 	= 	50;
 int minlength   =   5;
-int maxcost		= 	10;
+int mincost		=	1;
+int maxcost		= 	4;
 float _time 	= 	10.0;
 vector< vector<float> > mc;
 
@@ -78,7 +79,7 @@ int main(int argc , char** argv) { //generates a file of name argv[1]
 		//Give values
 	for(int r = 0; r<= alphabetsize; ++r) {
 		for(int c=r; c<=alphabetsize; ++c) {
-			mc[r][c] = (r==c)?(0):( cc + rand()%(maxcost-cc) );
+			mc[r][c] = (r==c)?(0):( mincost + rand()%(maxcost-mincost) );
 			mc[c][r] = mc[r][c];
 		}
 	}

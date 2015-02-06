@@ -44,11 +44,12 @@ SeqState greedyHillClimb_nRestarts_untimed(SeqProblem& p , int n) {
 	SeqState prevBest = p.initialState;
 	int restarts = n;
 	while( --restarts ) {
+		int sameCostMoves = 0;
 		while(true) {
 			vector<SeqState> nbd;
 			p.getNBD(best , nbd);
 			//Find minimum of the neigbhours.
-			int minIDX;
+			int minIDX = 0;
 			double minCost = BIG_DOUBLE; //Defined as numeric limit.
 			for(int i = 0; i<nbd.size();++i) {
 				if (nbd[i].cost < minCost) {
@@ -56,18 +57,27 @@ SeqState greedyHillClimb_nRestarts_untimed(SeqProblem& p , int n) {
 					minIDX = i;
 				}
 			} //Minimum found at i.
-			if( best.cost < minCost ){
+			if( best.cost < minCost ) {
 				break;
-			} else {
+			} 
+			else if (best.cost > minCost) {
 				best = nbd[minIDX]; //New best.
 				//Compare the previous bests too.
-				if (prevBest.cost < best.cost) {
-					prevBest = best;
-				}
+				sameCostMoves = 0;
+			}
+			else {
+				if(sameCostMoves > -1)
+					break;
+				++sameCostMoves;
+				best = nbd[minIDX];
 			}
 		}
-		prevBest = best;
-		cout << "\n" << prevBest.cost << "\n";
+		if(prevBest.cost > best.cost)
+		{
+			prevBest = best;
+			cout << "\n" << prevBest.cost << "\n";
+		}
+		cout<<restarts<<"\n";
 		p.initializeInto(RANDOM , best); //Generate 1 Random Start. ALTER THIS for better greedyhillClimb.
 
 	}
@@ -128,18 +138,16 @@ SeqState greedyHillClimb_infRestarts_timed(SeqProblem& p , clock_t& start) {
 					minIDX = i;
 				}
 			} //Minimum found at i.
-			if( best.cost < minCost ){
+			if( best.cost <= minCost ){
 				break;
 			} else {
 				best = nbd[minIDX]; //New best.
-				//Compare with the previous best too.
-				if (prevBest.cost < best.cost) {
-					prevBest = best;
-				}
+				
 			}
 			present = clock();
 		}
-		prevBest = best;
+		if (prevBest.cost > best.cost) 
+			prevBest = best;
 		p.initializeInto(RANDOM , best);
 	}
 	return (( best.cost < prevBest.cost )?( best ):( prevBest ));

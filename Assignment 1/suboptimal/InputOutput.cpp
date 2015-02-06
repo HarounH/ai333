@@ -49,6 +49,8 @@ void input(SeqProblem& p)
 		}
 	}
 	cin >> s;
+	p.longerLengthChildren = p.minimumFinalLength / 4;
+	p.shorterLengthChildren = p.minimumFinalLength / 4;
 } //Works.
 
 void output(SeqProblem& p , SeqState& n)
