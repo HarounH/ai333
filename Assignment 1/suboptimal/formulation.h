@@ -1,4 +1,4 @@
-#::ifndef FORMULATION_H
+#ifndef FORMULATION_H
 	#define FORMULATION_H
 
 #include <vector>
@@ -56,10 +56,14 @@ public:
 	vector<SeqState> initialStates;
 	std::random_device rd;
 	std::mt19937 engine;
+
+	SeqProblem();
+
 	//Misc Functions
 	void print();
 	void printState(const SeqState& state);
 	//Initialization Functions
+	void followSchedule(SeqState& best);
 	void initialize(INIT_TYPE initMode); 						//Initializes into Problem::initialState.
 	void initialize(INIT_TYPE initMode, int numStates);
 	void initializeInto(INIT_TYPE initMode , SeqState& state); 	//Initialize into state 
@@ -74,4 +78,5 @@ public:
 
 SeqProblem::SeqProblem() : engine(rd())
 {}
+
 #endif

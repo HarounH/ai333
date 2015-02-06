@@ -82,13 +82,20 @@ void SeqProblem::initialize(INIT_TYPE initMode, int numStates) {
 	}
 }
 
+#define INIT_LENGTH_FACTOR 0.1
+
 void SeqProblem::initializeInto(INIT_TYPE initMode , SeqState& state) {
 	// std::random_device rd;
 	// std::mt19937 engine(rd());
-	uniform_int_distribution<> initializer(0, (int)(minimumFinalLength / 5));
+	followSchedule(state); // Decides the length of the children to be generated and stuff.
+	//uniform_int_distribution<> initializer(0, (int)(minimumFinalLength / 5));
 	if(initMode == RANDOM)
 	{
-		state.length = minimumFinalLength + initializer(engine);
+		double improv = (initialState.cost - state.cost);
+		int delta_l; //Change in length when 
+		std::normal_distribution<double> initializer(0.0 ,  INIT_LENGTH_FACTOR*(((double)initialState.cost)/improv));
+		
+		state.length += (delta_l>0)?(delta_l):(0);
 		state.dashPos.resize(k);
 		for(int i = 0; i < k; i++)
 			randomInit(state.dashPos[i], state.length - (int)sequences[i].size(), 0, (int)sequences[i].size());
@@ -366,6 +373,22 @@ void SeqProblem::setChildCost_singleDash(const SeqState& parent ,  SeqState& chi
 		}
 	}
 	child.cost = parent.cost + deltaCost;
+}
+
+#define FOLLOW_SCHEDULE_THRESHOLD 0.05
+#define FOLLOW_SCHEDULE_FACTOR 0.1
+#define MIN_DIFFERENT_LENGTH_KIDS 1
+void SeqProblem::followSchedule(SeqState& state) {
+	double improv =  initialState.cost - state.cost; 
+	//  0 < improv/intialCost < 1
+	if ( improv < initialState.cost*FOLLOW_SCHEDULE_THRESHOLD) {
+		//Do Nothing
+	} else {
+		std::normal_distribution<double> dist( ((double)initialState.cost/improv) , FOLLOW_SCHEDULE_FACTOR*((double)initialState.cost/improv));
+		int rl = (int)dist(engine); //Random number of longer kids generated.
+		(*this).longerLengthChildren = (rl>0)?(rl):(MIN_DIFFERENT_LENGTH_KIDS);
+		(*this).shorterLengthChildren = (rl>0)?(rl):(MIN_DIFFERENT_LENGTH_KIDS);
+	}
 }
 
 #endif
