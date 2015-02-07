@@ -11,6 +11,7 @@ int main(int argc, char** argv) {
 	input(s);
 	s.initialize(RANDOM);
 	vector<SeqState> nbd;
-	s.printState(greedyHillClimb_nRestarts_untimed(s , 1000));
+	SeqState ans = greedyHillClimb_infRestarts_timed(s , start);
+	s.printState(  ans );
 	return 1;
 }

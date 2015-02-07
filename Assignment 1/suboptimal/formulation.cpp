@@ -25,7 +25,7 @@ void SeqProblem::print() { //Trivial Code to print the problem out.
 	return;
 } //QC passed -H
 
-void SeqProblem::printState(const SeqState& state) { //Mostly trivial Code to print out the strings associated with state
+void SeqProblem::printState( SeqState& state) { //Mostly trivial Code to print out the strings associated with state
 	for(int stringIDX = 0; stringIDX < k; ++stringIDX) {
 		//prints out the strings.
 		int ctr = 0; //Counts how many positions have been parsed.
@@ -84,30 +84,26 @@ void SeqProblem::initialize(INIT_TYPE initMode, int numStates) {
 
 #define INIT_LENGTH_FACTOR 0.1
 
-void SeqProblem::initializeInto(INIT_TYPE initMode , SeqState& state) {
-	// std::random_device rd;
-	// std::mt19937 engine(rd());
-	followSchedule(state); // Decides the length of the children to be generated and stuff.
-	//uniform_int_distribution<> initializer(0, (int)(minimumFinalLength / 5));
-	if(initMode == RANDOM)
+void SeqProblem::initializeInto(INIT_TYPE initMode , SeqState& state , SeqState& prevBest) {
+	if(initMode == STATS)
 	{
-		double improv = (initialState.cost - state.cost);
+		followSchedule(prevBest); // Decides the length of the children to be generated and stuff.
+		double improv = (initialState.cost - prevBest.cost);
 		int delta_l = 0; //Change in length when 
 		std::normal_distribution<double> initializer(0.0 ,  INIT_LENGTH_FACTOR*(((double)initialState.cost)/improv));
 		delta_l = (int) initializer(engine);
-		state.length += (delta_l> minimumFinalLength-state.length)?(delta_l):(0);
+		state.length = prevBest.length + (delta_l> minimumFinalLength-prevBest.length)?(delta_l):(0);
 		state.dashPos.resize(k);
 		for(int i = 0; i < k; i++)
-			randomInit(state.dashPos[i], state.length - (int)sequences[i].size(), 0, (int)sequences[i].size());
+			randomInit(state.dashPos[i], state.length - (int)sequences[i].size(), 0, (int)sequences[i].size()); //Initializes dashPos[i].
 		state.cost = evalCost(state);
+	} else if (initMode == RANDOM) {
+
 	}
 }
 
 void SeqProblem::initializeInto(INIT_TYPE initMode, vector<SeqState>& states, int numStates) {
 	states.resize(numStates);
-	
-	// std::random_device rd;
-	// std::mt19937 engine(rd());
 	uniform_int_distribution<int> initializer(0, (int)(minimumFinalLength / 5));
 	if(initMode == RANDOM)
 	{
@@ -124,21 +120,20 @@ void SeqProblem::initializeInto(INIT_TYPE initMode, vector<SeqState>& states, in
 
 void SeqProblem::randomInit(vector<int>& vec, int x, int start, int end)
 {
-	// std::random_device rd;
-	// std::mt19937 engine(rd());
 	uniform_int_distribution<int> initializer(start, end);
 	vec.resize(x);
 	for(int i = 0; i < x; i++)
 		vec[i] = initializer(engine);
 	sort(vec.begin(), vec.end());
-} //QC Not passed - is it not random? Or is it just sad?
-
-void SeqProblem::getNBD(const SeqState& state , vector<SeqState>& nbd) {
-	nbd.resize(0); //Clear.
-	getNBD_singleDashMove(state , nbd); //Change According to will
 }
 
-void SeqProblem::getNBD_singleDashMove(const SeqState& state , vector<SeqState>& nbd) {
+void SeqProblem::getNBD( SeqState& state , vector<SeqState>& nbd) {
+	nbd.resize(0); //Clear.
+	getNBD_singleDashMove(state , nbd); //Change According to will
+	getNBD_differentLengths(state,nbd); //Should generate children of different lengths.
+}
+
+void SeqProblem::getNBD_singleDashMove( SeqState& state , vector<SeqState>& nbd) {
 	//One neighbour per dash per string. , big-O(k*n*n) neighbours are generated here.
 	for(int stringIDX = 0; stringIDX < k ; ++stringIDX) {
 		//For each string in the state, generate children by moving each dash randomly. and one more dash by one length more and one length less.
@@ -216,7 +211,9 @@ void SeqProblem::getNBD_singleDashMove(const SeqState& state , vector<SeqState>&
 			}
 		}
 	}
+}
 
+void SeqProblem::getNBD_differentLengths(SeqState& state , vector<SeqState>& nbd) {
 	
 	//Code that handles neighbours of varying length.
 
@@ -250,7 +247,7 @@ void SeqProblem::getNBD_singleDashMove(const SeqState& state , vector<SeqState>&
 }
 
 
-double SeqProblem::evalCost(const SeqState& state) {
+double SeqProblem::evalCost( SeqState& state) {
 	double cost = 0.0;
 	/*
 	Following algorithm :
@@ -297,7 +294,7 @@ double SeqProblem::evalCost(const SeqState& state) {
 	return cost;
 } // Akshay QC : 
 
-void SeqProblem::setChildCost_singleDash(const SeqState& parent ,  SeqState& child , int stringIDX_1) { //Children are genereated by moving a dash around for one string.
+void SeqProblem::setChildCost_singleDash( SeqState& parent ,  SeqState& child , int stringIDX_1) { //Children are genereated by moving a dash around for one string.
 	
 	double deltaCost = 0.0;
 	for(int stringIDX_2 = 0; stringIDX_2 < k ; ++stringIDX_2) {
@@ -369,92 +366,11 @@ void SeqProblem::setChildCost_singleDash(const SeqState& parent ,  SeqState& chi
 	child.cost = parent.cost + deltaCost;
 }
 
-//
-// void SeqProblem::setChildCost_singleDash(const SeqState& parent ,  SeqState& child , int stringIDX_1, int di, int prevValue, int newdi) { //Children are genereated by moving a dash around for one string.
-//
-// 	double deltaCost = 0.0;
-// 	for(int stringIDX_2 = 0; stringIDX_2 < k ; ++stringIDX_2) {
-// 		if ( stringIDX_2 == stringIDX_1 )
-// 			continue;
-// 		else {
-//
-// 			//subtract previous cost
-// 			char s1 = '-';
-// 			char s2 = sequences[stringIDX_2][prevValue + di];
-// 			deltaCost -= MC[ charToInt[s1] ][ charToInt[s2] ];
-// 			s1 = sequences[stringIDX_1][parent.dashPos[stringIDX_1][newdi]];
-// 			s2 = sequences[stringIDX_2][parent.dashPos[stringIDX_2][newdi]];
-// 			int ctr = 0; //Counts how many positions have been parsed.
-// 			//Pointers to the dash/sequence thingies
-// 			int dashIDX_1 	= 0;
-// 			int seqIDX_1 	= 0;
-// 			int dashIDX_2 	= 0;
-// 			int seqIDX_2	= 0;
-//
-// 			while ( ctr < parent.length ) {
-// 				//StringIDX_1 's character is calculated here.
-// 				//Parent Cost
-// 					char s1 , s2; //s1 and s2 are the
-// 					if ( (dashIDX_1<parent.dashPos[stringIDX_1].size() ) && (parent.dashPos[stringIDX_1][dashIDX_1] + dashIDX_1 == ctr)) {
-// 						//String_IDX1 has a '-' at this position.
-// 						s1 = '-';
-// 						++dashIDX_1;
-// 					} else {
-// 						s1 = sequences[stringIDX_1][seqIDX_1];
-// 						++seqIDX_1;
-// 					}
-//
-// 					//StringIDX_2 's character is calculated here.
-// 					if ( (dashIDX_2 < parent.dashPos[stringIDX_2].size() ) && (parent.dashPos[stringIDX_2][dashIDX_2] + dashIDX_2 == ctr)) {
-// 						//String_IDX2 has a '-' at this position
-// 						s2 = '-';
-// 						++dashIDX_2;
-// 					} else {
-// 						s2 = sequences[stringIDX_2][seqIDX_2];
-// 						++seqIDX_2;
-// 					}
-// 					deltaCost -= MC[ charToInt[s1] ][ charToInt[s2] ];
-// 					ctr++;
-// 			}
-// 			ctr=0;
-// 			dashIDX_1 	= 0;
-// 			seqIDX_1 	= 0;
-// 			dashIDX_2 	= 0;
-// 			seqIDX_2	= 0;
-// 			while ( ctr < child.length) {
-// 				//ChildCost.
-// 					char c1 , c2;
-// 					if ( (dashIDX_1< child.dashPos[stringIDX_1].size() ) && (child.dashPos[stringIDX_1][dashIDX_1] + dashIDX_1 == ctr)) {
-// 						//String_IDX1 has a '-' at this position.
-// 						c1 = '-';
-// 						++dashIDX_1;
-// 					} else {
-// 						c1 = sequences[stringIDX_1][seqIDX_1];
-// 						++seqIDX_1;
-// 					}
-//
-// 					//StringIDX_2 's character is calculated here.
-// 					if ( (dashIDX_2<child.dashPos[stringIDX_2].size()) && (child.dashPos[stringIDX_2][dashIDX_2] + dashIDX_2 == ctr)) {
-// 						//String_IDX2 has a '-' at this position
-// 						c2 = '-';
-// 						++dashIDX_2;
-// 					} else {
-// 						c2 = sequences[stringIDX_2][seqIDX_2];
-// 						++seqIDX_2;
-// 					}
-// 					deltaCost += MC[ charToInt[c1] ][ charToInt[c2] ];
-// 				++ctr;
-// 			}
-// 		}
-// 	}
-// 	child.cost = parent.cost + deltaCost;
-// }
-
 
 #define FOLLOW_SCHEDULE_THRESHOLD 0.05
 #define FOLLOW_SCHEDULE_FACTOR 0.1
 #define MIN_DIFFERENT_LENGTH_KIDS 10
-void SeqProblem::followSchedule(SeqState& state) {
+void SeqProblem::followSchedule(SeqState& state) { //state is the present best.
 	double improv =  initialState.cost - state.cost; 
 	//  0 < improv/intialCost < 1
 	if ( improv < initialState.cost*FOLLOW_SCHEDULE_THRESHOLD) {
