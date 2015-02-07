@@ -85,7 +85,6 @@ SeqState greedyHillClimb_nRestarts_untimed(SeqProblem& p , int n) {
 /*
 Need some way of evaluation TIME_BUFFER. It allows for the program to print stuff etc.
 */
-#define TIME_BUFFER 10
 
 /*
 Greedy Hill Climb with no restarts but it is timed. Theoretically runs into shoulders etc and treats it as optimal.
@@ -94,7 +93,7 @@ SeqState greedyHillClimb_NoRestarts_timed(SeqProblem& p , clock_t& start) {
 	clock_t present;
 	present = clock();
 	SeqState best  = p.initialState;
-	while( ((float)present/CLOCKS_PER_SEC) + TIME_BUFFER < ((float)start/CLOCKS_PER_SEC) + p.clockTime) {
+	while( ((float)present/CLOCKS_PER_SEC) + p.TIME_BUFFER < ((float)start/CLOCKS_PER_SEC) + p.clockTime) {
 		cout << p.clockTime;
 		vector<SeqState> nbd;
 		p.getNBD(best , nbd);
@@ -119,14 +118,14 @@ SeqState greedyHillClimb_NoRestarts_timed(SeqProblem& p , clock_t& start) {
 /*
 Greedy Hill Climb with infinite restarts if time permits.
 */
-SeqState greedyHillClimb_infRestarts_timed(SeqProblem& p , clock_t& start) {
+SeqState greedyHillClimb_infRestarts_timed(SeqProblem& p , clock_t& start , INIT_TYPE mode = STATS) {
 	clock_t present;
 	present = clock();
 	SeqState best = p.initialState;		//...Extra copy.
 	SeqState prevBest = p.initialState; //...Extra copy.
-	while( ((float)present/CLOCKS_PER_SEC) + TIME_BUFFER < ((float)start/CLOCKS_PER_SEC) + p.clockTime) {
+	while( ((float)present/CLOCKS_PER_SEC) + p.TIME_BUFFER < ((float)start/CLOCKS_PER_SEC) + p.clockTime) {
 		cout << "restart " << prevBest.cost << "\n";
-		while(true && ((float)present/CLOCKS_PER_SEC) + TIME_BUFFER < ((float)start/CLOCKS_PER_SEC) + p.clockTime ) { //You don't want to get caught in this.
+		while(true && ((float)present/CLOCKS_PER_SEC) + p.TIME_BUFFER < ((float)start/CLOCKS_PER_SEC) + p.clockTime ) { //You don't want to get caught in this.
 			vector<SeqState> nbd;
 			p.getNBD(best , nbd);
 			//Find minimum of the neigbhours.
@@ -148,26 +147,28 @@ SeqState greedyHillClimb_infRestarts_timed(SeqProblem& p , clock_t& start) {
 		}
 		if (prevBest.cost > best.cost) 
 			prevBest = best;
-		p.initializeInto(STATS , best , prevBest);
+		p.initializeInto(mode , best , prevBest);
 	}
-	cout << (((float)present/CLOCKS_PER_SEC) + TIME_BUFFER - ((float)start/CLOCKS_PER_SEC) - p.clockTime) << "timed \n";
+	cout << (((float)present/CLOCKS_PER_SEC) + p.TIME_BUFFER - ((float)start/CLOCKS_PER_SEC) - p.clockTime) << "timed \n";
 	return (( best.cost < prevBest.cost )?( best ):( prevBest ));
 }
 
-#defined MAX_STEPS 10
-SeqState greedyHillClimb_limitedSteps_infRestarts_timed(SeqProblem& p ,clock_t& start) {
+#define MAX_STEPS 10
+SeqState greedyHillClimb_limitedSteps_infRestarts_timed(SeqProblem& p ,clock_t& start , INIT_TYPE mode = STATS) {
 	clock_t present;
 	present = clock();
 	SeqState best = p.initialState;
 	SeqState prevBest = p.initialState;
-	while( ((float)present/CLOCKS_PER_SEC) + TIME_BUFFER < ((float)start/CLOCKS_PER_SEC) + p.clockTime) {
+	int restarts=0;
+	while( ((float)present/CLOCKS_PER_SEC) + p.TIME_BUFFER < ((float)start/CLOCKS_PER_SEC) + p.clockTime) {
+		restarts++;
 		int stepCount = 0;
-		while( (stepCount < MAX_STEPS) && ((float)present/CLOCKS_PER_SEC) + TIME_BUFFER < ((float)start/CLOCKS_PER_SEC) + p.clockTime) {
-			vector<SeqState> nbd;
+		while( (stepCount < MAX_STEPS) && ((float)present/CLOCKS_PER_SEC) + p.TIME_BUFFER < ((float)start/CLOCKS_PER_SEC) + p.clockTime) {
+			vector<SeqState> nbd; //This loop needs to take less than the time buffer.
 			p.getNBD(best , nbd);
 			int minIDX = 0;
 			double minCost = BIG_DOUBLE;
-			for(int i =0; i<nbd.size() ++i) {
+			for(int i =0; i<nbd.size(); ++i) {
 				if (nbd[i].cost < minCost) {
 					minCost = nbd[i].cost;
 					minIDX = i;
@@ -178,12 +179,13 @@ SeqState greedyHillClimb_limitedSteps_infRestarts_timed(SeqProblem& p ,clock_t& 
 			} else {
 				best = nbd[minIDX];
 			}
-			present = clock();
 			++stepCount;
+			present = clock();
 		}
-		if (prevBest.cost >= best.Cost)
+		if (prevBest.cost >= best.cost) {
 			prevBest = best;
-		p.initializeInto(RANDOM , best , prevBest); //Should generate varying lengths too.
+		}
+		p.initializeInto(mode , best , prevBest); //Should generate varying lengths too.
 	}
 }
 #endif

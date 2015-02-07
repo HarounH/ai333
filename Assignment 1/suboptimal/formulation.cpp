@@ -84,7 +84,7 @@ void SeqProblem::initialize(INIT_TYPE initMode, int numStates) {
 
 #define INIT_LENGTH_FACTOR 0.1
 
-void SeqProblem::initializeInto(INIT_TYPE initMode , SeqState& state , SeqState& prevBest) {
+void SeqProblem::initializeInto(INIT_TYPE initMode , SeqState& state , SeqState& prevBest , int restarts = 0) {
 	if(initMode == STATS)
 	{
 		followSchedule(prevBest); // Decides the length of the children to be generated and stuff.
@@ -92,13 +92,26 @@ void SeqProblem::initializeInto(INIT_TYPE initMode , SeqState& state , SeqState&
 		int delta_l = 0; //Change in length when 
 		std::normal_distribution<double> initializer(0.0 ,  INIT_LENGTH_FACTOR*(((double)initialState.cost)/improv));
 		delta_l = (int) initializer(engine);
-		state.length = prevBest.length + (delta_l> minimumFinalLength-prevBest.length)?(delta_l):(0);
+		state.length = prevBest.length + ((delta_l>(minimumFinalLength-prevBest.length))?(delta_l):(0));
 		state.dashPos.resize(k);
 		for(int i = 0; i < k; i++)
 			randomInit(state.dashPos[i], state.length - (int)sequences[i].size(), 0, (int)sequences[i].size()); //Initializes dashPos[i].
 		state.cost = evalCost(state);
-	} else if (initMode == RANDOM) {
-
+	} else if (initMode == RANDOM_UNIFORM) {
+		//Generate truly random neighbours
+		std::uniform_int_distribution<int> initializer(minimumFinalLength , maximumFinalLength);
+		state.length = initializer(engine);
+		state.dashPos.resize(k);
+		for(int i = 0; i<k; ++i)
+			randomInit(state.dashPos[i] , state.length - (int)sequences[i].size() , 0 , (int)sequences[i].size());
+		state.cost = evalCost(state);
+	} else if (initMode == RANDOM_CHI2) {
+		std::chi_squared_distribution<double> initializer(prevBest.length);
+		state.length = minimumFinalLength + (((int)initializer(engine))%(maximumFinalLength - minimumFinalLength));
+		state.dashPos.resize(k);
+		for(int i = 0; i<k; ++i)
+			randomInit(state.dashPos[i] , state.length - (int)sequences[i].size() , 0 , (int)sequences[i].size());
+		state.cost = evalCost(state);
 	}
 }
 

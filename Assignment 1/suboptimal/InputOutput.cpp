@@ -4,6 +4,7 @@
 #include <limits>
 
 #define SMALL_INT std::numeric_limits<int>::min()
+#define NODE_EXPANSION_RATE 100000
 using namespace std;
 
 void input(SeqProblem& p)
@@ -26,11 +27,13 @@ void input(SeqProblem& p)
 	p.stringLengths.resize(p.k);
 	p.sumOfLengths = 0;
 	p.minimumFinalLength = 0; //Starts at zero and works its way up. It is also the length of the longest sequence.
+	p.maximumFinalLength = 0;
 	for(int i = 0; i < p.k; ++i)
 	{
 		cin >> s;
 		p.sequences[i] = s;
 		p.stringLengths[i] = s.size();
+		p.maximumFinalLength += s.size();
 		p.sumOfLengths += s.size();
 		if ( p.minimumFinalLength < s.size() ) {
 			p.minimumFinalLength = s.size();
@@ -51,6 +54,8 @@ void input(SeqProblem& p)
 	cin >> s;
 	p.longerLengthChildren = p.minimumFinalLength / 4;
 	p.shorterLengthChildren = p.minimumFinalLength / 4;
+	p.TIME_BUFFER = 4.0*pow( (p.minimumFinalLength*p.k) , 2)/NODE_EXPANSION_RATE;
+	cout << "TIME BUFFER is : " << p.TIME_BUFFER << "\n";
 } //Works.
 
 void output(SeqProblem& p , SeqState& n)
