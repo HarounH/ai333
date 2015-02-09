@@ -84,6 +84,7 @@ void hilldescent_restarts_untimed(int MAX_RESTARTS = 1 , int MAX_PLATEAU_MOVES =
 			moveToLocal(localstrings , localdashpos , length , cost);
 		}
 		++nrestarts;
+		restart();
 	} //Break out of inner loop.
 	if (cost < localcost) {
 		//Do Nothing.
