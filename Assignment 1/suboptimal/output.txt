@@ -1,5 +1,10 @@
-C---C-B-A--A---D
-BADBAAABABAABAAC
-BBDBABD-D-DADBAD
-DDACCDDBABBADADD
-DBABA-D-ACDADDCC
+ttcg-aa--tgtta--cagc-ga-ga-caggat-c-c-cat-tt-agggat-cgg-aatc-cgaataa-a-agt--atc-g
+ttg--a-cctctaa--c-g--gagggtaac-tg-cttac-c-acccg-ggagcg-ccgtca-g-gggcg-c-gt-t-gcc-
+a--tcaacg-cctaaccagg-g-ttccc-t--ta-a-atttta-g-gacaa---ataacca-aagt-a-tctatag-t--t
+-gg-caaca-g--actgct-tg-t-a--a-gcg-cacaagt-ac-tgcga-ccc-tc-tc-cgtaacag-ca-tacag-aa
+aggcctt-atg--atac-tca-aag-t-acca-aaccg-gc-tgg-g-gtttcggt-g-gacccgtc--tc-----atgca
+cggtt--c-tg-aatccc--a-c-gacgcc-tgg-ac-taaga-ggtacatatga-c-ac-c-aaact-act-tg-ag--t
+-t-tgatca-gg--gt--tgatct-cat-ccat-cgc-catgt--aga-aatt---ctt-tc-ag-ccg-cgttgaatcag
+-ga--a-gtccg--cccttagt-ttctca--atacaggtccgt-agaag-ca-gat-gacct--g-cacac-g-ac-tc--
+a-aata-c-tg-aa-cctgg-ggtca-ca-aa-aaa-g-gtggcgtg---ttc-a-cga-ttgag-c-caca--ggaccaa
+agagcaa-g---aa---agc-gct--tta-gagtgtc-tacc-caa-t-a-ccaaccgag--atgtgtgctgct-t-tc-t

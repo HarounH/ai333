@@ -112,6 +112,14 @@ void SeqProblem::initializeInto(INIT_TYPE initMode , SeqState& state , SeqState&
 		for(int i = 0; i<k; ++i)
 			randomInit(state.dashPos[i] , state.length - (int)sequences[i].size() , 0 , (int)sequences[i].size());
 		state.cost = evalCost(state);
+	} else if(initMode == RANDOM) {
+		uniform_int_distribution<int> initializer(0, (int)(minimumFinalLength / 3));
+		state.length = minimumFinalLength + initializer(engine);
+		state.dashPos.resize(k);
+		for(int j = 0; j < k; j++)
+			randomInit(state.dashPos[j], state.length - (int)sequences[j].size(), 0, (int)sequences[j].size());
+		state.cost = evalCost(state);
+	
 	}
 }
 
@@ -161,32 +169,20 @@ void SeqProblem::getNBD_singleDashMove( SeqState& state , vector<SeqState>& nbd)
 				Feasible alternative to sorting is to assert child.dsahPos[stringIDX][di] > child.dsahPos[stringIDX][di+1] 
 															and also to assert child.dashPos[stringIDX][di] < childdashPos[stringIDX][di-1]
 				*/
-				int tempctr = di; //loop variable for while loop
-					//There is another element after di
-					//ASSERT : child.dashPos[stringIDX][di] < child.dashPos[stringIDX][di+1]
-				while ((child.dashPos[stringIDX].size() > tempctr + 1) && (child.dashPos[stringIDX][tempctr] > child.dashPos[stringIDX][tempctr + 1])) {
-					//Swap to restore invariant.
-					int temp = child.dashPos[stringIDX][tempctr];
-					child.dashPos[stringIDX][tempctr] = child.dashPos[stringIDX][tempctr + 1];
-					child.dashPos[stringIDX][tempctr + 1] = temp;
-					++tempctr;
-				}
+				
 				int tempctr2 = di;
 					//There is one element before di.
 					//ASSERT : child.dashPos[stringIDX][di] > child.dashPos[stringIDX][di-1]
-					while ((tempctr2 > 0) && (child.dashPos[stringIDX][tempctr2] < child.dashPos[stringIDX][tempctr2-1])) {
+					while ((tempctr2 > 0) && (child.dashPos[stringIDX][tempctr2] < child.dashPos[stringIDX][di])) {
 						//Swap to restore invariant.
-						int temp = child.dashPos[stringIDX][tempctr2];
-						child.dashPos[stringIDX][tempctr2] = child.dashPos[stringIDX][tempctr2-1];
-						child.dashPos[stringIDX][tempctr2-1] = temp;
 						tempctr2--;
 					}
+					int temp = child.dashPos[stringIDX][tempctr2];
+					child.dashPos[stringIDX][tempctr2] = child.dashPos[stringIDX][di];
+					child.dashPos[stringIDX][di] = temp;
 				//std::sort(child.dashPos[stringIDX].begin(), child.dashPos[stringIDX].end()); //Possibly slowing us down.
 				//child.cost = evalCost(child);
-				if(tempctr == di)
-					setChildCost_singleDash(state, child , stringIDX);//, di, prevValue, tempctr2);
-				else
-					setChildCost_singleDash(state, child , stringIDX);//, di, prevValue, tempctr);
+				setChildCost_singleDash(state, child , stringIDX);//, di, prevValue, tempctr);
 				nbd.push_back(child);
 			}
 			if (state.dashPos[stringIDX][di] < stringLengths[stringIDX] ) {
@@ -200,23 +196,14 @@ void SeqProblem::getNBD_singleDashMove( SeqState& state , vector<SeqState>& nbd)
 				int tempctr = di; //loop variable for while loop
 					//There is another element after di
 					//ASSERT : child.dashPos[stringIDX][di] < child.dashPos[stringIDX][di+1]
-				while ((child.dashPos[stringIDX].size() > tempctr + 1) && (child.dashPos[stringIDX][tempctr] > child.dashPos[stringIDX][tempctr + 1])) {
+				while ((child.dashPos[stringIDX].size() > tempctr + 1) && (child.dashPos[stringIDX][di] > child.dashPos[stringIDX][tempctr + 1])) {
 					//Swap to restore invariant.
-					int temp = child.dashPos[stringIDX][tempctr];
-					child.dashPos[stringIDX][tempctr] = child.dashPos[stringIDX][tempctr + 1];
-					child.dashPos[stringIDX][tempctr + 1] = temp;
 					++tempctr;
 				}
-				int tempctr2 = di;
-					//There is one element before di.
-					//ASSERT : child.dashPos[stringIDX][di] > child.dashPos[stringIDX][di-1]
-					while ((tempctr2 > 0) && (child.dashPos[stringIDX][tempctr2] < child.dashPos[stringIDX][tempctr2-1])) {
-						//Swap to restore invariant.
-						int temp = child.dashPos[stringIDX][tempctr2];
-						child.dashPos[stringIDX][tempctr2] = child.dashPos[stringIDX][tempctr2-1];
-						child.dashPos[stringIDX][tempctr2-1] = temp;
-						tempctr2--;
-					}
+				int temp = child.dashPos[stringIDX][tempctr];
+				child.dashPos[stringIDX][tempctr] = child.dashPos[stringIDX][di];
+				child.dashPos[stringIDX][di] = temp;
+				
 				//std::sort(child.dashPos[stringIDX].begin(), child.dashPos[stringIDX].end()); //Possibly slowing us down.
 				//child.cost = evalCost(child);
 				setChildCost_singleDash(state, child , stringIDX);
