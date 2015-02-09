@@ -2,11 +2,10 @@
 	#define IO_CPP
 #include <iostream>
 #include <vector>
-#include "formulation.cpp"
 #include <limits>
 
 #define SMALL_INT std::numeric_limits<int>::min()
-#define NODE_EXPANSION_RATE 100000
+#define NODE_EXPANSION_RATE 10000000
 using namespace std;
 
 void input()
@@ -25,7 +24,7 @@ void input()
 	idxToChar.push_back('-');
 	charToIdx['-'] = aSize;
 	cin >> k;
-	inSequences.resize(k);
+	sequences.resize(k);
 	seqLengths.resize(k);
 	minFinalLength = 0; //Starts at zero and works its way up. It is also the length of the longest sequence.
 	maxFinalLength = 0;
@@ -33,7 +32,7 @@ void input()
 	for(int i = 0; i < k; ++i)
 	{
 		cin >> s;
-		inSequences[i] = s;
+		sequences[i] = s;
 		seqLengths[i] = s.size();
 		maxFinalLength += s.size();
 		if ( minFinalLength < s.size() ) {
@@ -58,9 +57,43 @@ void input()
 	TIME_BUFFER = 4.0*pow( (minFinalLength*k) , 2)/NODE_EXPANSION_RATE;
 } //Works.
 
-void output()
-{
-	printState();
-} //Should work.
+void print( MODE mode = PRINT_OUTPUT ) {
+	
+	if ( mode == PRINT_OUTPUT) {
+
+	} else if (mode == PRINT_DEBUG) {
+		cout << " length = " << length << "\n";
+		cout << " cost =   " << cost << "\n";
+		cout << " dashpos =\n"; 
+		for(int idx = 0; idx<k; ++idx) {
+			for(int didx = 0; didx < dashpos[idx].size(); ++didx) {
+				cout << dashpos[idx][didx] << " ";
+			}
+			cout << "\n";
+		}
+	} else if (mode == PRINT_STATE ) {
+		cout << " time_limit = " << timeLimit << "\n";
+		cout << " time_buffer = " << TIME_BUFFER << "\n";
+		cout << " alphabet_size = " << aSize << "\n";
+		cout << " alphabets = " ;
+		for(int i=0; i< aSize; ++i) cout << idxToChar[i] << "@" << charToIdx[idxToChar[i]] << ", ";
+			cout << "\n";
+		cout << " num_sequences = " << k << "\n";
+		cout << " sequences : \n" ;
+		for(int i=0; i<k; ++i) cout << " length = " << seqLengths[i] << "\n";
+
+		cout << " cc = " << cc << "\n";
+		for(int i=0; i<= aSize; ++i) {
+			for(int j=0; j<=aSize; ++j) {
+				cout << mc[i][j] << " ";
+			}
+		cout << "\n";
+		}
+	}
+	//Necessary print.
+	for(int i=0; i<k; ++i) {
+		cout << sequences[i] << "\n";
+	}
+}
 
 #endif
