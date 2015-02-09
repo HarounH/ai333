@@ -14,7 +14,7 @@ void getMoves( vector<Move>& moves ) { //Generates 2*k*length neighbours. Also s
 				}
 				move.origDptr = origDptr;
 				move.newDptr  = newDptr;
-				move.newcost += cost + evalCost_move(move);
+				move.newcost  = cost + evalCost_move(move);
 				moves.push_back(move);
 			}
 			//Backward swap
@@ -30,7 +30,7 @@ void getMoves( vector<Move>& moves ) { //Generates 2*k*length neighbours. Also s
 				}
 				move.origDptr = origDptr;
 				move.newDptr  = newDptr;
-				move.newcost += cost + evalCost_move(move);
+				move.newcost  = cost + evalCost_move(move);
 				moves.push_back(move);
 			}
 		}
@@ -92,6 +92,7 @@ void getBestMove( Move& bestMove ) {
 void setState(Move& move) {
 	sequences[move.idx][ move.origDptr ] = sequences[move.idx][ move.newDptr ];
 	sequences[move.idx][ move.newDptr ] = '-';
+	cost = move.newcost;
 	//Need to alter dashPos and sort it as well.
 	dashpos[move.idx][move.di] += ((move.newDptr>move.origDptr)?(1):(-1));
 	//swap forward
@@ -113,7 +114,6 @@ void setState(Move& move) {
 		} else {
 			break;
 		}
-
 	}
 }
 

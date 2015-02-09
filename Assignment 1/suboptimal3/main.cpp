@@ -71,7 +71,7 @@ int main(int argc , char** argv) {
 	input();
 	init( INIT_APPEND_BACK );
 	//search();
-	hilldescent_restarts_untimed(2);
+	hilldescent_restarts_untimed(20);
 	print(PRINT_DEBUG);
 	return 1;
 }
