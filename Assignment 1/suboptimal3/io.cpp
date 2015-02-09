@@ -24,6 +24,8 @@ void input()
 	charToIdx['-'] = aSize;
 	cin >> k;
 	sequences.resize(k);
+	insequences.resize(k);
+
 	seqLengths.resize(k);
 	minFinalLength = 0; //Starts at zero and works its way up. It is also the length of the longest sequence.
 	maxFinalLength = 0;
@@ -32,6 +34,7 @@ void input()
 	{
 		cin >> s;
 		sequences[i] = s;
+		insequences[i] = s;
 		seqLengths[i] = s.size();
 		maxFinalLength += s.size();
 		if ( minFinalLength < s.size() ) {

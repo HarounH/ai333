@@ -37,7 +37,6 @@ void hilldescent_norestarts_untimed(int MAX_PLATEAU_MOVES = 0) {
 }
 
 void hilldescent_restarts_untimed(int MAX_RESTARTS = 1 , int MAX_PLATEAU_MOVES = 0) {
-	cout << "hi1\n";
 	//local version stores the best so far.
 	vector<string> localstrings = sequences;
 	double localcost = cost;
@@ -46,7 +45,7 @@ void hilldescent_restarts_untimed(int MAX_RESTARTS = 1 , int MAX_PLATEAU_MOVES =
 	
 	while( nrestarts <= MAX_RESTARTS ) {
 		int plateauctr = 0;
-		//cout << "restarted with cost " << cost << " and local cost = " << localcost << "\n";
+		cout << "restarted with cost " << cost << " and local cost = " << localcost << "\n";
 		while(true) { //Breaks on the first optima after looking to escape plateaus
 			vector<Move> moves;
 			Move nxtbstmov;
@@ -89,8 +88,7 @@ void hilldescent_restarts_untimed(int MAX_RESTARTS = 1 , int MAX_PLATEAU_MOVES =
 }
 
 
-void hilldescent_infRestarts_timed(int MAX_PLATEAU_MOVES = 0, clock_t& start) {
-	cout << "hi1\n";
+void hilldescent_infRestarts_timed( clock_t& start , int MAX_PLATEAU_MOVES = 0) {
 	clock_t present;
 	present = clock();
 	//local version stores the best so far.
@@ -99,10 +97,10 @@ void hilldescent_infRestarts_timed(int MAX_PLATEAU_MOVES = 0, clock_t& start) {
 	int locallength = length;
 	vector< vector<int> > localdashpos = dashpos;
 	
-	while( ((float)present/CLOCKS_PER_SEC) + TIME_BUFFER < ((float)starts/CLOCKS_PER_SEC) + timeLimit ) {
+	while( ((float)present/CLOCKS_PER_SEC) + TIME_BUFFER < ((float)start/CLOCKS_PER_SEC) + timeLimit ) {
 		int plateauctr = 0;
-		//cout << "restarted with cost " << cost << " and local cost = " << localcost << "\n";
-		while(true && ((float)present/CLOCKS_PER_SEC) + TIME_BUFFER < ((float)starts/CLOCKS_PER_SEC) + timeLimit) { //Breaks on the first optima after looking to escape plateaus
+		cout << "restarted with cost " << cost << " and local cost = " << localcost << "\n";
+		while(true && ((float)present/CLOCKS_PER_SEC) + TIME_BUFFER < ((float)start/CLOCKS_PER_SEC) + timeLimit) { //Breaks on the first optima after looking to escape plateaus
 			vector<Move> moves;
 			Move nxtbstmov;
 				nxtbstmov.newcost = BIG_DOUBLE ;
