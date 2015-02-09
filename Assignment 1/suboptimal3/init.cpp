@@ -27,7 +27,7 @@ void init( MODE mode) {
 			sort(dashpos[idx].begin() , dashpos[idx].end());
 			//###########################################################################SORTING DASHPOS END
 			for(int didx = 0; didx< length - seqLengths[idx]; ++didx) {
-				sequences[idx].insert( didx + dashpos[idx][didx] , 1, '-' ); //Insert dashes in the appropriate locations
+				sequences[idx].insert( sequences[idx].begin() + didx + dashpos[idx][didx] , 1, '-' ); //Insert dashes in the appropriate locations
 			}
 			//############################################################################## INSERTION END
 		}

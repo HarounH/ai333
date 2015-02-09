@@ -19,7 +19,7 @@ struct Move { //Represents Moves.
 	int di;
 	int origDptr;
 	int newDptr;
-	int newcost;
+	double newcost;
 };
 
 enum MODE { PRINT_STATE , PRINT_DEBUG  , PRINT_OUTPUT , 
@@ -70,8 +70,9 @@ int main(int argc , char** argv) {
 	start = clock(); //Allows one to keep track of time.
 	input();
 	init( INIT_RANDOM );
-	//search();
-	hilldescent_restarts_untimed(20);
+	
+	hilldescent_restarts_untimed(100 , 10);
+	
 	print(PRINT_DEBUG);
 	return 1;
 }

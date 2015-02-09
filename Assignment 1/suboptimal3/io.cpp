@@ -4,7 +4,6 @@
 #include <vector>
 #include <limits>
 
-#define SMALL_INT std::numeric_limits<int>::min()
 #define NODE_EXPANSION_RATE 10000000
 using namespace std;
 

@@ -1,3 +1,4 @@
+
 void getMoves( vector<Move>& moves ) { //Generates 2*k*length neighbours. Also stores the best neighbour yet in a global variable.
 	for(int idx=0; idx<k; ++idx) {
 		for(int didx = 0; didx < dashpos[idx].size(); ++didx) {
@@ -8,14 +9,17 @@ void getMoves( vector<Move>& moves ) { //Generates 2*k*length neighbours. Also s
 					move.idx = idx;
 					move.di = didx;
 				int origDptr = dashpos[idx][didx] + didx;
-				int newDptr  = dashpos[idx][didx] + didx + 1;
+				int newDptr  = dashpos[idx][didx] + didx; // + 1 will be taken care of by the while loop
 				while ((newDptr < length) && (sequences[idx][newDptr]=='-')) {
 					++newDptr;
 				}
 				move.origDptr = origDptr;
 				move.newDptr  = newDptr;
 				move.newcost  = cost + evalCost_move(move);
-				moves.push_back(move);
+				//cout << " Move contents contain : \n" << " idx = " << move.idx << "\n" << " di = " << move.di << "\n" << " origdptr = " << move.origDptr << "\n" << " newdptr = " << move.newDptr << "\n";  
+				if (( move.newDptr < length) && (move.origDptr < length) && (move.newDptr >=0) && (move.origDptr >=0)) {
+					moves.push_back(move);
+				}
 			}
 			//Backward swap
 			if ( dashpos[idx][didx] > 0 ) { //it is possible to swap backward 
@@ -24,14 +28,17 @@ void getMoves( vector<Move>& moves ) { //Generates 2*k*length neighbours. Also s
 					move.idx = idx;
 					move.di = didx;
 				int origDptr = dashpos[idx][didx] + didx;
-				int newDptr  = dashpos[idx][didx] + didx - 1;
+				int newDptr  = dashpos[idx][didx] + didx; // -1 will be taken care of by the while loop.
 				while ((newDptr > 0) && (sequences[idx][newDptr]=='-')) {
 					--newDptr;
 				}
 				move.origDptr = origDptr;
 				move.newDptr  = newDptr;
 				move.newcost  = cost + evalCost_move(move);
-				moves.push_back(move);
+				//cout << " Move contents contain : \n" << " idx = " << move.idx << "\n" << " di = " << move.di << "\n" << " origdptr = " << move.origDptr << "\n" << " newdptr = " << move.newDptr << "\n";
+				if (( move.newDptr < length) && (move.origDptr < length) && (move.newDptr >=0) && (move.origDptr >=0)) {
+					moves.push_back(move);
+				}
 			}
 		}
 	}
@@ -90,34 +97,31 @@ void getBestMove( Move& bestMove ) {
 }
 
 void setState(Move& move) {
+	cost = move.newcost;
 	sequences[move.idx][ move.origDptr ] = sequences[move.idx][ move.newDptr ];
 	sequences[move.idx][ move.newDptr ] = '-';
-	cost = move.newcost;
-	//Need to alter dashPos and sort it as well.
-	dashpos[move.idx][move.di] += ((move.newDptr>move.origDptr)?(1):(-1));
-	//swap forward
-	for( int di1 = move.di; di1 < dashpos[move.idx].size()-1 ; ++di1) {
-		if ( dashpos[move.idx][di1] < dashpos[move.idx][di1+1]) {
-			int temp = dashpos[move.idx][di1];
-			dashpos[move.idx][di1] = dashpos[move.idx][di1+1];
-			dashpos[move.idx][di1+1] = temp;
-		} else {
-			break;
+
+	int change = ((move.newDptr > move.origDptr)?(1):(-1));
+	if (change > 0) {
+		int di = move.di;
+		while ( (di< dashpos[move.idx].size()) && (di>=0) && ( dashpos[move.idx][di] + di) < move.newDptr) {
+			dashpos[move.idx][di]++;
+			di++;
+		}
+	} else {
+		int di = move.di;
+		while ( (di< dashpos[move.idx].size()) && (di>=0) && ( dashpos[move.idx][di] + di) > move.newDptr) {
+			dashpos[move.idx][di]--;
+			di--;
 		}
 	}
-	//swap backward.
-	for( int di1 = move.di; di1 > -1; --di1) {
-		if ( dashpos[move.idx][di1] > dashpos[move.idx][di1-1]) {
-			int temp = dashpos[move.idx][di1];
-			dashpos[move.idx][di1] = dashpos[move.idx][di1-1];
-			dashpos[move.idx][di1-1] = temp;
-		} else {
-			break;
-		}
-	}
+
+	//sort( dashpos[move.idx].begin()  , dashpos[move.idx].end());
+	//Now that di's have been swapped
+	
 }
 
-void movefromLocal( vector<string>& localsequences , vector< vector<int> >& localdashpos , int locallength , double localcost) {
+void movefromLocal( vector<string>& localsequences , vector< vector<int> >& localdashpos , int& locallength , double& localcost) {
 	cost = localcost;
 	length = locallength;
 	sequences = localsequences;
@@ -125,7 +129,7 @@ void movefromLocal( vector<string>& localsequences , vector< vector<int> >& loca
 }
 
 
-void moveToLocal( vector<string>& localsequences , vector< vector<int> >& localdashpos , int locallength , double localcost) {
+void moveToLocal( vector<string>& localsequences , vector< vector<int> >& localdashpos , int& locallength , double& localcost) {
 	localcost = cost ;
 	locallength = length ;
 	localsequences = sequences;

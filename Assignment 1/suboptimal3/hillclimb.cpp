@@ -13,11 +13,13 @@ void hilldescent_norestarts_untimed(int MAX_PLATEAU_MOVES = 0) {
 		Move nxtbstmov;
 			nxtbstmov.newcost = BIG_DOUBLE;
 		getMoves(moves);
-		cout << moves.size() << " neighbours \n";
 		for(int i=0; i<moves.size(); ++i) {
-			cout << moves[i].newcost << " cost found \n";
 			if (moves[i].newcost < nxtbstmov.newcost ) {
-				nxtbstmov = moves[i];
+					nxtbstmov.idx = moves[i].idx;
+					nxtbstmov.di = moves[i].di;
+					nxtbstmov.origDptr = moves[i].origDptr;
+					nxtbstmov.newDptr = moves[i].newDptr;
+					nxtbstmov.newcost = moves[i].newcost;
 			}
 		}
 		if ( nxtbstmov.newcost < bestmove.newcost ) {
@@ -35,57 +37,52 @@ void hilldescent_norestarts_untimed(int MAX_PLATEAU_MOVES = 0) {
 }
 
 void hilldescent_restarts_untimed(int MAX_RESTARTS = 1 , int MAX_PLATEAU_MOVES = 0) {
-	Move bestmove;
-		bestmove.newcost = BIG_DOUBLE;
-		
-	int plateauctr = 0;
-
-
+	cout << "hi1\n";
 	//local version stores the best so far.
 	vector<string> localstrings = sequences;
 	double localcost = cost;
 	int locallength = length;
 	vector< vector<int> > localdashpos = dashpos;
 	
-
 	while( nrestarts <= MAX_RESTARTS ) {
-		restart();
+		int plateauctr = 0;
+		//cout << "restarted with cost " << cost << " and local cost = " << localcost << "\n";
 		while(true) { //Breaks on the first optima after looking to escape plateaus
 			vector<Move> moves;
 			Move nxtbstmov;
-				nxtbstmov.newcost = BIG_DOUBLE;
+				nxtbstmov.newcost = BIG_DOUBLE ;
 			getMoves(moves);
-			cout << moves.size() << " neighbours \n";
-			for(int i=0; i<moves.size(); ++i) {
-				cout << moves[i].newcost << " cost found \n";
+			for(int i=0; i<moves.size(); ++i) { //Find the best move.
+				
 				if (moves[i].newcost < nxtbstmov.newcost ) {
-					nxtbstmov = moves[i];
+					nxtbstmov.idx = moves[i].idx;
+					nxtbstmov.di = moves[i].di;
+					nxtbstmov.origDptr = moves[i].origDptr;
+					nxtbstmov.newDptr = moves[i].newDptr;
+					nxtbstmov.newcost = moves[i].newcost;
 				}
 			}
-			if ( nxtbstmov.newcost < bestmove.newcost ) {
-				bestmove = nxtbstmov;
+			if ( nxtbstmov.newcost < cost ) {
 				plateauctr = 0;
-				setState(bestmove);
+				setState(nxtbstmov);
 				if ( cost < localcost) {
-					moveToLocal(localstrings , localdashpos , length , cost);
+					moveToLocal(localstrings , localdashpos , locallength , localcost);
 				}
 
-			} else if (nxtbstmov.newcost == bestmove.newcost && (plateauctr < MAX_PLATEAU_MOVES)) {
+			} else if ( (nxtbstmov.newcost == cost) && (plateauctr < MAX_PLATEAU_MOVES)) {
 				plateauctr++;
-				bestmove = nxtbstmov;
-				setState(bestmove);
+				setState(nxtbstmov);
 				if ( cost < localcost) {
-					moveToLocal(localstrings , localdashpos , length , cost);
+					moveToLocal(localstrings , localdashpos , locallength , localcost);
 				}
 			} else {
 				break;
 			}
 		}
+		restart();
 		++nrestarts;
 	} //Break out of inner loop.
-	if (cost < localcost) {
-		//Do Nothing.
-	} else {
+	if (cost > localcost) {
 		movefromLocal(localstrings , localdashpos , locallength , localcost);
 	}
 	return;
