@@ -22,7 +22,7 @@ void Problem::print() {
 }
 
 void Problem::printState(State& s) {
-	//cout << "length = " << s.length << "\n";
+	cout << "length = " << s.length << "\n";
 	cout << "cost = " << s.cost << "\n";
 	for(int i=0; i<k; ++i) {
 		for(int j=0; j<s.length; ++j) {cout << s.sequences[i][j] ;} cout << "\n";
@@ -99,7 +99,7 @@ void Problem::randomState(State& s , State& best) {
 	s.cost = 0.0;
 	s.dashPos.resize(k);
 	s.sequences.resize(k);
-	uniform_int_distribution<int> dashinit(0 , initState.length-1);
+	uniform_int_distribution<int> dashinit(0 , s.length-1);
 	for(int idx = 0; idx<k; ++idx) {
 		generateRandomDashPos(idx , dashinit , s);
 		generateDeque(idx , s);
@@ -109,7 +109,7 @@ void Problem::randomState(State& s , State& best) {
 
 int Problem::generateRandomLength(State& best) {
 	// TODO:Insert cool function here.
-	uniform_int_distribution<int> lengthinit(minFinalLength , minFinalLength + ((maxFinalLength-minFinalLength)/k));
+	uniform_int_distribution<int> lengthinit(minFinalLength , minFinalLength + 2*minFinalLength);
 	return lengthinit(engine);
 }
 
@@ -118,7 +118,7 @@ void Problem::generateRandomDashPos(int idx , uniform_int_distribution<int>& das
 	s.dashPos[idx].resize(n_dashes);
 	for(int i=0; i< n_dashes; ++i) {
 		//Slightly biased dashPos.
-		s.dashPos[idx][i] = (dashinit(engine)%(seqLengths[idx]));
+		s.dashPos[idx][i] = (dashinit(engine)%(seqLengths[idx] + 1));
 	}
 	sort( s.dashPos[idx].begin() , s.dashPos[idx].end());	
 }
@@ -126,8 +126,9 @@ void Problem::generateRandomDashPos(int idx , uniform_int_distribution<int>& das
 void Problem::generateDeque(int idx , State& s) {
 	int dposptr=0; // points to the next index in dashPos[idx] to be inserted.
 	int sposptr=0; // points to the next index in inSequences[idx] to be inserted.
-	for(int ptr	=0; ptr<s.length ;++ptr) {		//points to the location in the deque to be inserted into.
-		if ( (dposptr < s.dashPos[idx].size()) && (initState.dashPos[idx][dposptr] + dposptr == ptr) ) {
+	s.sequences[idx].resize(0);
+	for(int ptr	= 0; ptr < s.length ;++ptr) {		//points to the location in the deque to be inserted into.
+		if ( (dposptr < s.dashPos[idx].size()) && (s.dashPos[idx][dposptr] + dposptr == ptr) ) {
 			s.sequences[idx].push_back('-');
 			++dposptr;
 		} else if (sposptr < seqLengths[idx]) {
@@ -172,7 +173,7 @@ void Problem::getNBD(State& state , vector<State>& nbd) {
 				//Possible to backward swap
 				int seqpos1 = state.dashPos[idx][didx] + didx;
 				int seqpos2 = seqpos1-1;
-				while ( (seqpos2 >= 0) && ( child.sequences[idx][seqpos2] == '-' ) ) {
+				while ( (seqpos2 > 0) && ( child.sequences[idx][seqpos2] == '-' ) ) {
 					seqpos2--;
 				}
 
@@ -182,6 +183,7 @@ void Problem::getNBD(State& state , vector<State>& nbd) {
 				int swapWith = didx-1;
 				int oldValue = child.dashPos[idx][didx];
 				--child.dashPos[idx][didx];
+
 				while ( (swapWith>0) && (state.dashPos[idx][didx] < state.dashPos[idx][swapWith])) {
 					child.dashPos[idx][didx] = child.dashPos[idx][swapWith];
 					child.dashPos[idx][swapWith] = oldValue;
