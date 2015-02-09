@@ -153,7 +153,7 @@ SeqState greedyHillClimb_infRestarts_timed(SeqProblem& p , clock_t& start , INIT
 	return (( best.cost < prevBest.cost )?( best ):( prevBest ));
 }
 
-#define MAX_STEPS 10
+#define MAX_STEPS 200
 SeqState greedyHillClimb_limitedSteps_infRestarts_timed(SeqProblem& p ,clock_t& start , INIT_TYPE mode = STATS) {
 	clock_t present;
 	present = clock();
@@ -163,6 +163,7 @@ SeqState greedyHillClimb_limitedSteps_infRestarts_timed(SeqProblem& p ,clock_t& 
 	while( ((float)present/CLOCKS_PER_SEC) + p.TIME_BUFFER < ((float)start/CLOCKS_PER_SEC) + p.clockTime) {
 		restarts++;
 		int stepCount = 0;
+		cout << "restart " << prevBest.cost << "\n";
 		while( (stepCount < MAX_STEPS) && ((float)present/CLOCKS_PER_SEC) + p.TIME_BUFFER < ((float)start/CLOCKS_PER_SEC) + p.clockTime) {
 			vector<SeqState> nbd; //This loop needs to take less than the time buffer.
 			p.getNBD(best , nbd);
@@ -187,5 +188,6 @@ SeqState greedyHillClimb_limitedSteps_infRestarts_timed(SeqProblem& p ,clock_t& 
 		}
 		p.initializeInto(mode , best , prevBest); //Should generate varying lengths too.
 	}
+	return (( best.cost < prevBest.cost )?( best ):( prevBest ));
 }
 #endif
