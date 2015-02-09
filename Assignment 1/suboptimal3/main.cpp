@@ -23,7 +23,7 @@ struct Move { //Represents Moves.
 };
 
 enum MODE { PRINT_STATE , PRINT_DEBUG  , PRINT_OUTPUT , 
-	INIT_APPEND_BACK ,
+	INIT_APPEND_BACK , INIT_RANDOM ,
 	RESTART_RANDOM , RESTART_MEANLENGTH,
 	SCHEDULE_RANDOM , SCHEDULE_BYRESTARTS
 };
@@ -69,7 +69,7 @@ clock_t start; //We need to keep track of time.
 int main(int argc , char** argv) {
 	start = clock(); //Allows one to keep track of time.
 	input();
-	init( INIT_APPEND_BACK );
+	init( INIT_RANDOM );
 	//search();
 	hilldescent_restarts_untimed(20);
 	print(PRINT_DEBUG);

@@ -27,7 +27,7 @@ void randomRestart() {
 		//#############################################################################DELETION END
 		dashpos[idx].resize(0);
 		//############################################################################# INSERTION BEGIN
-		for(int didx = 0; didx < length - seqLengths[idx]; ++didx) {
+		for(int didx = 0; didx < (length - seqLengths[idx]) ; ++didx) {
 			dashpos[idx].push_back( (dinit(engine)%(seqLengths[idx] + 1)) ); // Because the valuesa at dashpos[idx][didx] represent how many chracters before the didx'th dash.
 		}
 		//###########################################################################SORTING DASHPOS BEGIN
