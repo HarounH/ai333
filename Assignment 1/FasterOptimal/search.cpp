@@ -24,7 +24,6 @@ SeqNode* dfbb(SeqProblem& problem) { //Informed search
 		double maxCost = BIG_DOUBLE; //BIG_DOUBLE is the numeric limit of double
 
 	// ############# BOUND is the totalCost of the optimalSeqNode;
-		int n = 0;
 	stack<SeqNode*> fringe;
 	SeqNode *initial = &(problem.initialState);
 	fringe.push(initial);
@@ -52,8 +51,6 @@ SeqNode* dfbb(SeqProblem& problem) { //Informed search
 				optimalSeqNode = node;
 				maxCost = node->totalCost;
 			}
-			cout<<"Node : "<<node->totalCost<<"\n";
-			cout<<n<<"\n";
 		}
 		else {
 			if(node->explored == false)
@@ -66,7 +63,6 @@ SeqNode* dfbb(SeqProblem& problem) { //Informed search
 			//Sort children by their heuristic value. Only heuristic value because looking into the future.
 			std::stable_sort(children.begin() , children.end() , seqNodeTotalCostComparatorLeft);
 			for(int i = 0; i<children.size(); i++) {
-				n++;
 				if( children[i]->totalCost < maxCost ) {
 					fringe.push(children[i]);
 				}
@@ -74,7 +70,6 @@ SeqNode* dfbb(SeqProblem& problem) { //Informed search
 		}
 		node = NULL;
 	}
-	cout<<n<<"\n";
 	
 	return optimalSeqNode;
 }

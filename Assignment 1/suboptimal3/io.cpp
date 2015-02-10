@@ -3,8 +3,8 @@
 #include <iostream>
 #include <vector>
 #include <limits>
-
-#define NODE_EXPANSION_RATE 10000000
+#include <cmath>
+#define NODE_EXPANSION_RATE 2000000
 using namespace std;
 
 void input()
@@ -14,14 +14,15 @@ void input()
 	cin >> aSize;
 	string s;
 	idxToChar.resize(aSize);
+	charToIdx.resize(256);
 	for(int i = 0; i < aSize; ++i)
 	{
 		cin >> s;
 		idxToChar[i] = s[0];
-		charToIdx[s[0]] = i;
+		charToIdx[(int) s[0]] = i;
 	}
 	idxToChar.push_back('-');
-	charToIdx['-'] = aSize;
+	charToIdx[(int) '-'] = aSize;
 	cin >> k;
 	sequences.resize(k);
 	insequences.resize(k);
@@ -56,7 +57,8 @@ void input()
 		}
 	}
 	cin >> s;
-	TIME_BUFFER = 4.0*pow( (minFinalLength*k) , 2)/NODE_EXPANSION_RATE;
+	TIME_BUFFER = max( ((4.0*pow( (minFinalLength*k) , 2))/(double)NODE_EXPANSION_RATE) , 3.0);
+	//cout << TIME_BUFFER << "\n";
 } //Works.
 
 void print( MODE mode = PRINT_OUTPUT ) {
@@ -78,7 +80,7 @@ void print( MODE mode = PRINT_OUTPUT ) {
 		cout << " time_buffer = " << TIME_BUFFER << "\n";
 		cout << " alphabet_size = " << aSize << "\n";
 		cout << " alphabets = " ;
-		for(int i=0; i< aSize; ++i) cout << idxToChar[i] << "@" << charToIdx[idxToChar[i]] << ", ";
+		for(int i=0; i< aSize; ++i) cout << idxToChar[i] << "@" << charToIdx[(int) idxToChar[i]] << ", ";
 			cout << "\n";
 		cout << " num_sequences = " << k << "\n";
 		cout << " sequences : \n" ;

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <iterator>
 #include "Sequence Alignment.cpp"
 
 using namespace std;

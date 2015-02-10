@@ -45,7 +45,7 @@ void hilldescent_restarts_untimed(int MAX_RESTARTS = 1 , int MAX_PLATEAU_MOVES =
 	
 	while( nrestarts <= MAX_RESTARTS ) {
 		int plateauctr = 0;
-		cout << "restarted with cost " << cost << " and local cost = " << localcost << "\n";
+		//cout << "restarted with cost " << cost << " and local cost = " << localcost << "\n";
 		while(true) { //Breaks on the first optima after looking to escape plateaus
 			vector<Move> moves;
 			Move nxtbstmov;
@@ -99,7 +99,7 @@ void hilldescent_infRestarts_timed( clock_t& start , int MAX_PLATEAU_MOVES = 0) 
 	
 	while( ((float)present/CLOCKS_PER_SEC) + TIME_BUFFER < ((float)start/CLOCKS_PER_SEC) + timeLimit ) {
 		int plateauctr = 0;
-		cout << "restarted with cost " << cost << " and local cost = " << localcost << "\n";
+		//cout << "restarted with cost " << cost << " and local cost = " << localcost << "\n";
 		while(true && ((float)present/CLOCKS_PER_SEC) + TIME_BUFFER < ((float)start/CLOCKS_PER_SEC) + timeLimit) { //Breaks on the first optima after looking to escape plateaus
 			vector<Move> moves;
 			Move nxtbstmov;
@@ -133,7 +133,10 @@ void hilldescent_infRestarts_timed( clock_t& start , int MAX_PLATEAU_MOVES = 0) 
 			}
 			present = clock();
 		}
-		restart( RESTART_MEANLENGTH );
+		if((float)present/CLOCKS_PER_SEC) + TIME_BUFFER < ((float)start/CLOCKS_PER_SEC) + timeLimit)
+			restart( RESTART_RANDOM );
+		else
+		    break;
 		++nrestarts;
 	} //Break out of inner loop.
 	if (cost > localcost) {

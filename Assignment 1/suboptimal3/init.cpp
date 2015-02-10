@@ -5,8 +5,8 @@ void getDPInit();
 void init( MODE mode) {
 	if (mode == INIT_APPEND_BACK) {
 		//length init
-		uniform_int_distribution<int> linit(minFinalLength , minFinalLength + ((maxFinalLength-minFinalLength)/k));
-		length = linit(engine);
+		//uniform_int_distribution<int> linit(minFinalLength , minFinalLength + ((maxFinalLength-minFinalLength)/k));
+		length = minFinalLength + (rand()%( 1 + (int)((maxFinalLength-minFinalLength)/k)));
 		dashpos.resize(k);
 		for(int idx=0; idx < k; ++idx) {
 			while( sequences[idx].size() < length ) {
@@ -15,16 +15,16 @@ void init( MODE mode) {
 			}
 		}
 	} else if ( mode == INIT_RANDOM ) {
-		uniform_int_distribution<int> linit(minFinalLength , minFinalLength + ((maxFinalLength-minFinalLength)/k));
-		length = linit(engine);
+		//uniform_int_distribution<int> linit(minFinalLength , minFinalLength + ((maxFinalLength-minFinalLength)/k));
+		length = minFinalLength + (rand()%( 1 + (int)((maxFinalLength-minFinalLength)/k)));
 		//dash init
 		dashpos.resize(k);
-		uniform_int_distribution<int> dinit( 0 , length);
+		//uniform_int_distribution<int> dinit( 0 , length);
 		for(int idx = 0; idx<k; ++idx) {
 			dashpos[idx].resize(0);
 			//############################################################################# INSERTION BEGIN
 			for(int didx = 0; didx < (length - seqLengths[idx]) ; ++didx) {
-				dashpos[idx].push_back( (dinit(engine)%(seqLengths[idx] + 1)) ); // Because the valuesa at dashpos[idx][didx] represent how many chracters before the didx'th dash.
+				dashpos[idx].push_back( (rand()%(seqLengths[idx] + 1)) ); // Because the valuesa at dashpos[idx][didx] represent how many chracters before the didx'th dash.
 			}
 			//###########################################################################SORTING DASHPOS BEGIN
 			sort(dashpos[idx].begin() , dashpos[idx].end());
@@ -66,18 +66,18 @@ void getDPInit() {
 			B[i].resize(seqLengths[sidx+1] + 1 , 0);
 
 			A[i].resize(seqLengths[sidx+1] + 1);
-			A[i][0] = A[i-1][0] + cc + mc[charToIdx[insequences[sidx][i-1]]][charToIdx['-']];
+			A[i][0] = A[i-1][0] + cc + mc[charToIdx[(int) insequences[sidx][i-1]]][charToIdx[(int) '-']];
 		
 		}
 		for( int i = 1; i <= seqLengths[sidx+1]; ++i) {
-			A[0][i] = A[0][i-1] + cc + mc[charToIdx['-']][charToIdx[insequences[sidx+1][i-1]]];
+			A[0][i] = A[0][i-1] + cc + mc[charToIdx[(int) '-']][charToIdx[(int) insequences[sidx+1][i-1]]];
 		}
 		//DP
 		for( int i=1; i <= seqLengths[sidx] ; ++i) {
 			for( int j=1; j <= seqLengths[sidx+1] ; ++j) {
-				double x = A[i-1][j-1] + mc[charToIdx[insequences[sidx][i-1]]][charToIdx[insequences[sidx+1][j-1]]];
-				double y = A[i-1][j] + cc + mc[charToIdx[insequences[sidx][i-1]]][charToIdx['-']];
-				double z = A[i][j-1] + cc + mc[charToIdx['-']][charToIdx[insequences[sidx+1][j-1]]];
+				double x = A[i-1][j-1] + mc[charToIdx[(int) insequences[sidx][i-1]]][charToIdx[(int) insequences[sidx+1][j-1]]];
+				double y = A[i-1][j] + cc + mc[charToIdx[(int) insequences[sidx][i-1]]][charToIdx[(int) '-']];
+				double z = A[i][j-1] + cc + mc[charToIdx[(int) '-']][charToIdx[(int) insequences[sidx+1][j-1]]];
 				double w = min( x, min(y,z));
 				if(w == x)	{
 					B[i][j] = 1;

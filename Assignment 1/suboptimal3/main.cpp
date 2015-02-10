@@ -1,8 +1,6 @@
 #include <vector>
 #include <iostream>
-#include <unordered_map>
 #include <ctime>
-#include <random>
 #include <algorithm>
 using namespace std;
 
@@ -25,7 +23,7 @@ struct Move { //Represents Moves.
 enum MODE { PRINT_STATE , PRINT_DEBUG  , PRINT_OUTPUT , 
 	INIT_APPEND_BACK , INIT_RANDOM , INIT_DP,
 	RESTART_RANDOM , RESTART_MEANLENGTH, RESTART_EQUALLYSPACED,
-	SCHEDULE_RANDOM , SCHEDULE_BYRESTARTS
+	SCHEDULE_RANDOM , SCHEDULE_BYRESTARTS ,SCHEDULE_TWICEMINFINALLENGTH
 };
 
 Move bestMove;
@@ -35,7 +33,7 @@ double TIME_BUFFER; //needs to be calculated.
 
 int aSize; //number of alphabets
 vector<char> idxToChar; //every position is a character. 
-unordered_map<char , int> charToIdx; // every chararcter is mapped to an int.
+vector<int> charToIdx; // every chararcter is mapped to an int.
 
 
 int minFinalLength; // Minimum length needed by the strings
@@ -53,9 +51,6 @@ vector< vector<int> > dashpos; //positions of the dashes in the present strings.
 double cc;
 vector< vector<double> > mc;
 
-random_device rd;
-mt19937 engine(rd()); //Engines for random number generation.
-
 int nrestarts = 1; //number of restarts done so far.
 clock_t start; //We need to keep track of time.
 //Ideally i would have externs all over the place in the following files, but thats cool.
@@ -69,11 +64,12 @@ clock_t start; //We need to keep track of time.
 
 int main(int argc , char** argv) {
 	start = clock(); //Allows one to keep track of time.
+	srand(time(NULL));
 	input();
 	init( INIT_RANDOM );
 	
-	hilldescent_infrestarts_untimed(100 , 100);
+	hilldescent_infRestarts_timed(start, 100);
 	
-	print(PRINT_DEBUG);
+	print(PRINT_OUTPUT);
 	return 1;
 }
