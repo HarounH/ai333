@@ -24,7 +24,7 @@ struct Move { //Represents Moves.
 
 enum MODE { PRINT_STATE , PRINT_DEBUG  , PRINT_OUTPUT , 
 	INIT_APPEND_BACK , INIT_RANDOM , INIT_DP,
-	RESTART_RANDOM , RESTART_MEANLENGTH,
+	RESTART_RANDOM , RESTART_MEANLENGTH, RESTART_EQUALLYSPACED,
 	SCHEDULE_RANDOM , SCHEDULE_BYRESTARTS
 };
 
@@ -72,7 +72,7 @@ int main(int argc , char** argv) {
 	input();
 	init( INIT_RANDOM );
 	
-	hilldescent_restarts_untimed(100 , 100);
+	hilldescent_infrestarts_untimed(100 , 100);
 	
 	print(PRINT_DEBUG);
 	return 1;

@@ -133,7 +133,7 @@ void hilldescent_infRestarts_timed( clock_t& start , int MAX_PLATEAU_MOVES = 0) 
 			}
 			present = clock();
 		}
-		restart();
+		restart( RESTART_MEANLENGTH );
 		++nrestarts;
 	} //Break out of inner loop.
 	if (cost > localcost) {
