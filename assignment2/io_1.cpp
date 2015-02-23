@@ -8,22 +8,15 @@ void input_1() {
 	cin >> N; //number of vertices
 	cin >> M; //number of edges
 	cin >> K; //number of desired subgraphs
-
 	//NODE 0 is reserved.
 
 	edges.resize(N+1);
 	for(int idx = 0; idx < N+1; ++idx) edges[idx].resize(N+1);
-	
-	//adjlist.resize(N+1);
-	
 
 	for( int e = 0; e<M; ++e) {
 		int from, to;
 		cin >> from;
-
 		cin >> to;
-
-		cout << "edge from " << from << " to " << to<< "\n";
 		edges[from][to] = true;
 		edges[to][from] = true;
 		//adjlist[from].push_back(to);
