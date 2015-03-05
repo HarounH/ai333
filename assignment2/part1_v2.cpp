@@ -39,7 +39,7 @@ int main(int argc , char** argv) {
 	printf("p cnf %d %d\n" , n_vars , n_clauses);
 	make_variables();
 	make_nonempty_subgraph();
-	make_node_in_graph();
+	//make_node_in_graph(); Not necessary
 	make_complete_graph();
 	make_not_subgraph();
 	make_edge_in_graph();
@@ -71,7 +71,7 @@ void eval_nclauses() {
 	n_clauses = 3*N*K*(K-1) + // clauses to fix fipq
 				3*N*(N-1)*K + // clauses to fix hijq
 				K 	+ // clauses in make_nonempty_subgraph
-				N 	+ // clauses in make_node_in_graph
+				//N 	+ // clauses in make_node_in_graph
 				(((N*(N-1)/2) + -M)*K) + // clauses in make_complete_graph()
 				K*(K - 1)	+ // clauses for make_not_subgraph
 				M;		  // clauses for make_edge_in_subgraph
