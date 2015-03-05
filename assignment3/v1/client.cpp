@@ -8,7 +8,8 @@
 #include <unistd.h>
 #include <errno.h>
 #include <arpa/inet.h> 
-#include <bits/stdc++.h>
+#include <iostream>
+#include <cstdlib>
 
 using namespace std;
 /* Complete the function below to print 1 integer which will be your next move 
