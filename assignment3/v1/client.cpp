@@ -11,12 +11,16 @@
 #include <iostream>
 #include <cstdlib>
 
+
+
 using namespace std;
 /* Complete the function below to print 1 integer which will be your next move 
    */
-int N,M,K, time_left, player;
+int N,M,K, time_left, _player; 
 
-
+#include "game_player.h"
+#include "game_player.cpp"
+Game_Player player;
 
 
 
@@ -63,13 +67,15 @@ int main(int argc, char *argv[])
     memset(recvBuff, '0',sizeof(recvBuff));
     n = read(sockfd, recvBuff, sizeof(recvBuff)-1);
     recvBuff[n] = 0;
-    sscanf(recvBuff, "%d %d %d %d %d", &player, &N, &M, &K, &time_left);
+    sscanf(recvBuff, "%d %d %d %d %d", &_player, &N, &M, &K, &time_left);
 
 
-    cout<<"Player "<<player<<endl;
+    cout<<"Player "<<_player<<endl;
     cout<<"Time "<<time_left<<endl;
     cout<<"Board size "<<N<<"x"<<M<<" :"<<K<<endl;
-
+    
+    float _time_left = time_left; //Neccessary because thats how the world rotates.
+    player.init( N , M , K , _time_left ,  _player);
 //$$$$$$$$$$$$$ GAME INITIALIZATION COMPLETE. 
 
     float TL; //Timetaken, maybe?
@@ -80,12 +86,14 @@ int main(int argc, char *argv[])
     char s[100]; //Unused.
 	int x=1; //Used for gamestate, but not really needed.
 
-    if(player == 1)
+    if(_player == 1)
     {
         
         memset(sendBuff, '0', sizeof(sendBuff)); 
         string temp;
-        cin>>m>>r>>c; //accepting the move.
+
+        player.output_move(m,r,c);
+        //CHANGESMADE
         
         snprintf(sendBuff, sizeof(sendBuff), "%d %d %d", m, r , c);
         write(sockfd, sendBuff, strlen(sendBuff)); //sending move to server.
@@ -115,8 +123,13 @@ int main(int argc, char *argv[])
         recvBuff[n] = 0;
         
         sscanf(recvBuff, "%d %d %d %d", &om,&oro,&oc,&d);
+        
         cout << om<<" "<<oro<<" "<<oc << " "<<d<<endl; //Opponent move, row and column.
     	
+        //CHANGES MADE:
+        player.update_state(om,oro,oc,d);
+
+
         if(d==1) {
     		cout<<"You win!! Yayee!! :D ";
     		break;
@@ -130,7 +143,7 @@ int main(int argc, char *argv[])
         memset(sendBuff, '0', sizeof(sendBuff)); 
         string temp;
 	    
-        cin>>m>>r>>c; //Accepting your next move.
+        player.output_move(m , r, c);
         
         snprintf(sendBuff, sizeof(sendBuff), "%d %d %d", m, r , c);
         write(sockfd, sendBuff, strlen(sendBuff)); //Write your move onto the server.
