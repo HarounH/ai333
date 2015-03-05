@@ -68,78 +68,93 @@ int main(int argc, char *argv[])
     cout<<"Player "<<player<<endl;
     cout<<"Time "<<time_left<<endl;
     cout<<"Board size "<<N<<"x"<<M<<" :"<<K<<endl;
-    float TL;
-    int om,oro,oc;
-    int m,r,c;
-	int d=3;
-    char s[100];
-	int x=1;
+
+//$$$$$$$$$$$$$ GAME INITIALIZATION COMPLETE. 
+
+    float TL; //Timetaken, maybe?
+    int om,oro,oc; // Opponent move, Opponent row, Opponent column.
+    int m,r,c; // Your Move , Your Row, Your column.
+	int d=3; //Used for game state. 
+    
+    char s[100]; //Unused.
+	int x=1; //Used for gamestate, but not really needed.
+
     if(player == 1)
     {
         
         memset(sendBuff, '0', sizeof(sendBuff)); 
         string temp;
-	cin>>m>>r>>c;
+        cin>>m>>r>>c; //accepting the move.
         
         snprintf(sendBuff, sizeof(sendBuff), "%d %d %d", m, r , c);
-        write(sockfd, sendBuff, strlen(sendBuff));
+        write(sockfd, sendBuff, strlen(sendBuff)); //sending move to server.
 
-	memset(recvBuff, '0',sizeof(recvBuff));
-        n = read(sockfd, recvBuff, sizeof(recvBuff)-1);
+        memset(recvBuff, '0',sizeof(recvBuff));
+        n = read(sockfd, recvBuff, sizeof(recvBuff)-1); //What did i read? A confirmation?
         recvBuff[n] = 0;
         sscanf(recvBuff, "%f %d", &TL, &d);
-	cout<<TL<<" "<<d<<endl;
-	if(d==1)
-	{
-		cout<<"You win!! Yayee!! :D ";
-		x=0;
-	}
-	else if(d==2)
-	{
-		cout<<"Loser :P ";
-		x=0;
-	}
+    	
+        cout<<TL<<" "<<d<<endl;
+    	if(d==1)
+    	{
+    		cout<<"You win!! Yayee!! :D ";
+    		x=0;
+    	}
+    	else if(d==2)
+    	{
+    		cout<<"Loser :P ";
+    		x=0;
+    	}
     }
 
     while(x)
     {
         memset(recvBuff, '0',sizeof(recvBuff));
-        n = read(sockfd, recvBuff, sizeof(recvBuff)-1);
+        n = read(sockfd, recvBuff, sizeof(recvBuff)-1); //Reads opponents next move from the server.
         recvBuff[n] = 0;
+        
         sscanf(recvBuff, "%d %d %d %d", &om,&oro,&oc,&d);
-	cout << om<<" "<<oro<<" "<<oc << " "<<d<<endl;
-    	if(d==1)
-	{
-		cout<<"You win!! Yayee!! :D ";
-		break;
-	}
-	else if(d==2)
-	{
-		cout<<"Loser :P ";
-		break;
-	}
+        cout << om<<" "<<oro<<" "<<oc << " "<<d<<endl; //Opponent move, row and column.
+    	
+        if(d==1) {
+    		cout<<"You win!! Yayee!! :D ";
+    		break;
+        }
+    	else if(d==2)
+    	{
+    		cout<<"Loser :P ";
+    		break;
+    	}
+        
         memset(sendBuff, '0', sizeof(sendBuff)); 
         string temp;
-	cin>>m>>r>>c;
+	    
+        cin>>m>>r>>c; //Accepting your next move.
+        
         snprintf(sendBuff, sizeof(sendBuff), "%d %d %d", m, r , c);
-        write(sockfd, sendBuff, strlen(sendBuff));
+        write(sockfd, sendBuff, strlen(sendBuff)); //Write your move onto the server.
 
-	memset(recvBuff, '0',sizeof(recvBuff));
-        n = read(sockfd, recvBuff, sizeof(recvBuff)-1);
+        memset(recvBuff, '0',sizeof(recvBuff));
+        n = read(sockfd, recvBuff, sizeof(recvBuff)-1); //Reads server's reply.
+        
         recvBuff[n] = 0;
-        sscanf(recvBuff, "%f %d", &TL, &d);
-	cout<<TL<<" "<<d<<endl;
-	if(d==1)
-	{
-		cout<<"You win!! Yayee!! :D ";
-		break;
-	}
-	else if(d==2)
-	{
-		cout<<"Loser :P ";
-		break;
-	}
+        sscanf(recvBuff, "%f %d", &TL, &d);//d=3 indicates game continues.. d=2 indicates lost game, d=1 means game won.
+    	
+        cout<<TL<<" "<<d<<endl;
+    	if(d==1)
+    	{
+    		cout<<"You win!! Yayee!! :D ";
+            x=0;
+    		break;
+    	}
+    	else if(d==2)
+    	{
+    		cout<<"Loser :P ";
+            x=0;
+    		break;
+    	}
     }
+
     cout<<endl<<"The End"<<endl;
     return 0;
 }
