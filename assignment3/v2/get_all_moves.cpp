@@ -22,7 +22,7 @@ void State::get_all_moves(vector<Move>& moves) { //Assumes that the vector has b
 		// x-1 Move.
 		
 		//PART 2 :::::::::: PLACE WALLS.
-		if ( n_player_1_walls > 0 ) { //Check if he CAN place walls.
+		if ( n_player_1_walls > 0 ) { //Check if s/he CAN place walls.
 			for( int _r = 2 ; _r <= N ; ++_r) {
 				for( int _c = 2; _c <= M ; ++ _c ) {
 					//Horizontal Wall.

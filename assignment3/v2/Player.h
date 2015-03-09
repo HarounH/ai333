@@ -42,15 +42,19 @@ class State {
 		bool valid_wall( int& _r , int& _c , bool hor ); //Returns if the given wall placement at _r,_c is valid.
 	//	bool valid_jump( pair<int,int>& oldpos , pair<int,int>& newpos); //Returns if the given jump from oldpos to newpos is valid or not. get the present player from the State.
 	double eval_state();
+	
 };
 
 class Player {
-	State gbl,loc;
+	State gblState,locState;
 	int player_num;
 	float max_total_time;
 	float remaining_time;
 
 	Move minimax( int depth , float time_limit );
+	Move best_move;
+	int max_value(double alpha, double beta, int cutoff, int curDepth, float time_limit);
+	int min_value(double alpha, double beta, int cutoff, int curDepth, float time_limit);
 };
 
 void State::init(int& _N , int& _M , int& _K) {
