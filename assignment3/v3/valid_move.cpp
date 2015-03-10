@@ -28,9 +28,9 @@ bool State::valid_wall(Move& m) {
 		if ( is_wall_H[m.r][m.c] || is_wall_V[m.r][m.c] ) {
 			return false;
 		}
-		if ( (m.m == 1) && (m.r>=2) && (!is_wall_H[m.r-1][m.c]) && (m.r<=N) && (!is_wall_H[m.r+1][m.c]) ) {
+		if ( (m.m == 1) && (m.r>=2) && (!is_wall_H[m.r][m.c-1]) && (m.r<=N) && (!is_wall_H[m.r][m.c+1]) ) {
 			return true;
-		} else if ( (m.m == 2) && (m.c>=2) && (!is_wall_V[m.r][m.c-1]) && (m.c<=M) && (!is_wall_V[m.r][m.c+1])) {
+		} else if ( (m.m == 2) && (m.c>=2) && (!is_wall_V[m.r-1][m.c]) && (m.c<=M) && (!is_wall_V[m.r+1][m.c])) {
 			return true;
 		} else {
 			return false;
@@ -62,7 +62,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 
 					//Case1 : Single Up. Within bounds, no blocking player, no blocking wall.
 					if ( (m.r == (player_1.r-1)) && (player_1.c==m.c) // Jump Up Request?
-						&& (player_2.r!=m.r) && (player_2.c!=m.c) 	// Not blocked by player 2.
+						&& ((player_2.r!=m.r) || (player_2.c!=m.c)) 	// Not blocked by player 2.
 						&& (!is_wall_H[player_1.r][player_1.c]) && (!is_wall_H[player_1.r][(player_1.c+1)]) //Not blocked by a wall.
 						) {
 						return true;
@@ -70,7 +70,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 
 					//Case2 : Single Down. Requested, No Blocking Player, No Blocking Wall.
 					if ((m.r == (player_1.r+1)) && (player_1.c==m.c) // Jump Down Request?
-						&& (player_2.r!=m.r) && (player_2.c!=m.c) 	// Not blocked by player 2.
+						&& ((player_2.r!=m.r) || (player_2.c!=m.c)) 	// Not blocked by player 2.
 						&& (!is_wall_H[(player_1.r+1)][player_1.c]) && (!is_wall_H[(player_1.r+1)][(player_1.c+1)]) //Not blocked by a wall.
 						) {
 						return true;
@@ -78,7 +78,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 
 					//Case3 : Single Right. Requested, No Blocking Player , No Blocking Wall.
 					if ((m.r == player_1.r) && ((player_1.c+1)==m.c) // Jump Right Request?
-						&& (player_2.r!=m.r) && (player_2.c!=m.c) 	// Not blocked by player 2.
+						&& ((player_2.r!=m.r) || (player_2.c!=m.c)) 	// Not blocked by player 2.
 						&& (!is_wall_V[player_1.r][player_1.c+1]) && (!is_wall_V[player_1.r+1][player_1.c+1]) //Not blocked by walls.
 						) {
 						return true;
@@ -86,7 +86,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 
 					//Case4 : Single Left. Requested, No Blocking Player.
 					if ((m.r == player_1.r) && ((player_1.c-1)==m.c) // Jump Left Request?
-						&& (player_2.r!=m.r) && (player_2.c!=m.c) 	// Not blocked by player 2.
+						&& ((player_2.r!=m.r) || (player_2.c!=m.c)) 	// Not blocked by player 2.
 						&& (!is_wall_V[player_1.r][player_1.c]) && (!is_wall_V[player_1.r+1][player_1.c]) //Not blocked by walls.
 						) {
 						return true;
@@ -94,7 +94,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 
 					//Case5 : Double Up. Requested. Player Blocks above. No Walls blocking.
 					if ( (( m.r==(player_1.r-2) )) && (m.c==player_1.c)  //Requested.
-						&& ( ((player_1.r+1)==player_2.r) ) && (player_1.c==player_2.c)  //Player 2 is blocking aptly.
+						&& ( ((player_1.r-1)==player_2.r) ) && (player_1.c==player_2.c)  //Player 2 is blocking aptly.
 						&& (!is_wall_H[player_1.r-1][player_1.c]) && (!is_wall_H[player_1.r-1][player_1.c+1]) //No Blocking part1
 						&& (!is_wall_H[player_1.r][player_1.c]) && (!is_wall_H[player_1.r][player_1.c+1]) //Not blocked by a wall part2
 						) {
@@ -103,7 +103,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 
 					//Case6 : Double Down. Requested, Player Blocks Below, No walls blocking.
 					if ( (( m.r==(player_1.r+2) )) && (m.c==player_1.c)  //Requested.
-						&& ( ((player_1.r-1)==player_2.r) ) && (player_1.c==player_2.c)  //Player 2 is blocking aptly.
+						&& ( ((player_1.r+1)==player_2.r) ) && (player_1.c==player_2.c)  //Player 2 is blocking aptly.
 						&& (!is_wall_H[player_1.r+2][player_1.c]) && (!is_wall_H[player_1.r+2][player_1.c+1]) //Not blocked by a wall, part1
 						&& (!is_wall_H[player_1.r+1][player_1.c]) && (!is_wall_H[player_1.r+1][player_1.c+1]) //Not blocked by a wall part2
 						) {
@@ -235,7 +235,6 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 					return false;
 				}
 			} else { //present_player==2.
-				//TODO IMPORTANT
 				if ( (player_2.r == m._pr) && (player_2.c == m._pc) ) { //Ensure that the move is from the present state.
 					//############# FUNCTIONING PART OF CODE #######################
 
@@ -243,7 +242,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 
 					//Case1 : Single Up. Within bounds, no blocking player, no blocking wall.
 					if ( (m.r == (player_2.r-1)) && (player_2.c==m.c) // Jump Up Request?
-						&& (player_1.r!=m.r) && (player_1.c!=m.c) 	// Not blocked by player 2.
+						&& ((player_1.r!=m.r) || (player_1.c!=m.c)) 	// Not blocked by player 2.
 						&& (!is_wall_H[player_2.r][player_2.c]) && (!is_wall_H[player_2.r][player_2.c+1]) //Not blocked by a wall.
 						) {
 						return true;
@@ -251,7 +250,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 
 					//Case2 : Single Down. Requested, No Blocking Player, No Blocking Wall.
 					if ((m.r == (player_2.r+1)) && (player_2.c==m.c) // Jump Down Request?
-						&& (player_1.r!=m.r) && (player_1.c!=m.c) 	// Not blocked by player 2.
+						&& ((player_1.r!=m.r) || (player_1.c!=m.c)) 	// Not blocked by player 2.
 						&& (!is_wall_H[player_2.r+1][player_2.c]) && (!is_wall_H[player_2.r+1][player_2.c+1]) //Not blocked by a wall.
 						) {
 						return true;
@@ -259,7 +258,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 
 					//Case3 : Single Right. Requested, No Blocking Player , No Blocking Wall.
 					if ((m.r == player_2.r) && ((player_2.c+1)==m.c) // Jump Right Request?
-						&& (player_1.r!=m.r) && (player_1.c!=m.c) 	// Not blocked by player 2.
+						&& ((player_1.r!=m.r) || (player_1.c!=m.c)) 	// Not blocked by player 2.
 						&& (!is_wall_V[player_2.r][player_2.c+1]) && (!is_wall_V[player_2.r+1][player_2.c+1]) //Not blocked by walls.
 						) {
 						return true;
@@ -267,7 +266,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 
 					//Case4 : Single Left. Requested, No Blocking Player.
 					if ((m.r == player_2.r) && ((player_2.c-1)==m.c) // Jump Left Request?
-						&& (player_1.r!=m.r) && (player_1.c!=m.c) 	// Not blocked by player 2.
+						&& ((player_1.r!=m.r) || (player_1.c!=m.c)) 	// Not blocked by player 2.
 						&& (!is_wall_V[player_2.r][player_2.c]) && (!is_wall_V[player_2.r+1][player_2.c]) //Not blocked by walls.
 						) {
 						return true;
@@ -275,7 +274,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 
 					//Case5 : Double Up. Requested. Player Blocks above. No Walls blocking.
 					if ( (( m.r==(player_2.r-2) )) && (m.c==player_2.c)  //Requested.
-						&& ( ((player_2.r+1)==player_1.r) ) && (player_2.c==player_1.c)  //Player 2 is blocking aptly.
+						&& ( ((player_2.r-1)==player_1.r) ) && (player_2.c==player_1.c)  //Player 2 is blocking aptly.
 						&& (!is_wall_H[player_2.r-1][player_2.c]) && (!is_wall_H[player_2.r-1][player_2.c+1]) //No Blocking part1
 						&& (!is_wall_H[player_2.r][player_2.c]) && (!is_wall_H[player_2.r][player_2.c+1]) //Not blocked by a wall part2
 						) {
@@ -284,7 +283,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 
 					//Case6 : Double Down. Requested, Player Blocks Below, No walls blocking.
 					if ( (( m.r==(player_2.r+2) )) && (m.c==player_2.c)  //Requested.
-						&& ( ((player_2.r-1)==player_1.r) ) && (player_2.c==player_1.c)  //Player 2 is blocking aptly.
+						&& ( ((player_2.r+1)==player_1.r) ) && (player_2.c==player_1.c)  //Player 2 is blocking aptly.
 						&& (!is_wall_H[player_2.r+2][player_2.c]) && (!is_wall_H[player_2.r+2][player_2.c+1]) //Not blocked by a wall, part1
 						&& (!is_wall_H[player_2.r+1][player_2.c]) && (!is_wall_H[player_2.r+1][player_2.c+1]) //Not blocked by a wall part2
 						) {

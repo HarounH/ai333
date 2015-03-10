@@ -11,6 +11,9 @@ Player 1 is at the top.
 Player 2 is at the bottom.
 */
 
+//Change this definition to toggle state printing.
+#define STATE_PRINTORNOTTOPRINT true
+#define MOVE_PRINTORNOTTOPRINT true
 //class Position replaces pair<int,int> FOR PLAYER ALONE. . Makes life easier.
 class Position {
 public:
@@ -28,6 +31,8 @@ public:
 	Position down() { Position p(r+1 , c); return p; }
 	Position right() { Position p(r , c+1); return p; }
 	Position left() { Position p(r , c-1); return p; }
+
+	void print() { cout << "PosPrint: \t (" << r << "," << c << ")...\n"; }
 }; //That should allow easy conversion between pair<int,int> and Position.
 
 class Move {
@@ -37,6 +42,7 @@ public:
 	float eval;
 
 	Move& operator=(const Move& _m) { m=_m.m; r=_m.r; c=_m.c; _pn=_m._pn; _pr=_m._pr; _pc=_m._pc; eval=_m.eval; return *this;}
+	void print() { cout << "\tMovePrint (m,r,c)="<<m<<","<<r<<","<<c<<")\t (_pn,_pr,_pc,eval)="<<_pn<<","<<_pr<<","<<_pc<<","<<eval<<")...\n" ;}
 };
 
 class State {
@@ -56,7 +62,7 @@ public:
 
 	State() {} //Default
 	~State() {} //Default.
-
+	void print(bool shouldiprint);
 	State& operator=(const State& s);
 
 	void init(int _N, int _M , int _K);

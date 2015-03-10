@@ -1,6 +1,96 @@
 #ifndef MISC_CPP
 #define MISC_CPP
 
+void terminal_input(int& m , int& r, int& c) {cin >> m >> r >> c; }
+//ACTIVELY ALTER THIS FOR OUR AI.
+void Player::send_move_to_client_cpp(int& m , int& r , int& c) {
+	
+	if ( MOVE_PRINTORNOTTOPRINT ) {
+		vector<Move> moves;
+		locState.get_all_moves(moves);
+		for(int i=0; i<moves.size(); ++i) moves[i].print();
+	}
+
+	Move res;
+	terminal_input(m,r,c);
+	//Preserve.
+		res.m = m;
+		res.r = r;
+		res.c = c;	
+		res._pn = gblState.present_player;
+		res._pr = gblState.pos_present_player.r;
+		res._pc = gblState.pos_present_player.c;
+		res.eval = -1.0;
+	gblState.apply_move(res);
+	locState.apply_move(res);
+
+	gblState.print(STATE_PRINTORNOTTOPRINT);
+	return;
+}
+
+void Player::read_time_left_from_client_cpp(float _t) {
+	remaining_time = _t;
+}
+
+void Player::read_move_from_client_cpp(int& m ,int& r, int& c) {
+	Move res;
+		res.m = m;
+		res.r = r;
+		res.c = c;
+		res._pn = gblState.present_player;
+		res._pr = gblState.pos_present_player.r;
+		res._pc = gblState.pos_present_player.c;
+		res.eval = -1.0;
+	gblState.apply_move(res);
+	locState.apply_move(res);
+
+	gblState.print(STATE_PRINTORNOTTOPRINT);
+	return;
+}
+
+
+//STUFF!
+void State::print( bool shouldiprint ) {
+	if ( !shouldiprint ) {
+		return;
+	}
+
+	cout << "\n##################\nPrinting State:\n";
+	cout << "Player_1 : \n \twalls_left="<<n_player_1_walls<<" "; player_1.print();
+	cout << "Player_2 : \n \twalls_left="<<n_player_2_walls<<" "; player_2.print();
+	cout << "Present_player is player=" << present_player << " has walls left="<< n_present_player_walls <<"\n"; pos_present_player.print();
+	//Now to print walls.
+
+	std::set< pair<int,int> >::iterator it;
+	
+	cout << "\n Horizontal walls at: \n";
+	for( it=pos_wall_H.begin(); it != pos_wall_H.end(); ++it) {
+		cout << "Horizontal::: \t\t("<< (*it).first<<","<< (*it).second <<")\n"; 
+	}
+	cout << "\n Vertical walls at: \n";
+	for( it=pos_wall_V.begin(); it != pos_wall_V.end(); ++it) {
+		cout << "Vertical:::::\t\t("<< (*it).first<<","<< (*it).second <<")\n"; 
+	}
+
+	cout << " Printing is_wall_H ... NOTE: ITS ONLY THE CENTRES OF THE WALLS \n";
+	for(int r=1; r<=N; ++r) {
+		for(int c=1; c<=M; ++c) {
+			cout << is_wall_H[r][c] << " ";
+		}
+		cout << "\n";
+	}
+
+	cout << " Printing is_wall_V ... NOTE: ITS ONLY THE CENTRES OF THE WALLS \n";
+	for(int r=1; r<=N; ++r) {
+		for(int c=1; c<=M; ++c) {
+			cout << is_wall_V[r][c] << " ";
+		}
+		cout << "\n";
+	}
+
+	cout << "End of state printing \n";
+}
+
 void State::apply_move(Move& mov) { //Assumes that the move is valid.
 	if (mov._pn == 1) {
 		if(mov.m == 0) {
@@ -67,16 +157,15 @@ void State::unapply_move(Move& mov) { //Assumes that the move is valid.
 	toggle_player();
 }
 
-void terminal_input(int& m , int& r, int& c) {cin >> m >> r >> c; }
 
 void State::init(int _N , int _M , int _K) {
 	N = _N; M=_M; K=_K;
 	
 
 		Position top(1 , ((M+1)/2) );
-	player_2 = top;
+	player_1 = top;
 		top.r = N;
-	player_1 = top; //Now bottom. dw.
+	player_2 = top; //Now bottom. dw.
 	n_player_2_walls = K; n_player_1_walls = K;
 	
 
@@ -107,40 +196,6 @@ void Player::init( int _N , int _M , int _K , int _pn , float max_time ) {
 	walls_left = _K;
 	gblState.init(_N,_M,_K);
 	locState.init(_N,_M,_K);
-	return;
-}
-
-void Player::send_move_to_client_cpp(int& m , int& r , int& c) {
-	Move res;
-	terminal_input(m,r,c);
-	//Preserve.
-		res.m = m;
-		res.r = r;
-		res.c = c;	
-		res._pn = gblState.present_player;
-		res._pr = gblState.pos_present_player.r;
-		res._pc = gblState.pos_present_player.c;
-		res.eval = -1.0;
-	gblState.apply_move(res);
-	locState.apply_move(res);
-	return;
-}
-
-void Player::read_time_left_from_client_cpp(float _t) {
-	remaining_time = _t;
-}
-
-void Player::read_move_from_client_cpp(int& m ,int& r, int& c) {
-	Move res;
-		res.m = m;
-		res.r = r;
-		res.c = c;
-		res._pn = gblState.present_player;
-		res._pr = gblState.pos_present_player.r;
-		res._pc = gblState.pos_present_player.c;
-		res.eval = -1.0;
-	gblState.apply_move(res);
-	locState.apply_move(res);
 	return;
 }
 

@@ -17,7 +17,7 @@ void State::get_all_moves(std::vector<Move>& moves) {
 	mov.c = pos_present_player.c    ;
 	if ( valid_jump(mov) ) {
 		moves.push_back(mov);
-	} else {
+	} else { //Move double up?
 		mov.r -= 1;
 		if ( flag && valid_jump(mov)) {
 			moves.push_back(mov);
@@ -29,7 +29,7 @@ void State::get_all_moves(std::vector<Move>& moves) {
 	mov.c = pos_present_player.c    ;
 	if ( valid_jump(mov) ) {
 		moves.push_back(mov);
-	} else {
+	} else { //Move double down?
 		mov.r += 1;
 		if ( flag &&  valid_jump(mov)) {
 			moves.push_back(mov);
@@ -41,7 +41,7 @@ void State::get_all_moves(std::vector<Move>& moves) {
 	mov.c = pos_present_player.c+1;
 	if ( valid_jump(mov) ) {
 		moves.push_back(mov);
-	} else {
+	} else { //Move double right?
 		mov.c += 1;
 		if ( flag &&  valid_jump(mov)) {
 			moves.push_back(mov);
@@ -53,7 +53,7 @@ void State::get_all_moves(std::vector<Move>& moves) {
 	mov.c = pos_present_player.c-1;
 	if ( valid_jump(mov) ) {
 		moves.push_back(mov);
-	} else {
+	} else { // Move double left?
 		mov.c -= 1;
 		if ( flag &&  valid_jump(mov)) {
 			moves.push_back(mov);
