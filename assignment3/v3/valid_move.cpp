@@ -338,7 +338,6 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 						Requested, Player Blocking and Wall Blocking aptly.
 					*/
 					if ( (m.r==(player_2.r-1)) && (m.c==(player_2.c-1)) ) { //Requested.
-						cout << "#brk1\n";
 						if ( ((player_1.r)==(player_2.r-1) ) && ( (player_1.c)==(player_2.c) ) ) { //Player 1 blocks above.
 							if (	((is_wall_H[player_2.r-1][player_2.c]) || (is_wall_H[player_2.r-1][player_2.c+1])) //No Blocking part1
 								&& (!is_wall_H[player_2.r][player_2.c]) && (!is_wall_H[player_2.r][player_2.c+1]) //Not blocked by a wall part2
