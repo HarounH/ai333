@@ -43,8 +43,11 @@ public:
 
 	Position player_1 , player_2;
 	int n_player_1_walls , n_player_2_walls;
+	
 	int present_player;
-		
+	Position pos_present_player;
+	int n_present_player_walls;
+
 
 	vector < vector < bool > > is_wall_H , is_wall_V; // is_wall_H tells me if there's a wall at [r][c] ((2<=r<=N+1) && (2<=c<=M+1))
 	std::set < pair<int,int> > pos_wall_H , pos_wall_V; //Slower inserts, but faster removals. 2*log(K) v/s (1 + K )...
@@ -53,7 +56,18 @@ public:
 	~State(); //Default.
 
 	void init(int _N, int_M , int_K);
-	void toggle_player() { present_player = ((present_player%2==0)?(1):(2)) ; } //Toggles the player. hurrah.
+	void toggle_player() { 
+		present_player = ((present_player%2==0)?(1):(2)) ; 
+		if ( present_player == 1 ) {
+			pos_present_player.r = player_1.r;
+			pos_present_player.c = player_1.c;
+			n_present_player_walls = n_player_1_walls;
+		} else {
+			pos_present_player.r = player_2.r;
+			pos_present_player.c = player_2.c;
+			n_present_player_walls = n_player_2_walls;
+		}
+	} //Toggles the player. hurrah.
 	
 	/* THINGS RELATED TO MOVES. */
 	bool valid_jump(Move& m);
