@@ -8,19 +8,14 @@
 #include <unistd.h>
 #include <errno.h>
 #include <arpa/inet.h> 
-#include <iostream>
-#include <cstdlib>
-
-
+#include <bits/stdc++.h>
 
 using namespace std;
 /* Complete the function below to print 1 integer which will be your next move 
-*/
-int N,M,K, time_left, _player; 
+   */
+int N,M,K, time_left, player;
 
-#include "game_player.h"
-#include "game_player.cpp"
-Game_Player player;
+
 
 
 
@@ -67,108 +62,84 @@ int main(int argc, char *argv[])
     memset(recvBuff, '0',sizeof(recvBuff));
     n = read(sockfd, recvBuff, sizeof(recvBuff)-1);
     recvBuff[n] = 0;
-    sscanf(recvBuff, "%d %d %d %d %d", &_player, &N, &M, &K, &time_left);
+    sscanf(recvBuff, "%d %d %d %d %d", &player, &N, &M, &K, &time_left);
 
 
-    cout<<"Player "<<_player<<endl;
+    cout<<"Player "<<player<<endl;
     cout<<"Time "<<time_left<<endl;
     cout<<"Board size "<<N<<"x"<<M<<" :"<<K<<endl;
-    
-    float _time_left = time_left; //Neccessary because thats how the world rotates.
-    player.init( N , M , K , _time_left ,  _player);
-//$$$$$$$$$$$$$ GAME INITIALIZATION COMPLETE. 
-
-    float TL; //Timetaken, maybe?
-    int om,oro,oc; // Opponent move, Opponent row, Opponent column.
-    int m,r,c; // Your Move , Your Row, Your column.
-	int d=3; //Used for game state. 
-    
-    char s[100]; //Unused.
-	int x=1; //Used for gamestate, but not really needed.
-
-    if(_player == 1)
+    float TL;
+    int om,oro,oc;
+    int m,r,c;
+	int d=3;
+    char s[100];
+	int x=1;
+    if(player == 1)
     {
         
         memset(sendBuff, '0', sizeof(sendBuff)); 
         string temp;
-
-        player.output_move(m,r,c);
-        //CHANGESMADE
+	cin>>m>>r>>c;
         
         snprintf(sendBuff, sizeof(sendBuff), "%d %d %d", m, r , c);
-        write(sockfd, sendBuff, strlen(sendBuff)); //sending move to server.
+        write(sockfd, sendBuff, strlen(sendBuff));
 
-        memset(recvBuff, '0',sizeof(recvBuff));
-        n = read(sockfd, recvBuff, sizeof(recvBuff)-1); //What did i read? A confirmation?
+	memset(recvBuff, '0',sizeof(recvBuff));
+        n = read(sockfd, recvBuff, sizeof(recvBuff)-1);
         recvBuff[n] = 0;
         sscanf(recvBuff, "%f %d", &TL, &d);
-    	
-        cout<<TL<<" "<<d<<endl;
-    	if(d==1)
-    	{
-    		cout<<"You win!! Yayee!! :D ";
-    		x=0;
-    	}
-    	else if(d==2)
-    	{
-    		cout<<"Loser :P ";
-    		x=0;
-    	}
+	cout<<TL<<" "<<d<<endl;
+	if(d==1)
+	{
+		cout<<"You win!! Yayee!! :D ";
+		x=0;
+	}
+	else if(d==2)
+	{
+		cout<<"Loser :P ";
+		x=0;
+	}
     }
 
     while(x)
     {
         memset(recvBuff, '0',sizeof(recvBuff));
-        n = read(sockfd, recvBuff, sizeof(recvBuff)-1); //Reads opponents next move from the server.
+        n = read(sockfd, recvBuff, sizeof(recvBuff)-1);
         recvBuff[n] = 0;
-        
         sscanf(recvBuff, "%d %d %d %d", &om,&oro,&oc,&d);
-        
-        cout << om<<" "<<oro<<" "<<oc << " "<<d<<endl; //Opponent move, row and column.
-    	
-        //CHANGES MADE:
-        player.update_state(om,oro,oc,d);
-
-
-        if(d==1) {
-    		cout<<"You win!! Yayee!! :D ";
-    		break;
-        }
-    	else if(d==2)
-    	{
-    		cout<<"Loser :P ";
-    		break;
-    	}
-        
+	cout << om<<" "<<oro<<" "<<oc << " "<<d<<endl;
+    	if(d==1)
+	{
+		cout<<"You win!! Yayee!! :D ";
+		break;
+	}
+	else if(d==2)
+	{
+		cout<<"Loser :P ";
+		break;
+	}
         memset(sendBuff, '0', sizeof(sendBuff)); 
         string temp;
-	    
-        player.output_move(m , r, c);
-        
+	cin>>m>>r>>c;
         snprintf(sendBuff, sizeof(sendBuff), "%d %d %d", m, r , c);
-        write(sockfd, sendBuff, strlen(sendBuff)); //Write your move onto the server.
+        write(sockfd, sendBuff, strlen(sendBuff));
 
-        memset(recvBuff, '0',sizeof(recvBuff));
-        n = read(sockfd, recvBuff, sizeof(recvBuff)-1); //Reads server's reply.
-        
+	memset(recvBuff, '0',sizeof(recvBuff));
+        n = read(sockfd, recvBuff, sizeof(recvBuff)-1);
         recvBuff[n] = 0;
         sscanf(recvBuff, "%f %d", &TL, &d);//d=3 indicates game continues.. d=2 indicates lost game, d=1 means game won.
-    	
-        cout<<TL<<" "<<d<<endl;
-    	if(d==1)
-    	{
-    		cout<<"You win!! Yayee!! :D ";
-            x=0;
-    		break;
-    	}
-    	else if(d==2)
-    	{
-    		cout<<"Loser :P ";
-            x=0;
-    		break;
-    	}
+	cout<<TL<<" "<<d<<endl;
+	if(d==1)
+	{
+		cout<<"You win!! Yayee!! :D ";
+		break;
+	}
+	else if(d==2)
+	{
+		cout<<"Loser :P ";
+		break;
+	}
     }
-
     cout<<endl<<"The End"<<endl;
     return 0;
 }
