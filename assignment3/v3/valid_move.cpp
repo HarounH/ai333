@@ -66,7 +66,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 						&& (!is_wall_H[player_1.r][player_1.c]) && (!is_wall_H[player_1.r][(player_1.c+1)]) //Not blocked by a wall.
 						) {
 						return true;
-					}
+					} //Theoretically correct.
 
 					//Case2 : Single Down. Requested, No Blocking Player, No Blocking Wall.
 					if ((m.r == (player_1.r+1)) && (player_1.c==m.c) // Jump Down Request?
@@ -74,7 +74,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 						&& (!is_wall_H[(player_1.r+1)][player_1.c]) && (!is_wall_H[(player_1.r+1)][(player_1.c+1)]) //Not blocked by a wall.
 						) {
 						return true;
-					}
+					} //Theoretically correct.
 
 					//Case3 : Single Right. Requested, No Blocking Player , No Blocking Wall.
 					if ((m.r == player_1.r) && ((player_1.c+1)==m.c) // Jump Right Request?
@@ -82,7 +82,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 						&& (!is_wall_V[player_1.r][player_1.c+1]) && (!is_wall_V[player_1.r+1][player_1.c+1]) //Not blocked by walls.
 						) {
 						return true;
-					}
+					} //Theoretically correct.
 
 					//Case4 : Single Left. Requested, No Blocking Player.
 					if ((m.r == player_1.r) && ((player_1.c-1)==m.c) // Jump Left Request?
@@ -90,7 +90,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 						&& (!is_wall_V[player_1.r][player_1.c]) && (!is_wall_V[player_1.r+1][player_1.c]) //Not blocked by walls.
 						) {
 						return true;
-					}
+					} //Theoretically correct.
 
 					//Case5 : Double Up. Requested. Player Blocks above. No Walls blocking.
 					if ( (( m.r==(player_1.r-2) )) && (m.c==player_1.c)  //Requested.
@@ -99,7 +99,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 						&& (!is_wall_H[player_1.r][player_1.c]) && (!is_wall_H[player_1.r][player_1.c+1]) //Not blocked by a wall part2
 						) {
 						return true;
-					}
+					} //Theoretically correct.
 
 					//Case6 : Double Down. Requested, Player Blocks Below, No walls blocking.
 					if ( (( m.r==(player_1.r+2) )) && (m.c==player_1.c)  //Requested.
@@ -108,25 +108,25 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 						&& (!is_wall_H[player_1.r+1][player_1.c]) && (!is_wall_H[player_1.r+1][player_1.c+1]) //Not blocked by a wall part2
 						) {
 						return true;
-					}
+					} //Theoretically correct.
 
 					//Case7 : Double RIght. Requested, Player Blocks To The Right, No Walls Blocking.
 					if ( (( m.r==(player_1.r) )) && (m.c==(player_1.c+2))  //Requested.
 						&& ( ((player_1.r)==player_2.r) ) && ((player_1.c+1)==player_2.c)  //Player 2 is blocking aptly.
-						&& (!is_wall_H[player_1.r][player_1.c+2]) && (!is_wall_H[player_1.r+1][player_1.c+2]) //Not blocked by walls. part1.
+						&& (!is_wall_V[player_1.r][player_1.c+2]) && (!is_wall_V[player_1.r+1][player_1.c+2]) //Not blocked by walls. part1.
 						&& (!is_wall_V[player_1.r][player_1.c+1]) && (!is_wall_V[player_1.r+1][player_1.c+1]) //Not blocked by walls. part2
 						) {
 						return true;
-					}
+					} //Theoretically correct.
 
 					//Case8 : Double left. Requested, Player Blocks To The Left, No Walls Blocking.
 					if ( (( m.r==(player_1.r) )) && (m.c==(player_1.c-2))  //Requested.
 						&& ( ((player_1.r)==player_2.r) ) && ((player_1.c-1)==player_2.c)  //Player 2 is blocking aptly.
-						&& (!is_wall_H[player_1.r][player_1.c-2]) && (!is_wall_H[player_1.r+1][player_1.c-2]) //Not blocked by walls. part1.
-						&& (!is_wall_V[player_1.r][player_1.c-1]) && (!is_wall_V[player_1.r+1][player_1.c-1]) //Not blocked by walls. part2
+						&& (!is_wall_V[player_1.r][player_1.c-1]) && (!is_wall_V[player_1.r+1][player_1.c-1]) //Not blocked by walls. part1.
+						&& (!is_wall_V[player_1.r][player_1.c]) && (!is_wall_V[player_1.r+1][player_1.c]) //Not blocked by walls. part2
 						) {
 						return true;
-					}
+					} //Theoretically correct.
 
 
 					/*Case9 : Up and right - part1 : from up and part2 : from right. 
@@ -140,19 +140,19 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 								return true;
 							} else {
 								return false;
-							}
+							} //Theoretically correct.
 						} else if ( (player_2.r==m.r)&&((player_2.c+1)==m.c) ) { //Player 2 blocks to the right.
-							if (	((is_wall_H[player_1.r][player_1.c+2]) || (is_wall_H[player_1.r+1][player_1.c+2])) //Not blocked by walls. part1.
+							if (	((is_wall_V[player_1.r][player_1.c+2]) || (is_wall_V[player_1.r+1][player_1.c+2])) //Not blocked by walls. part1.
 								&& (!is_wall_V[player_1.r][player_1.c+1]) && (!is_wall_V[player_1.r+1][player_1.c+1]) //Not blocked by walls. part2
 							) { //Walls are appropriate.
 								return true;
 							} else {
 								return false;
-							}
+							} //Theoretically correct.
 						} else {
 							return false; //Speed up the boolean lookups.
 						}
-					}
+					} //Theoretically correct.
 
 					/*Case10 : Up and left - part1 : from up and part2 : from left
 						Requested, Player Blocking and Wall Blocking aptly.
@@ -165,15 +165,15 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 								return true;
 							} else {
 								return false;
-							}
+							} //Theoretically correct.
 						} else if ( (player_2.r==m.r)&&((player_2.c-1)==m.c) ) { //Player 2 blocks to the left.
-							if (	((is_wall_H[player_1.r][player_1.c-2]) || (is_wall_H[player_1.r+1][player_1.c-2])) //Not blocked by walls. part1.
-								&& (!is_wall_V[player_1.r][player_1.c-1]) && (!is_wall_V[player_1.r+1][player_1.c-1]) //Not blocked by walls. part2
+							if (	((is_wall_V[player_1.r][player_1.c-1]) || (is_wall_V[player_1.r+1][player_1.c-1])) //Not blocked by walls. part1.
+								&& (!is_wall_V[player_1.r][player_1.c]) && (!is_wall_V[player_1.r+1][player_1.c]) //Not blocked by walls. part2
 							) { //Walls are appropriate.
 								return true;
 							} else {
 								return false;
-							}
+							} //Theoretically correct.
 						} else {
 							return false; //Speed up the boolean lookups.
 						}
@@ -189,19 +189,19 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 								return true;
 							} else {
 								return false;
-							}
+							} //Theoretically correct.
 						} else if ( (player_2.r==m.r)&&((player_2.c+1)==m.c) ) { //Player 2 blocks to the right.
-							if (	((is_wall_H[player_1.r][player_1.c+2]) || (is_wall_H[player_1.r+1][player_1.c+2])) //Not blocked by walls. part1.
+							if (	((is_wall_V[player_1.r][player_1.c+2]) || (is_wall_V[player_1.r+1][player_1.c+2])) //Not blocked by walls. part1.
 								&& (!is_wall_V[player_1.r][player_1.c+1]) && (!is_wall_V[player_1.r+1][player_1.c+1]) //Not blocked by walls. part2
 							) { //Walls are appropriate.
 								return true;
 							} else {
 								return false;
-							}
+							} //Theoretically correct.
 						} else {
 							return false; //Speed up the boolean lookups.
 						}
-					}
+					} //Theoretically correct.
 					/*Case12 : down and left - part1 : from down and part2 : from left
 						Requested, Player Blocking and Wall Blocking aptly.
 					*/
@@ -213,19 +213,19 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 								return true;
 							} else {
 								return false;
-							}
+							} //Theoretically correct.
 						} else if ( (player_2.r==m.r)&&((player_2.c-1)==m.c) ) { //Player 2 blocks to the left.
-							if (	((is_wall_H[player_1.r][player_1.c-2]) || (is_wall_H[player_1.r+1][player_1.c-2])) //Not blocked by walls. part1.
-								&& (!is_wall_V[player_1.r][player_1.c-1]) && (!is_wall_V[player_1.r+1][player_1.c-1]) //Not blocked by walls. part2
+							if (	((is_wall_V[player_1.r][player_1.c-1]) || (is_wall_V[player_1.r+1][player_1.c-1])) //Not blocked by walls. part1.
+								&& (!is_wall_V[player_1.r][player_1.c-0]) && (!is_wall_V[player_1.r+1][player_1.c-0]) //Not blocked by walls. part2
 							) { //Walls are appropriate.
 								return true;
 							} else {
 								return false;
-							}
+							} //Theoretically correct.
 						} else {
 							return false; //Speed up the boolean lookups.
 						}
-					}
+					} //Theoretically correct.
 
 					//$$$$$$$$ END OF SINGLE JUMP MOVES. $$$$$$$$$$$$$$$$
 
@@ -247,7 +247,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 						&& (!is_wall_H[player_2.r][player_2.c]) && (!is_wall_H[player_2.r][player_2.c+1]) //Not blocked by a wall.
 						) {
 						return true;
-					} //REPLACED.
+					} //REPLACED. //Theoretically correct.
 
 					//Case2 : Single Down. Requested, No Blocking Player, No Blocking Wall.
 					if ((m.r == (player_2.r+1)) && (player_2.c==m.c) // Jump Down Request?
@@ -255,7 +255,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 						&& (!is_wall_H[player_2.r+1][player_2.c]) && (!is_wall_H[player_2.r+1][player_2.c+1]) //Not blocked by a wall.
 						) {
 						return true;
-					}//REPLACED.
+					}//REPLACED. //Theoretically correct.
 
 					//Case3 : Single Right. Requested, No Blocking Player , No Blocking Wall.
 					if ((m.r == player_2.r) && ((player_2.c+1)==m.c) // Jump Right Request?
@@ -263,7 +263,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 						&& (!is_wall_V[player_2.r][player_2.c+1]) && (!is_wall_V[player_2.r+1][player_2.c+1]) //Not blocked by walls.
 						) {
 						return true;
-					}//REPLACED.
+					}//REPLACED. //Theoretically correct.
 
 					//Case4 : Single Left. Requested, No Blocking Player.
 					if ((m.r == player_2.r) && ((player_2.c-1)==m.c) // Jump Left Request?
@@ -271,7 +271,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 						&& (!is_wall_V[player_2.r][player_2.c]) && (!is_wall_V[player_2.r+1][player_2.c]) //Not blocked by walls.
 						) {
 						return true;
-					}//REPLACED.
+					}//REPLACED. //Theoretically correct.
 
 					//Case5 : Double Up. Requested. Player Blocks above. No Walls blocking.
 					if ( (( m.r==(player_2.r-2) )) && (m.c==player_2.c)  //Requested.
@@ -280,7 +280,7 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 						&& (!is_wall_H[player_2.r][player_2.c]) && (!is_wall_H[player_2.r][player_2.c+1]) //Not blocked by a wall part2
 						) {
 						return true;
-					} //REPLACED
+					} //REPLACED //Theoretically correct.
 
 					//Case6 : Double Down. Requested, Player Blocks Below, No walls blocking.
 					if ( (( m.r==(player_2.r+2) )) && (m.c==player_2.c)  //Requested.
@@ -289,25 +289,25 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 						&& (!is_wall_H[player_2.r+1][player_2.c]) && (!is_wall_H[player_2.r+1][player_2.c+1]) //Not blocked by a wall part2
 						) {
 						return true;
-					} //REPLACED
+					} //REPLACED //Theoretically correct.
 
 					//Case7 : Double RIght. Requested, Player Blocks To The Right, No Walls Blocking.
 					if ( (( m.r==(player_2.r) )) && (m.c==(player_2.c+2))  //Requested.
 						&& ( ((player_2.r)==player_1.r) ) && ((player_2.c+1)==player_1.c)  //Player 2 is blocking aptly.
-						&& (!is_wall_H[player_2.r][player_2.c+2]) && (!is_wall_H[player_2.r+1][player_2.c+2]) //Not blocked by walls. part1.
+						&& (!is_wall_V[player_2.r][player_2.c+2]) && (!is_wall_V[player_2.r+1][player_2.c+2]) //Not blocked by walls. part1.
 						&& (!is_wall_V[player_2.r][player_2.c+1]) && (!is_wall_V[player_2.r+1][player_2.c+1]) //Not blocked by walls. part2
 						) {
 						return true;
-					} //REPLACED
+					} //REPLACED //Theoretically correct.
 
 					//Case8 : Double left. Requested, Player Blocks To The Left, No Walls Blocking.
 					if ( (( m.r==(player_2.r) )) && (m.c==(player_2.c-2))  //Requested.
 						&& ( ((player_2.r)==player_1.r) ) && ((player_2.c-1)==player_1.c)  //Player 2 is blocking aptly.
-						&& (!is_wall_H[player_2.r][player_2.c-2]) && (!is_wall_H[player_2.r+1][player_2.c-2]) //Not blocked by walls. part1.
-						&& (!is_wall_V[player_2.r][player_2.c-1]) && (!is_wall_V[player_2.r+1][player_2.c-1]) //Not blocked by walls. part2
+						&& (!is_wall_V[player_2.r][player_2.c-1]) && (!is_wall_V[player_2.r+1][player_2.c-1]) //Not blocked by walls. part1.
+						&& (!is_wall_V[player_2.r][player_2.c-0]) && (!is_wall_V[player_2.r+1][player_2.c-0]) //Not blocked by walls. part2
 						) {
 						return true;
-					}
+					} //Theoretically correct.
 
 
 					/*Case9 : Up and right - part1 : from up and part2 : from right. 
@@ -321,19 +321,19 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 								return true;
 							} else {
 								return false;
-							} //REPLACED
+							} //REPLACED //Theoretically correct.
 						} else if ( (player_1.r==m.r)&&((player_1.c+1)==m.c) ) { //Player 2 blocks to the right.
-							if (	((is_wall_H[player_2.r][player_2.c+2]) || (is_wall_H[player_2.r+1][player_2.c+2])) //Not blocked by walls. part1.
+							if (	((is_wall_V[player_2.r][player_2.c+2]) || (is_wall_V[player_2.r+1][player_2.c+2])) //Not blocked by walls. part1.
 								&& (!is_wall_V[player_2.r][player_2.c+1]) && (!is_wall_V[player_2.r+1][player_2.c+1]) //Not blocked by walls. part2
 							) { //Walls are appropriate.
 								return true;
 							} else {
 								return false;
-							}
+							} //Theoretically correct.
 						} else {
 							return false; //Speed up the boolean lookups.
 						}
-					} //REPLACED
+					} //REPLACED //Theoretically correct.
 
 					/*Case10 : Up and left - part1 : from up and part2 : from left
 						Requested, Player Blocking and Wall Blocking aptly.
@@ -346,19 +346,19 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 								return true;
 							} else {
 								return false;
-							} //REPLACED
+							} //REPLACED //Theoretically correct.
 						} else if ( (player_2.r==m.r)&&((player_2.c-1)==m.c) ) { //Player 2 blocks to the left.
-							if (	((is_wall_H[player_2.r][player_2.c-2]) || (is_wall_H[player_2.r+1][player_2.c-2])) //Not blocked by walls. part1.
-								&& (!is_wall_V[player_2.r][player_2.c-1]) && (!is_wall_V[player_2.r+1][player_2.c-1]) //Not blocked by walls. part2
+							if (	((is_wall_V[player_2.r][player_2.c-1]) || (is_wall_V[player_2.r+1][player_2.c-1])) //Not blocked by walls. part1.
+								&& (!is_wall_V[player_2.r][player_2.c-0]) && (!is_wall_V[player_2.r+1][player_2.c-0]) //Not blocked by walls. part2
 							) { //Walls are appropriate.
 								return true;
 							} else {
 								return false;
-							}
+							} //Theoretically correct.
 						} else {
 							return false; //Speed up the boolean lookups.
 						}
-					} //REPLACED
+					} //REPLACED //Theoretically correct.
 					/*Case11 : down and right - part1 : from down and part2 : from right.
 						Requested, Player Blocking and Wall Blocking aptly.
 					*/
@@ -370,19 +370,19 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 								return true;
 							} else {
 								return false;
-							} //REPLACED
+							} //REPLACED //Theoretically correct.
 						} else if ( (player_1.r==m.r)&&((player_1.c+1)==m.c) ) { //Player 2 blocks to the right.
-							if (	((is_wall_H[player_2.r][player_2.c+2]) || (is_wall_H[player_2.r+1][player_2.c+2])) //Not blocked by walls. part1.
+							if (	((is_wall_V[player_2.r][player_2.c+2]) || (is_wall_V[player_2.r+1][player_2.c+2])) //Not blocked by walls. part1.
 								&& (!is_wall_V[player_2.r][player_2.c+1]) && (!is_wall_V[player_2.r+1][player_2.c+1]) //Not blocked by walls. part2
 							) { //Walls are appropriate.
 								return true;
 							} else {
 								return false;
-							}
+							} //Theoretically correct.
 						} else {
 							return false; //Speed up the boolean lookups.
 						}
-					} //REPLACED
+					} //REPLACED //Theoretically correct.
 					/*Case12 : down and left - part1 : from down and part2 : from left
 						Requested, Player Blocking and Wall Blocking aptly.
 					*/
@@ -394,19 +394,19 @@ bool State::valid_jump(Move& m) { //Assumes that it is from a valid state.
 								return true;
 							} else {
 								return false;
-							} //REPLACED
+							} //REPLACED //Theoretically correct.
 						} else if ( (player_1.r==m.c)&&((player_1.c-1)==m.c) ) { //Player 2 blocks to the left.
-							if (	((is_wall_H[player_2.r][player_2.c-2]) || (is_wall_H[player_2.r+1][player_2.c-2])) //Not blocked by walls. part1.
-								&& (!is_wall_V[player_2.r][player_2.c-1]) && (!is_wall_V[player_2.r+1][player_2.c-1]) //Not blocked by walls. part2
+							if (	((is_wall_V[player_2.r][player_2.c-1]) || (is_wall_V[player_2.r+1][player_2.c-1])) //Not blocked by walls. part1.
+								&& (!is_wall_V[player_2.r][player_2.c-0]) && (!is_wall_V[player_2.r+1][player_2.c-0]) //Not blocked by walls. part2
 							) { //Walls are appropriate.
 								return true;
 							} else {
 								return false;
-							}
+							} //Theoretically correct.
 						} else {
 							return false; //Speed up the boolean lookups.
 						}
-					}
+					} //Theoretically correct.
 
 					//$$$$$$$$ END OF SINGLE JUMP MOVES. $$$$$$$$$$$$$$$$
 

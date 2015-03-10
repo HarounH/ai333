@@ -8,14 +8,16 @@
 #include <unistd.h>
 #include <errno.h>
 #include <arpa/inet.h> 
-#include <bits/stdc++.h>
+//#include <bits/stdc++.h>
+
+#include "player.cpp"
 
 using namespace std;
 /* Complete the function below to print 1 integer which will be your next move 
    */
 int N,M,K, time_left, player;
 
-
+Player us;
 
 
 
@@ -64,6 +66,8 @@ int main(int argc, char *argv[])
     recvBuff[n] = 0;
     sscanf(recvBuff, "%d %d %d %d %d", &player, &N, &M, &K, &time_left);
 
+    //CHANGES. INITIALIZATION.
+    us.init(N,M,K,player,time_left);
 
     cout<<"Player "<<player<<endl;
     cout<<"Time "<<time_left<<endl;
@@ -79,7 +83,9 @@ int main(int argc, char *argv[])
         
         memset(sendBuff, '0', sizeof(sendBuff)); 
         string temp;
-	cin>>m>>r>>c;
+
+        us.send_move_to_client_cpp(m,r,c);
+	   //cin>>m>>r>>c;
         
         snprintf(sendBuff, sizeof(sendBuff), "%d %d %d", m, r , c);
         write(sockfd, sendBuff, strlen(sendBuff));
@@ -88,8 +94,12 @@ int main(int argc, char *argv[])
         n = read(sockfd, recvBuff, sizeof(recvBuff)-1);
         recvBuff[n] = 0;
         sscanf(recvBuff, "%f %d", &TL, &d);
-	cout<<TL<<" "<<d<<endl;
-	if(d==1)
+        //CHANGES MADE.
+	   us.read_time_left_from_client_cpp(TL);
+        cout<<TL<<" "<<d<<endl;
+	   
+
+    if(d==1)
 	{
 		cout<<"You win!! Yayee!! :D ";
 		x=0;
@@ -107,7 +117,10 @@ int main(int argc, char *argv[])
         n = read(sockfd, recvBuff, sizeof(recvBuff)-1);
         recvBuff[n] = 0;
         sscanf(recvBuff, "%d %d %d %d", &om,&oro,&oc,&d);
-	cout << om<<" "<<oro<<" "<<oc << " "<<d<<endl;
+	   
+       //CHANGES MADE.
+       us.read_move_from_client_cpp(om,oro,oc);
+       cout << om<<" "<<oro<<" "<<oc << " "<<d<<endl;
     	if(d==1)
 	{
 		cout<<"You win!! Yayee!! :D ";
@@ -120,7 +133,9 @@ int main(int argc, char *argv[])
 	}
         memset(sendBuff, '0', sizeof(sendBuff)); 
         string temp;
-	cin>>m>>r>>c;
+	   //CHANGES MADE.
+        us.send_move_to_client_cpp(m,r,c);
+
         snprintf(sendBuff, sizeof(sendBuff), "%d %d %d", m, r , c);
         write(sockfd, sendBuff, strlen(sendBuff));
 
@@ -128,7 +143,9 @@ int main(int argc, char *argv[])
         n = read(sockfd, recvBuff, sizeof(recvBuff)-1);
         recvBuff[n] = 0;
         sscanf(recvBuff, "%f %d", &TL, &d);//d=3 indicates game continues.. d=2 indicates lost game, d=1 means game won.
-	cout<<TL<<" "<<d<<endl;
+	   //CHANGES MADE.
+       us.read_time_left_from_client_cpp(TL);
+    cout<<TL<<" "<<d<<endl;
 	if(d==1)
 	{
 		cout<<"You win!! Yayee!! :D ";

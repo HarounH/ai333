@@ -37,15 +37,18 @@ void State::get_all_moves(vector<Move>& moves) { //Assumes that the vector has b
 		if ( n_player_1_walls > 0 ) { //Check if he CAN place walls.
 			for( int _r = 2 ; _r <= N ; ++_r) {
 				for( int _c = 2; _c <= M ; ++ _c ) {
+
+					mov.r = _r;
+					mov.c = _c;
+
 					//Horizontal Wall.
-					if ( valid_wall( _r , _c , true ) ) {
-						mov.m = 1; //Horizontal wall.
-						mov.r = _r;
-						mov.c = _c;
+					mov.m = 1; //Horizontal wall.
+					if ( valid_wall( mov ) ) {
 						moves.push_back(mov);
 					}
 					//Vertical Wall.
-					if ( valid_wall( _r , _ c , false) ) {
+					mov.m = 2;
+					if ( valid_wall( mov ) ) {
 						mov.m = 2; //vertical wall.
 						mov.r = _r;
 						mov.c = _c;

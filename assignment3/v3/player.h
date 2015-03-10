@@ -4,7 +4,7 @@
 #include <vector>
 #include <set>
 #include <unordered_map>
-
+using namespace std;
 /*
 (1,1) is the top left corner.
 Player 1 is at the top.
@@ -16,8 +16,8 @@ class Position {
 public:
 	int r,c;
 	Position() { r=0; c=0; }
-	~Position(); //Default destructor.
-	Position(int _r , int_c) { r = _r ; c = _c; }
+	~Position() {} //Default destructor.
+	Position(int _r , int _c) { r = _r ; c = _c; }
 	Position( pair<int,int> x ) { r=x.first ; c=x.second; }
 	Position& operator=(const pair<int,int>& _p) { r = _p.first; c = _p.second; return *this; }	
 	Position& operator=(const Position& _p) { r = _p.r; c = _p.c; return *this; }
@@ -35,6 +35,8 @@ public:
 	int m,r,c; //Move TO
 	int _pn , _pr , _pc; //Move FROM
 	float eval;
+
+	Move& operator=(const Move& _m) { m=_m.m; r=_m.r; c=_m.c; _pn=_m._pn; _pr=_m._pr; _pc=_m._pc; eval=_m.eval; return *this;}
 };
 
 class State {
@@ -49,13 +51,15 @@ public:
 	int n_present_player_walls;
 
 
-	vector < vector < bool > > is_wall_H , is_wall_V; // is_wall_H tells me if there's a wall at [r][c] ((2<=r<=N+1) && (2<=c<=M+1))
-	std::set < pair<int,int> > pos_wall_H , pos_wall_V; //Slower inserts, but faster removals. 2*log(K) v/s (1 + K )...
+	vector< vector <bool> > is_wall_H , is_wall_V; // is_wall_H tells me if there's a wall at [r][c] ((2<=r<=N+1) && (2<=c<=M+1))
+	std::set< pair<int,int> > pos_wall_H , pos_wall_V; //Slower inserts, but faster removals. 2*log(K) v/s (1 + K )...
 
-	State(); //Default
-	~State(); //Default.
+	State() {} //Default
+	~State() {} //Default.
 
-	void init(int _N, int_M , int_K);
+	State& operator=(const State& s);
+
+	void init(int _N, int _M , int _K);
 	void toggle_player() { 
 		present_player = ((present_player%2==0)?(1):(2)) ; 
 		if ( present_player == 1 ) {
@@ -72,7 +76,7 @@ public:
 	/* THINGS RELATED TO MOVES. */
 	bool valid_jump(Move& m);
 	bool valid_wall(Move& m);
-	bool valid_move(Move& m) { return (valid_jump(m)&&valid_wall(m));}
+	bool valid_move(Move& m);
 
 	void apply_move(Move& m);
 	void unapply_move(Move &m);
@@ -85,14 +89,30 @@ public:
 };
 
 class Player {
+public:
 	State gblState,locState;
 	int player_num;
 	float max_total_time;
 	float remaining_time;
-	
+	int walls_left;
+
+
 	Move best_move;
-	Move minimax( int depth , float time_limit );
+
+
+	/* FOR INTERACTION WITH CLIENT_CPP */
+	void init( int _N , int _M , int _K , int _pn , float max_time );
+	void read_time_left_from_client_cpp(float _t);
+	void send_move_to_client_cpp(int& m , int& r , int& c);
+	void read_move_from_client_cpp(int& m ,int& r, int& c);
+
+	/* FOR MINIMAX? */
+
+	
+/*	Move minimax( int depth , float time_limit );
 		int max_value(double alpha, double beta, int cutoff, int curDepth, float time_limit);
 		int min_value(double alpha, double beta, int cutoff, int curDepth, float time_limit);
+*/
+
 };
 #endif
