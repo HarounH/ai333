@@ -86,7 +86,7 @@ public:
 	int n_present_walls , n_other_walls;
 
 	vector< vector< bool > > is_wall_H, is_wall_V;
-	std::set< pair<int,int> > wall_H, wall_V;
+	set< pair<int,int> > wall_H, wall_V;
 
 
 
@@ -114,6 +114,16 @@ public:
 	bool connected(Position& from , Position& to);
 	
 	//Connectivity.
+	bool wall_up(Position& p) { return ( (p.r<=1) || ((is_wall_H[p.r][p.c]) || (is_wall_H[p.r][p.c+1] )) ); }
+	bool wall_down(Position& p) { return ( ((p.r)>=N) || ((is_wall_H[p.r+1][p.c]) || (is_wall_H[p.r+1][p.c+1] )) ); }
+	bool wall_right(Position& p) { return ( ((p.c)>=M) || ((is_wall_V[p.r][p.c+1]) || (is_wall_V[p.r+1][p.c+1] )) ); }
+	bool wall_left(Position& p) { return ( (p.c<=1) || (is_wall_V[p.r][p.c]) || (is_wall_V[p.r][p.c+1]) );}
+	
+	bool wall_d_up(Position& p) { return ( (p.r<=2)||(is_wall_H[p.r-1][p.c])||(is_wall_H[p.r-1][p.c+1]) ); }
+	bool wall_d_down(Position& p) { return ( (p.r>=(N-1))||(is_wall_H[p.r+2][p.c])||(is_wall_H[p.r+2][p.c+1]) ); }
+	bool wall_d_right(Position& p) { return ( (p.c>=(M-1))||(is_wall_V[p.r][p.c+2])||(is_wall_V[p.r+1][p.c+2]) ); }
+	bool wall_d_left(Position& p) { return ( (p.c<=2)||(is_wall_V[p.r][p.c-1])||(is_wall_V[p.r+1][p.c-1]) ); }
+	
 	bool connected_up(Position& p);
 	bool connected_down(Position& p);
 	bool connected_right(Position& p);
@@ -134,7 +144,6 @@ public:
 	void get_all_jumps(vector<Move>& moves);
 	void get_all_walls(vector<Move>& moves);
 	void get_all_moves(vector<Move>& moves) { get_all_jumps(moves);get_all_walls(moves);}
-
 };
 
 class Player {
