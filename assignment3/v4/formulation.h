@@ -19,10 +19,10 @@ public:
 	Position(int _r , int _c) { r=_r; c=_c; }
 	Position( pair<int,int> x ) { r=x.first ; c=x.second; }
 
-	Position& operator=(const Position _p) { r = _p.r; c=_p.c; return *this; }
-	Position& operator=(const pair<int,int> _p) { r = _p.first; c=_p.second; return *this; }
+	Position& operator=(const Position& _p) { r = _p.r; c=_p.c; return *this; }
+	Position& operator=(const pair<int,int>& _p) { r = _p.first; c=_p.second; return *this; }
 
-	bool operator==(const Position _p) { return ((r==_p.r)&&(c==_p.c)); }
+	bool operator==(const Position& _p) { return ((r==_p.r)&&(c==_p.c)); }
 	bool operator==(const pair<int,int>& _p) { return ((this->r == _p.first) && (this->c == _p.second)); }
 
 	pair<int,int>& pair() { pair<int,int> p; p.first=r; p.second=r; return p; }
@@ -64,12 +64,15 @@ public:
 	int m,r,c;
 	int pn;
 	Position from,to;
-	double eval;
+	double eval; //Optional
+
+
 	void print(bool pr=false) { cout << "MOVE:: pn=" << pn << "  m=" << m << "\tFROM="; from.print(pr); cout << "\tTO="; to.print(pr) << "\n"; }
 
 	Move() {}
 	~Move() {}
 	Move(int _m, int _r , int _c) { m = _m; r=_r; c=_c; to.r = r; to.c = c; }
+	
 	Move& operator=(const Move& _m) { m=_m.m; r=_m.r; c=_m.c; pn=_m.pn; from=_m.from; to=_m.to; return *this; }
 	bool operator==(const Move& _m) { return ((m==_m.m)&&(r==_m.r)&&(c==_m.c)&&(pn==_m.pn)&&(from==_m.from)&&(to==_m.to)); }
 
@@ -86,8 +89,9 @@ public:
 	int n_present_walls , n_other_walls;
 
 	vector< vector< bool > > is_wall_H, is_wall_V;
-	set< pair<int,int> > wall_H, wall_V;
+	set< pair<int,int> > wall_H, wall_V; /* POSSIBLE WIERD STUFF. CONSULT SURAG. */
 
+	double eval;
 
 
 	State() {}
@@ -96,6 +100,7 @@ public:
 
 	State& operator=(const State& s);
 
+	bool paths_exists();
 	void apply_move(Move& m);
 	void unapply_move(Move& m);
 
@@ -107,6 +112,7 @@ public:
 
 	bool in_bounds(Position& p) { return ((p.r>=1)&&(p.r<=N)&&(p.c>=1)&&(p.c<=M)); }
 
+	bool valid_move(Move& m) { return valid_wall(m)&&valid_jump(m) ;}
 	bool valid_wall(Move& m);
 	bool valid_jump(Move& m);
 
@@ -144,6 +150,8 @@ public:
 	void get_all_jumps(vector<Move>& moves);
 	void get_all_walls(vector<Move>& moves);
 	void get_all_moves(vector<Move>& moves) { get_all_jumps(moves);get_all_walls(moves);}
+
+	double evaluate();
 };
 
 class Player {

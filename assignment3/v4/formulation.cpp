@@ -7,6 +7,9 @@
 #define P_PRINT true
 #include "formulation.h"
 
+//BFS to check if both players
+#include "bfs.cpp"
+
 //Comms between Client and Player.
 #include "communications.cpp"
 //Initializations and the sort.
