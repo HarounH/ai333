@@ -12,24 +12,25 @@
  * implementation similar to AIMA version 						
  * INVARIANT: max_value and min_value return state unchanged in the end	
  * ------------------------------------------------- */									
-/*
+
 Move Player::minimax( int depth , float time_limit )
 {
-	locState = glbState;		// init
+	locState = gblState;		// init
 	
 	max_value( -INFTY, +INFTY , depth, 0, time_limit);								// FIX {do a find and replace for all -INFTY, +INFTY}
 	
 	return best_move;
 }
 
-int Player::max_value(double alpha, double beta, int cutoff, int curDepth, float time_limit)
+double Player::max_value(double alpha, double beta, int cutoff, int curDepth, float time_limit)
 {
-	if (cutoff == curDepth or locState.is_endgame()) return locState.eval_state();
+	if (cutoff == curDepth or locState.is_endgame()) return locState.evaluate();
 	
-	vector<Move> moves = locState.get_all_moves();
+	vector<Move> moves; locState.get_all_moves(moves);
+	
 	double v = -INFTY;
 	
-	for (vector<Move>::iterator it = moves.begin ; it!=moves.end ;it++)
+	for (vector<Move>::iterator it = moves.begin() ; it!=moves.end() ;it++)
 	{
 		locState.apply_move(*it);
 		
@@ -50,12 +51,15 @@ int Player::max_value(double alpha, double beta, int cutoff, int curDepth, float
 	return v;
 }
 
-int Player::min_value(double alpha, double beta, int cutoff, int curDepth, float time_limit)
+double Player::min_value(double alpha, double beta, int cutoff, int curDepth, float time_limit)
 {
-	if (cutoff == curDepth or  locState.is_endgame()) return locState.eval_state();
+	if (cutoff == curDepth or  locState.is_endgame()) return locState.evaluate();
+	
+	vector<Move> moves; locState.get_all_moves(moves);
+	
 	double v = +INFTY;
 	
-	for (vector<Move>::iterator it = moves.begin ; it!=moves.end ;it++)
+	for (vector<Move>::iterator it = moves.begin() ; it!=moves.end() ;it++)
 	{
 		locState.apply_move(*it);
 		
@@ -70,5 +74,5 @@ int Player::min_value(double alpha, double beta, int cutoff, int curDepth, float
 }																
 
 ////////////////  end of minimax  //////////////////
-*/
+
 #endif

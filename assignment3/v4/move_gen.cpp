@@ -370,9 +370,10 @@ bool State::valid_wall(Move& m) {
 			unapply_move(m);
 			return ans;	
 		}
-	} else if ( m==0 ) {
+	} else if ( m.m==0 ) {
 		return true;
 	}
+	return false;
 }
 
 bool State::valid_jump(Move& m) {
@@ -409,5 +410,6 @@ bool State::valid_jump(Move& m) {
 			return false;
 		}
 	}
+	return false;
 }
 #endif

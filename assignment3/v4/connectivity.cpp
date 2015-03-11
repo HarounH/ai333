@@ -35,7 +35,7 @@ bool State::connected_left(Position& p) {
 
 //Part 1 Done!.
 
-bool State::connected_double_up(Position& p) { 
+bool State::connected_d_up(Position& p) { 
 	Position to=p.d_up();
 	Position bl=p.up();
 	if ( !in_bounds(to) ) { return false; }
@@ -46,7 +46,7 @@ bool State::connected_double_up(Position& p) {
 		&&  (!wall_d_up(p))
 		);
 }
-bool State::connected_double_down(Position& p) { 
+bool State::connected_d_down(Position& p) { 
 	Position to=p.d_down();
 	Position bl=p.down();
 	if ( !in_bounds(to) ) { return false; }
@@ -57,7 +57,7 @@ bool State::connected_double_down(Position& p) {
 		&&  (!wall_d_down(p))
 		);
 }
-bool State::connected_double_right(Position& p) { 
+bool State::connected_d_right(Position& p) { 
 	Position to=p.d_right();
 	Position bl=p.right();
 	if ( !in_bounds(to) ) { return false; }
@@ -68,7 +68,7 @@ bool State::connected_double_right(Position& p) {
 		&&  (!wall_d_right(p))
 		);
 }
-bool State::connected_double_left(Position& p) { 
+bool State::connected_d_left(Position& p) { 
 	Position to=p.d_left();
 	Position bl=p.left();
 	if ( !in_bounds(to) ) { return false; }
@@ -106,6 +106,7 @@ bool State::connected_up_right(Position& p) {
 			return false;
 		}
 	}
+	return false;
 }
 
 bool State::connected_up_left(Position& p) { 
@@ -132,6 +133,7 @@ bool State::connected_up_left(Position& p) {
 			return false;
 		}
 	}
+	return false;
 }
 
 bool State::connected_down_right(Position& p) { 
@@ -158,6 +160,7 @@ bool State::connected_down_right(Position& p) {
 			return false;
 		}
 	}
+	return false;
 }
 
 bool State::connected_down_left(Position& p) { 
@@ -184,6 +187,7 @@ bool State::connected_down_left(Position& p) {
 			return false;
 		}
 	}
+	return false;
 }
 
 #endif

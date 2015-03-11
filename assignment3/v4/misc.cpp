@@ -9,11 +9,11 @@ void State::print(bool sp) {
 
 		std::set< pair<int,int> >::iterator it;
 		cout << "\n Horizontal walls at: \n";
-		for( it=pos_wall_H.begin(); it != pos_wall_H.end(); ++it) {
+		for( it=wall_H.begin(); it != wall_H.end(); ++it) {
 			cout << "Horizontal::: \t\t("<< (*it).first<<","<< (*it).second <<")\n"; 
 		}
 		cout << "\n Vertical walls at: \n";
-		for( it=pos_wall_V.begin(); it != pos_wall_V.end(); ++it) {
+		for( it=wall_V.begin(); it != wall_V.end(); ++it) {
 			cout << "Vertical:::::\t\t("<< (*it).first<<","<< (*it).second <<")\n"; 
 		}
 
@@ -60,13 +60,13 @@ State& State::operator=(const State& s) {
 	
 	pos_present = s.pos_present;
 	pos_other = s.pos_other;
-	n_present_walls = nos_prese_wallsnt;
+	n_present_walls = s.n_present_walls;
 	n_other_walls = s.n_other_walls;
 
 	is_wall_H = s.is_wall_H;
 	is_wall_V = s.is_wall_V;
-	pos_wall_H = s.pos_wall_H;
-	pos_wall_V = s.pos_wall_V;
+	wall_H = s.wall_H;
+	wall_V = s.wall_V;
 
 	return *this;
 }
@@ -85,6 +85,6 @@ void Player::init( int _N , int _M , int _K , int _pn , float max_time ) {
 void Player::print(bool pr) {
 	cout << "####PLAYER####\n";
 	cout << "\tpn="<<pn<<"\n";
-	cout << "\twls="<<
+	cout << "\twls="<< remaining_walls << "\n";
 }
 #endif

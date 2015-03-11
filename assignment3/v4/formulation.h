@@ -1,3 +1,9 @@
+using namespace std;
+
+#include<vector>
+#include<set>
+#include<cmath>
+
 #ifndef FORMULATION_H
 #define FORMULATION_H
 
@@ -25,7 +31,7 @@ public:
 	bool operator==(const Position& _p) { return ((r==_p.r)&&(c==_p.c)); }
 	bool operator==(const pair<int,int>& _p) { return ((this->r == _p.first) && (this->c == _p.second)); }
 
-	pair<int,int>& pair() { pair<int,int> p; p.first=r; p.second=r; return p; }
+	pair<int,int> makepair() { pair<int,int> p; p.first=r; p.second=c; return p; }
 
 	Position up() { Position p(r-1,c); return p; }
 	Position down() { Position p(r+1,c); return p; }
@@ -42,20 +48,20 @@ public:
 	Position down_right() { Position p(r+1,c+1); return p; }
 	Position down_left() { Position p(r+1,c-1); return p; }
 
-	bool is_up(Position& p) {  return (((*this).r==(p.r-1))&&(*this).c==(p.c))); }
-	bool is_down(Position& p) {  return (((*this).r==(p.r+1))&&(*this).c==(p.c))); }
-	bool is_right(Position& p) {  return (((*this).r==(p.r))&&(*this).c==(p.c+1))); }
-	bool is_left(Position& p) {  return (((*this).r==(p.r))&&(*this).c==(p.c-1))); }
+	bool is_up(Position& p) {  return (((*this).r==(p.r-1))&&((*this).c==(p.c))); }
+	bool is_down(Position& p) {  return (((*this).r==(p.r+1))&&((*this).c==(p.c))); }
+	bool is_right(Position& p) {  return (((*this).r==(p.r))&&((*this).c==(p.c+1))); }
+	bool is_left(Position& p) {  return (((*this).r==(p.r))&&((*this).c==(p.c-1))); }
 
-	bool is_d_up(Position& p) { return (((*this).r==(p.r-2))&&(*this).c==(p.c))); }
-	bool is_d_down(Position& p) { return (((*this).r==(p.r+2))&&(*this).c==(p.c))); }
-	bool is_d_right(Position& p) { return (((*this).r==(p.r))&&(*this).c==(p.c+2))); }
-	bool is_d_left(Position& p) { return (((*this).r==(p.r))&&(*this).c==(p.c-2))); }
+	bool is_d_up(Position& p) { return (((*this).r==(p.r-2))&&((*this).c==(p.c))); }
+	bool is_d_down(Position& p) { return (((*this).r==(p.r+2))&&((*this).c==(p.c))); }
+	bool is_d_right(Position& p) { return (((*this).r==(p.r))&&((*this).c==(p.c+2))); }
+	bool is_d_left(Position& p) { return (((*this).r==(p.r))&&((*this).c==(p.c-2))); }
 
-	bool is_up_right(Position& p) {  return (((*this).r==(p.r-1))&&(*this).c==(p.c+1))) }
-	bool is_up_left(Position& p) {  return (((*this).r==(p.r-1))&&(*this).c==(p.c-1)))  }
-	bool is_down_right(Position& p) { return (((*this).r==(p.r+1))&&(*this).c==(p.c+1)))  }
-	bool is_down_left(Position& p) { return (((*this).r==(p.r+1))&&(*this).c==(p.c-1)))  }
+	bool is_up_right(Position& p) {  return (((*this).r==(p.r-1))&&((*this).c==(p.c+1))); }
+	bool is_up_left(Position& p) {  return (((*this).r==(p.r-1))&&((*this).c==(p.c-1)))  ;}
+	bool is_down_right(Position& p) { return (((*this).r==(p.r+1))&&((*this).c==(p.c+1))) ; }
+	bool is_down_left(Position& p) { return (((*this).r==(p.r+1))&&((*this).c==(p.c-1)))  ;}
 
 };
 
@@ -67,7 +73,7 @@ public:
 	double eval; //Optional
 
 
-	void print(bool pr=false) { cout << "MOVE:: pn=" << pn << "  m=" << m << "\tFROM="; from.print(pr); cout << "\tTO="; to.print(pr) << "\n"; }
+	void print(bool pr=false) { cout << "MOVE:: pn=" << pn << "  m=" << m << "\tFROM="; from.print(pr); cout << "\tTO="; to.print(pr) ; cout<< "\n"; }
 
 	Move() {}
 	~Move() {}
@@ -135,10 +141,10 @@ public:
 	bool connected_right(Position& p);
 	bool connected_left(Position& p);
 
-	bool connected_double_up(Position& p);
-	bool connected_double_down(Position& p);
-	bool connected_double_right(Position& p);
-	bool connected_double_left(Position& p);
+	bool connected_d_up(Position& p);
+	bool connected_d_down(Position& p);
+	bool connected_d_right(Position& p);
+	bool connected_d_left(Position& p);
 
 	bool connected_up_right(Position& p);
 	bool connected_up_left(Position& p);
@@ -156,6 +162,7 @@ public:
 };
 
 class Player {
+public: 
 	State gblState , locState;
 	int pn;
 	double total_time;
@@ -174,6 +181,11 @@ class Player {
 	void send_move_to_client_cpp(int& m , int& r , int& c);
 	void read_move_from_client_cpp(int& m ,int& r, int& c);
 	//Minimax
-
+	
+	Move minimax( int depth , float time_limit );
+    double max_value(double alpha, double beta, int cutoff, int curDepth, float time_limit);
+  	double min_value(double alpha, double beta, int cutoff, int curDepth, float time_limit);
+	
 };
+
 #endif
