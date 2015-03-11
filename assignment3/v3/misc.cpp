@@ -87,7 +87,6 @@ void State::print( bool shouldiprint ) {
 		}
 		cout << "\n";
 	}
-
 	cout << "End of state printing \n";
 }
 
