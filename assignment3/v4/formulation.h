@@ -42,20 +42,20 @@ public:
 	Position& down_right() { Position p(r+1,c+1); return p; }
 	Position& down_left() { Position p(r+1,c-1); return p; }
 
-	bool is_up(Position& p) { Position p(r-1,c); return (((*this).r==p.r)&&(*this).c==p.c)); }
-	bool is_down(Position& p) { Position p(r+1,c); return (((*this).r==p.r)&&(*this).c==p.c)); }
-	bool is_right(Position& p) { Position p(r,c+1); return (((*this).r==p.r)&&(*this).c==p.c)); }
-	bool is_left(Position& p) { Position p(r,c-1); return (((*this).r==p.r)&&(*this).c==p.c)); }
+	bool is_up(Position& p) {  return (((*this).r==(p.r-1))&&(*this).c==(p.c))); }
+	bool is_down(Position& p) {  return (((*this).r==(p.r+1))&&(*this).c==(p.c))); }
+	bool is_right(Position& p) {  return (((*this).r==(p.r))&&(*this).c==(p.c+1))); }
+	bool is_left(Position& p) {  return (((*this).r==(p.r))&&(*this).c==(p.c-1))); }
 
-	bool is_d_up(Position& p) { Position p(r-2,c); return (((*this).r==p.r)&&(*this).c==p.c)); }
-	bool is_d_down(Position& p) { Position p(r+2,c); return (((*this).r==p.r)&&(*this).c==p.c)); }
-	bool is_d_right(Position& p) { Position p(r,c+2); return (((*this).r==p.r)&&(*this).c==p.c)); }
-	bool is_d_left(Position& p) { Position p(r,c-2); return (((*this).r==p.r)&&(*this).c==p.c)); }
+	bool is_d_up(Position& p) { return (((*this).r==(p.r-2))&&(*this).c==(p.c))); }
+	bool is_d_down(Position& p) { return (((*this).r==(p.r+2))&&(*this).c==(p.c))); }
+	bool is_d_right(Position& p) { return (((*this).r==(p.r))&&(*this).c==(p.c+2))); }
+	bool is_d_left(Position& p) { return (((*this).r==(p.r))&&(*this).c==(p.c-2))); }
 
-	bool is_up_right(Position& p) { Position p(r-1,c+1); retur(((*this).r==n.r)&&(*this).c==n.c)) p; }
-	bool is_up_left(Position& p) { Position p(r-1,c-1); retur(((*this).r==n.r)&&(*this).c==n.c)) p; }
-	bool is_down_right(Position& p) { Position p(r+1,c+1); retur(((*this).r==n.r)&&(*this).c==n.c)) p; }
-	bool is_down_left(Position& p) { Position p(r+1,c-1); retur(((*this).r==n.r)&&(*this).c==n.c)) p; }
+	bool is_up_right(Position& p) {  return (((*this).r==(p.r-1))&&(*this).c==(p.c+1))) }
+	bool is_up_left(Position& p) {  return (((*this).r==(p.r-1))&&(*this).c==(p.c-1)))  }
+	bool is_down_right(Position& p) { return (((*this).r==(p.r+1))&&(*this).c==(p.c+1)))  }
+	bool is_down_left(Position& p) { return (((*this).r==(p.r+1))&&(*this).c==(p.c-1)))  }
 
 };
 

@@ -82,5 +82,8 @@ void Player::init( int _N , int _M , int _K , int _pn , float max_time ) {
 	return;
 }
 
-
+void Player::print(bool pr) {
+	cout << "####PLAYER####\n";
+	cout << "\tpn="<<pn<<"\n";
+}
 #endif
