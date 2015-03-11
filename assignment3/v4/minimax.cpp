@@ -1,6 +1,8 @@
 #ifndef MINIMAX_CPP
 #define MINIMAX_CPP
 
+#define INFTY 1000000000
+ 
 /* MINIMAX (with Alpha Beta Pruning, with cutoff)
  *-------------------------------------------------
  * Recursive implementation
@@ -9,13 +11,13 @@
  * apply_move, unapply_move to tweak state back and forth
  * implementation similar to AIMA version 						
  * INVARIANT: max_value and min_value return state unchanged in the end	
- * -------------------------------------------------*/									
-
+ * ------------------------------------------------- */									
+/*
 Move Player::minimax( int depth , float time_limit )
 {
 	locState = glbState;		// init
 	
-	max_value( -infty, +infty , depth, 0, time_limit);								// FIX {do a find and replace for all -infty, +infty}
+	max_value( -INFTY, +INFTY , depth, 0, time_limit);								// FIX {do a find and replace for all -INFTY, +INFTY}
 	
 	return best_move;
 }
@@ -25,7 +27,7 @@ int Player::max_value(double alpha, double beta, int cutoff, int curDepth, float
 	if (cutoff == curDepth or locState.is_endgame()) return locState.eval_state();
 	
 	vector<Move> moves = locState.get_all_moves();
-	double v = -infty;
+	double v = -INFTY;
 	
 	for (vector<Move>::iterator it = moves.begin ; it!=moves.end ;it++)
 	{
@@ -51,7 +53,7 @@ int Player::max_value(double alpha, double beta, int cutoff, int curDepth, float
 int Player::min_value(double alpha, double beta, int cutoff, int curDepth, float time_limit)
 {
 	if (cutoff == curDepth or  locState.is_endgame()) return locState.eval_state();
-	double v = +infty;
+	double v = +INFTY;
 	
 	for (vector<Move>::iterator it = moves.begin ; it!=moves.end ;it++)
 	{
@@ -68,5 +70,5 @@ int Player::min_value(double alpha, double beta, int cutoff, int curDepth, float
 }																
 
 ////////////////  end of minimax  //////////////////
-
+*/
 #endif

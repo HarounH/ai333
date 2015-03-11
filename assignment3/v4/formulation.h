@@ -27,20 +27,20 @@ public:
 
 	pair<int,int>& pair() { pair<int,int> p; p.first=r; p.second=r; return p; }
 
-	Position& up() { Position p(r-1,c); return p; }
-	Position& down() { Position p(r+1,c); return p; }
-	Position& right() { Position p(r,c+1); return p; }
-	Position& left() { Position p(r,c-1); return p; }
+	Position up() { Position p(r-1,c); return p; }
+	Position down() { Position p(r+1,c); return p; }
+	Position right() { Position p(r,c+1); return p; }
+	Position left() { Position p(r,c-1); return p; }
 
-	Position& d_up() { Position p(r-2,c); return p; }
-	Position& d_down() { Position p(r+2,c); return p; }
-	Position& d_right() { Position p(r,c+2); return p; }
-	Position& d_left() { Position p(r,c-2); return p; }
+	Position d_up() { Position p(r-2,c); return p; }
+	Position d_down() { Position p(r+2,c); return p; }
+	Position d_right() { Position p(r,c+2); return p; }
+	Position d_left() { Position p(r,c-2); return p; }
 
-	Position& up_right() { Position p(r-1,c+1); return p; }
-	Position& up_left() { Position p(r-1,c-1); return p; }
-	Position& down_right() { Position p(r+1,c+1); return p; }
-	Position& down_left() { Position p(r+1,c-1); return p; }
+	Position up_right() { Position p(r-1,c+1); return p; }
+	Position up_left() { Position p(r-1,c-1); return p; }
+	Position down_right() { Position p(r+1,c+1); return p; }
+	Position down_left() { Position p(r+1,c-1); return p; }
 
 	bool is_up(Position& p) {  return (((*this).r==(p.r-1))&&(*this).c==(p.c))); }
 	bool is_down(Position& p) {  return (((*this).r==(p.r+1))&&(*this).c==(p.c))); }
@@ -148,6 +148,7 @@ public:
 
 	//Move generators.
 	void get_all_jumps(vector<Move>& moves);
+	void get_all_jumps(vector<Move>& moves , Position& p);	
 	void get_all_walls(vector<Move>& moves);
 	void get_all_moves(vector<Move>& moves) { get_all_jumps(moves);get_all_walls(moves);}
 

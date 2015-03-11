@@ -113,11 +113,9 @@ public:
 	void read_move_from_client_cpp(int& m ,int& r, int& c);
 
 	/* FOR MINIMAX? */
-
-	
 /*	Move minimax( int depth , float time_limit );
-		int max_value(double alpha, double beta, int cutoff, int curDepth, float time_limit);
-		int min_value(double alpha, double beta, int cutoff, int curDepth, float time_limit);
+	int max_value(double alpha, double beta, int cutoff, int curDepth, float time_limit);
+	int min_value(double alpha, double beta, int cutoff, int curDepth, float time_limit);
 */
 
 };
