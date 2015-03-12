@@ -33,7 +33,7 @@ void State::get_all_jumps(std::vector<Move>& moves) {
 	bool flag = true;
 
 	cout << "###########IN GET ALL JUMPS###########\n";
-	cout << mov.from.print(M_PRINT);
+	mov.from.print(M_PRINT);
 	//Upward!
 	if ( connected_up(mov.from) ) {
 		cout << "::: connect_up() :::\n";

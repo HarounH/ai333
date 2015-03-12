@@ -129,7 +129,7 @@ public:
 	bool wall_up(Position& p) { return ( (p.r<=1) || ((is_wall_H[p.r][p.c]) || (is_wall_H[p.r][p.c+1] )) ); }
 	bool wall_down(Position& p) { return ( ((p.r)>=N) || ((is_wall_H[p.r+1][p.c]) || (is_wall_H[p.r+1][p.c+1] )) ); }
 	bool wall_right(Position& p) { return ( ((p.c)>=M) || ((is_wall_V[p.r][p.c+1]) || (is_wall_V[p.r+1][p.c+1] )) ); }
-	bool wall_left(Position& p) { return ( (p.c<=1) || (is_wall_V[p.r][p.c]) || (is_wall_V[p.r][p.c+1]) );}
+	bool wall_left(Position& p) { return ( (p.c<=1) || (is_wall_V[p.r][p.c]) || (is_wall_V[p.r+1][p.c]) );}
 	
 	bool wall_d_up(Position& p) { return ( (p.r<=2)||(is_wall_H[p.r-1][p.c])||(is_wall_H[p.r-1][p.c+1]) ); }
 	bool wall_d_down(Position& p) { return ( (p.r>=(N-1))||(is_wall_H[p.r+2][p.c])||(is_wall_H[p.r+2][p.c+1]) ); }
