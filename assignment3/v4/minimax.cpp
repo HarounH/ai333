@@ -27,12 +27,15 @@ double Player::max_value(double alpha, double beta, int cutoff, int curDepth, fl
 	if (cutoff == curDepth or locState.is_endgame()) return locState.evaluate();
 
 	vector<Move> moves; locState.get_all_moves(moves);
-
+	// cout << " ########### BEGIN LOC_STATE in max_value of depth="<<curDepth<<"########### \n";
+	// locState.print(S_PRINT);
+	// cout << " ########### END OF LOC STATE in max_value ########## \n";
 	double v = -INFTY;
 	
 	for (vector<Move>::iterator it = moves.begin() ; it!=moves.end() ;it++)
 	{
-		locState.apply_move(*it);
+		Move t = *it;  // H - Changed the free usage of *it to a "save the value and do shit" because iterators can be scary things.
+		locState.apply_move(t);
 		
 		// v = max(v,min_value(alpha,beta,cutoff,curDepth+1,time_limit));					// FIX time_limit
 		int cur_min = min_value(alpha,beta,cutoff,curDepth+1,time_limit);
@@ -40,13 +43,19 @@ double Player::max_value(double alpha, double beta, int cutoff, int curDepth, fl
 		if (cur_min > v)
 		{
 			v = cur_min;
-			if (curDepth == 0) {best_move = *it;}
+			if (curDepth == 0) {
+				best_move = t;
+				// cout << " ################# BEST"; best_move.print(M_PRINT); cout << " ##################\n";
+			}
 		}
 		
-		if (v >= beta) return v;
+		if (v >= beta) {
+			locState.unapply_move(t); //H - Changed some stuff to be VERY careful.
+			return v;
+		}
 		alpha = max(alpha,v);
 		
-		locState.unapply_move(*it);
+		locState.unapply_move(t);
 	}
 	
 	return v;
@@ -57,22 +66,29 @@ double Player::min_value(double alpha, double beta, int cutoff, int curDepth, fl
 	if (cutoff == curDepth or  locState.is_endgame()) return locState.evaluate();
 	
 	vector<Move> moves; locState.get_all_moves(moves);
-	
+	// cout << " ########### BEGIN LOC_STATE in min_value of depth="<<curDepth<<"########### \n";
+	// locState.print(S_PRINT);
+	// cout << " ########### END OF LOC STATE in min_value ########## \n";
+
 	double v = +INFTY;
 	
 	for (vector<Move>::iterator it = moves.begin() ; it!=moves.end() ;it++)
 	{
-		locState.apply_move(*it);
+		Move t = *it; 	// H - Changed the free usage of *it to a "save the value and do shit" because iterators can be scary things.
+		locState.apply_move(t);
 		
 		v = min(v,max_value(alpha,beta,cutoff,curDepth+1,time_limit));					// FIX time_limit
-		if (v <= alpha) return v;
+		if (v <= alpha) { 
+			locState.unapply_move(t); //H - Changed some stuff to be VERY careful.
+			return v;
+		}
 		beta = min(beta,v);
 		
-		locState.unapply_move(*it);
+		locState.unapply_move(t);
 	}
 	
 	return v;
-}																
+}
 
 ////////////////  end of minimax  //////////////////
 

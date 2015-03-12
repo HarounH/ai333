@@ -5,20 +5,20 @@ void terminal_input(int& m , int& r, int& c) {cin >> m >> r >> c; }
 //ACTIVELY ALTER THIS FOR OUR AI.
 void Player::send_move_to_client_cpp(int& m , int& r , int& c) {
 	
-	if ( M_PRINT ) {
-		cout << "-----------------------\n";
-		vector<Move> moves;
-		//locState.get_all_walls(moves);
-		locState.get_all_jumps(moves);
-		for(int i=0; i<moves.size(); ++i) moves[i].print(M_PRINT);
-		cout << "-----------------------\n";
-	}
+	// if ( M_PRINT ) {
+	// 	cout << "-----------------------\n";
+	// 	vector<Move> moves;
+	// 	//locState.get_all_walls(moves);
+	// 	locState.get_all_jumps(moves);
+	// 	for(int i=0; i<moves.size(); ++i) moves[i].print(M_PRINT);
+	// 	cout << "-----------------------\n";
+	// } // H - ...might want it elsewhere because of how wierd this looks. :P
 
 	Move res;
 	//terminal_input(m,r,c);					// SNair - made edits here for using minimax
-	cout << "starting minimax" << endl;
-	minimax(5,10);
-	cout << "et fini minimax" << endl;
+	cout << "starting minimax\n";
+	res = minimax(2,10);
+	cout << "et fini minimax\n";
 	//Preserve.
 		m = best_move.m;
 		r = best_move.r;
@@ -32,8 +32,8 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c) {
 		res.eval = -1.0;
 	gblState.apply_move(res);
 	locState.apply_move(res);
-	cout << "Move played " <<  m << " " << r << " " << c << endl;
-	gblState.print(S_PRINT);
+	cout << "Move played " <<  m << " " << r << " " << c << "\n";
+	// gblState.print(S_PRINT);
 	return;
 }
 
@@ -53,7 +53,7 @@ void Player::read_move_from_client_cpp(int& m ,int& r, int& c) {
 	gblState.apply_move(res);
 	locState.apply_move(res);
 
-	gblState.print(S_PRINT);
+	// gblState.print(S_PRINT);
 	return;
 }
 #endif

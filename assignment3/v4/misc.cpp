@@ -82,6 +82,9 @@ void Player::init( int _N , int _M , int _K , int _pn , float max_time ) {
 	gblState.init(_N,_M,_K);
 	locState.init(_N,_M,_K);
 	//Add stuff?
+
+	gblState.print(S_PRINT);
+	locState.print(S_PRINT);
 	return;
 }
 

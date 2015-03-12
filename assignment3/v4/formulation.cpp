@@ -2,7 +2,7 @@
 #define FORMULATION_CPP
 
 
-#define S_PRINT false
+#define S_PRINT true
 #define M_PRINT true
 #define P_PRINT true
 #include "formulation.h"

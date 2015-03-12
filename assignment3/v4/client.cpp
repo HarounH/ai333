@@ -33,14 +33,14 @@ int main(int argc, char *argv[])
 
     if(argc != 3)
     {
-        printf("\n Usage: %s <ip of server> <port no> \n",argv[0]);
+        // printf("\n Usage: %s <ip of server> <port no> \n",argv[0]);
         return 1;
     } 
 
     
     if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {
-        printf("\n Error : Could not create socket \n");
+        // printf("\n Error : Could not create socket \n");
         return 1;
     } 
 
@@ -51,13 +51,13 @@ int main(int argc, char *argv[])
 
     if(inet_pton(AF_INET, argv[1], &serv_addr.sin_addr)<=0)
     {
-        printf("\n inet_pton error occured\n");
+        // printf("\n inet_pton error occured\n");
         return 1;
     } 
 
     if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
-       printf("\n Error : Connect Failed \n");
+       // printf("\n Error : Connect Failed \n");
        return 1;
     } 
 
@@ -70,8 +70,8 @@ int main(int argc, char *argv[])
     us.init(N,M,K,player,(double)time_left);
 
     cout<<"Player "<<player<<endl;
-    cout<<"Time "<<time_left<<endl;
-    cout<<"Board size "<<N<<"x"<<M<<" :"<<K<<endl;
+    // cout<<"Time "<<time_left<<endl;
+    // cout<<"Board size "<<N<<"x"<<M<<" :"<<K<<endl;
     float TL;
     int om,oro,oc;
     int m,r,c;
@@ -93,19 +93,19 @@ int main(int argc, char *argv[])
         n = read(sockfd, recvBuff, sizeof(recvBuff)-1);
         recvBuff[n] = 0;
         sscanf(recvBuff, "%f %d", &TL, &d);
-	cout<<TL<<" "<<d<<"\n";
+	// cout<<TL<<" "<<d<<"\n";
 
         us.read_time_left_from_client_cpp(TL);
 
 
 	if(d==1)
 	{
-		cout<<"You win!! Yayee!! :D ";
+		// cout<<"You win!! Yayee!! :D ";
 		x=0;
 	}
 	else if(d==2)
 	{
-		cout<<"Loser :P ";
+		// cout<<"Loser :P ";
 		x=0;
 	}
     }
@@ -118,15 +118,15 @@ int main(int argc, char *argv[])
         sscanf(recvBuff, "%d %d %d %d", &om,&oro,&oc,&d);
 
         us.read_move_from_client_cpp(om,oro,oc);
-	cout << om<<" "<<oro<<" "<<oc << " "<<d<<endl;
+	// cout << om<<" "<<oro<<" "<<oc << " "<<d<<endl;
     	if(d==1)
 	{
-		cout<<"You win!! Yayee!! :D ";
+		// cout<<"You win!! Yayee!! :D ";
 		break;
 	}
 	else if(d==2)
 	{
-		cout<<"Loser :P ";
+		// cout<<"Loser :P ";
 		break;
 	}
         memset(sendBuff, '0', sizeof(sendBuff)); 
@@ -143,19 +143,19 @@ int main(int argc, char *argv[])
         sscanf(recvBuff, "%f %d", &TL, &d);//d=3 indicates game continues.. d=2 indicates lost game, d=1 means game won.
 	
         us.read_time_left_from_client_cpp(TL);
-    cout<<"time left: " << TL<<" won/lost/continue :"<<d<<endl;
+    // cout<<"time left: " << TL<<" won/lost/continue :"<<d<<endl;
 	if(d==1)
 	{
-		cout<<"You win!! Yayee!! :D ";
+		// cout<<"You win!! Yayee!! :D ";
 		break;
 	}
 	else if(d==2)
 	{
-		cout<<"Loser :P ";
+		// cout<<"Loser :P ";
 		break;
 	}
     }
-    cout<<endl<<"The End"<<endl;
+    // cout<<endl<<"The End"<<endl;
     return 0;
 }
 
