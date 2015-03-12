@@ -11,6 +11,7 @@ class Position;
 class Move;
 class State;
 class Player;
+class Eval;
 
 #define COMMA ","
 
@@ -161,6 +162,14 @@ public:
 	double evaluate();
 };
 
+class Eval {
+public:
+	Eval() {}
+	~Eval() {}
+
+	double shortest_path(State& s , int _pn);
+	double diff_shortest_path(State& s) { return (shortest_path(s,((s.pn==1)?(2):(1)))) - shortest_path(s,s.pn) ; } 
+};
 class Player {
 public: 
 	State gblState , locState;
@@ -168,6 +177,7 @@ public:
 	double total_time;
 	double remaining_time;
 	int remaining_walls;
+	Eval evaluator;
 
 	Player() {};
 	~Player() {};	

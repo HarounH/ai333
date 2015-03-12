@@ -96,5 +96,4 @@ bool State::paths_exists()
 	
 	return true;
 }
-
 #endif
