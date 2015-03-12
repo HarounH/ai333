@@ -25,9 +25,9 @@ Move Player::minimax( int depth , float time_limit )
 double Player::max_value(double alpha, double beta, int cutoff, int curDepth, float time_limit)
 {
 	if (cutoff == curDepth or locState.is_endgame()) return locState.evaluate();
-	
+
 	vector<Move> moves; locState.get_all_moves(moves);
-	
+
 	double v = -INFTY;
 	
 	for (vector<Move>::iterator it = moves.begin() ; it!=moves.end() ;it++)
@@ -36,10 +36,11 @@ double Player::max_value(double alpha, double beta, int cutoff, int curDepth, fl
 		
 		// v = max(v,min_value(alpha,beta,cutoff,curDepth+1,time_limit));					// FIX time_limit
 		int cur_min = min_value(alpha,beta,cutoff,curDepth+1,time_limit);
+		
 		if (cur_min > v)
 		{
 			v = cur_min;
-			if (curDepth == 0) best_move = *it;
+			if (curDepth == 0) {best_move = *it;}
 		}
 		
 		if (v >= beta) return v;

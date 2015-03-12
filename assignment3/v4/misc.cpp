@@ -44,19 +44,22 @@ void State::init(int n, int m , int k) {
 	pos_present = make_pair(1,(M+1)/2);
 	pos_other = make_pair(N, (M+1)/2 );
 
-	is_wall_H.resize(N+3);
-	is_wall_V.resize(N+3);
+	is_wall_H = vector<vector<bool> >(N+3, vector<bool>(M+3,false));		// SNair - changed way of declaration
+	is_wall_V = vector<vector<bool> >(N+3, vector<bool>(M+3,false));
+	
+//	is_wall_H.resize(N+3);
+//	is_wall_V.resize(N+3);
 
-	for(int i = 0; i<N+2; ++i) {
-		is_wall_V[i].resize(M+3,false); //Extra size to allow for easy life later on.
-		is_wall_H[i].resize(M+3,false); //Extra size to allow for easy life later on.
-	}
+//	for(int i = 0; i<N+2; ++i) {
+//		is_wall_V[i].resize(M+3,false); //Extra size to allow for easy life later on.
+//		is_wall_H[i].resize(M+3,false); //Extra size to allow for easy life later on.
+//	}
 	//Add stuff?
 	return;
 }
 
 State& State::operator=(const State& s) {
-	N = s.N; M = s.M; K = s.K;
+	N = s.N; M = s.M; K = s.K; pn = s.pn;
 	
 	pos_present = s.pos_present;
 	pos_other = s.pos_other;

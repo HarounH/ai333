@@ -169,8 +169,6 @@ public:
 	double remaining_time;
 	int remaining_walls;
 
-	Move best_move;
-
 	Player() {};
 	~Player() {};	
 
@@ -185,6 +183,7 @@ public:
 	Move minimax( int depth , float time_limit );
     double max_value(double alpha, double beta, int cutoff, int curDepth, float time_limit);
   	double min_value(double alpha, double beta, int cutoff, int curDepth, float time_limit);
+	Move best_move;
 	
 };
 

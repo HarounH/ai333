@@ -2,11 +2,11 @@
 #define MOVE_GEN_CPP
 
 void State::get_all_walls(std::vector<Move>& moves) {
-	Move mov;
+		Move mov;
 		mov.pn = pn;
 		mov.from = pos_present;
-	for( int r = 1; r<=N; ++r) {
-		for(int c=1; c<=M; ++c) {
+	for( int r = 2; r<=N; r++) {
+		for(int c=2; c<=M; c++) {
 			mov.to = make_pair(r,c);
 			mov.r = r;
 			mov.c = c;
@@ -301,7 +301,7 @@ bool State::connected(Position& from, Position& to) {
 }
 
 void State::toggle_player() {
-	pn = ((pn==1)?(2):(0));
+	pn = ((pn==1)?(2):(1));
 	
 	Position temp;
 	temp = pos_present;
@@ -331,6 +331,7 @@ void State::apply_move(Move& m) { //assumes that the move is valid
 }
 
 void State::unapply_move(Move& m) {
+	toggle_player();						// SNair - moved toggle up
 	if ( m.m==0 ) {
 		pos_present = m.from;
 	} else if ( m.m==1 ) {
@@ -342,31 +343,30 @@ void State::unapply_move(Move& m) {
 		is_wall_V[m.r][m.c] = false;
 		wall_V.erase( make_pair(m.r,m.c) );
 	}
-	toggle_player();
 }
 
 //VALIDITY STUFF.
 
 bool State::valid_wall(Move& m) {
-	if ( is_wall_H[m.r][m.c] || is_wall_V[m.r][m.c] || (!(n_present_walls>0))) {
+	if ( is_wall_H[m.r][m.c] || is_wall_V[m.r][m.c] || (!(n_present_walls>0))) { 
 		return false;
 	}
 
 	if (m.m == 1) {
-		if ( (m.c==1) || (m.c==M) || is_wall_H[m.r][m.c-1] || is_wall_H[m.r][m.c+1] ) {
-			return true;
+		if ( (m.c==1) || (m.c==M+1) || is_wall_H[m.r][m.c-1] || is_wall_H[m.r][m.c+1] ) {
+			return false;
 		} else {
 			apply_move(m);
-			bool ans = paths_exists();
+			bool ans = paths_exists(); if (!ans){cout << "r,c: " << m.r << "," << m.c << endl; }
 			unapply_move(m);
 			return ans;
 		}
 	} else if ( m.m == 2) {
-		if ( (m.r==1) || (m.r==N) || is_wall_V[m.r-1][m.c] || is_wall_V[m.r+1][m.c] ) {
+		if ( (m.r==1) || (m.r==N+1) || is_wall_V[m.r-1][m.c] || is_wall_V[m.r+1][m.c] ) {
 			return false;
 		} else {
 			apply_move(m);
-			bool ans = paths_exists();
+			bool ans = paths_exists(); 	if (!ans){cout << "r,c: " << m.r << "," << m.c << endl; };
 			unapply_move(m);
 			return ans;	
 		}

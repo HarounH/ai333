@@ -45,7 +45,11 @@ bool State::paths_exists()
 		}
 	}
 	
-	if (found_present==false) return false;
+	if (!found_present) 
+	{
+		//cout << "Can't block it all off, mate." << endl; 
+		return false;
+	}
 	
 	// check for pos_other
 	
@@ -84,7 +88,13 @@ bool State::paths_exists()
 		}
 	}
 	
-	return found_other;	
+	if(!found_other)
+	{
+	//	cout << "Can't block it all off, mate." << endl; 
+		return false;
+	}
+	
+	return true;
 }
 
 #endif

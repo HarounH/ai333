@@ -143,7 +143,7 @@ int main(int argc, char *argv[])
         sscanf(recvBuff, "%f %d", &TL, &d);//d=3 indicates game continues.. d=2 indicates lost game, d=1 means game won.
 	
         us.read_time_left_from_client_cpp(TL);
-    cout<<TL<<" "<<d<<endl;
+    cout<<"time left: " << TL<<" won/lost/continue :"<<d<<endl;
 	if(d==1)
 	{
 		cout<<"You win!! Yayee!! :D ";
