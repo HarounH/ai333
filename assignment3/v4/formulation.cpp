@@ -5,6 +5,9 @@
 #define S_PRINT false
 #define M_PRINT true
 #define P_PRINT true
+#define JUMP_EVAL 100.0
+#define WALL_EVAL 0.0
+
 #include "formulation.h"
 
 //BFS to check if both players

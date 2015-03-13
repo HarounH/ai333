@@ -25,6 +25,16 @@ double State::evaluate()
 	// }
 }
 
+double Eval::eval_move(State& s, Move& m) {
+	if ( m.m== 0 ) {
+		m.eval = JUMP_EVAL;
+	} else {
+		//I want to check gaps and distance from players. Does distance from players really matter?
+		//How do i define a gap?
+	}
+	return 0.0;
+}
+
 double Eval::shortest_path(State& s , int _pn)
 {
 	vector<vector<bool> > visited = vector<vector<bool> >(s.N+1 , vector<bool>(s.M+1,false));
@@ -126,4 +136,6 @@ double Eval::shortest_path(State& s , int _pn)
 	
 	// return true;
 }
+
+double Eval::diff_shortest_path(State& s) { return (shortest_path(s,((s.pn==1)?(2):(1)))) - shortest_path(s,s.pn) ; } 
 #endif

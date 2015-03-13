@@ -17,21 +17,21 @@ void State::print(bool sp) {
 			cout << "Vertical:::::\t\t("<< (*it).first<<","<< (*it).second <<")\n"; 
 		}
 
-		cout << " Printing is_wall_H ... NOTE: ITS ONLY THE CENTRES OF THE WALLS \n";
-		for(int r=1; r<=N; ++r) {
-			for(int c=1; c<=M; ++c) {
-				cout << is_wall_H[r][c] << " ";
-			}
-			cout << "\n";
-		}
+		// cout << " Printing is_wall_H ... NOTE: ITS ONLY THE CENTRES OF THE WALLS \n";
+		// for(int r=1; r<=N; ++r) {
+		// 	for(int c=1; c<=M; ++c) {
+		// 		cout << is_wall_H[r][c] << " ";
+		// 	}
+		// 	cout << "\n";
+		// }
 
-		cout << " Printing is_wall_V ... NOTE: ITS ONLY THE CENTRES OF THE WALLS \n";
-		for(int r=1; r<=N; ++r) {
-			for(int c=1; c<=M; ++c) {
-				cout << is_wall_V[r][c] << " ";
-			}
-			cout << "\n";
-		}
+		// cout << " Printing is_wall_V ... NOTE: ITS ONLY THE CENTRES OF THE WALLS \n";
+		// for(int r=1; r<=N; ++r) {
+		// 	for(int c=1; c<=M; ++c) {
+		// 		cout << is_wall_V[r][c] << " ";
+		// 	}
+		// 	cout << "\n";
+		// }
 	}
 }
 
@@ -47,7 +47,7 @@ void State::init(int n, int m , int k , int _mypn) {
 
 	is_wall_H = vector<vector<bool> >(N+3, vector<bool>(M+3,false));		// SNair - changed way of declaration
 	is_wall_V = vector<vector<bool> >(N+3, vector<bool>(M+3,false));
-	
+	plies = 0;	
 //	is_wall_H.resize(N+3);
 //	is_wall_V.resize(N+3);
 
@@ -62,6 +62,7 @@ void State::init(int n, int m , int k , int _mypn) {
 State& State::operator=(const State& s) {
 	N = s.N; M = s.M; K = s.K; pn = s.pn;
 	mypn = s.mypn;
+	plies = s.plies;
 	pos_present = s.pos_present;
 	pos_other = s.pos_other;
 	n_present_walls = s.n_present_walls;
@@ -80,6 +81,7 @@ void Player::init( int _N , int _M , int _K , int _pn , float max_time ) {
 	total_time = max_time;
 	remaining_time = max_time;
 	remaining_walls = _K;
+	plies = 0;
 	gblState.init(_N,_M,_K , pn);
 	locState.init(_N,_M,_K , pn);
 	//Add stuff?

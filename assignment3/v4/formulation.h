@@ -13,6 +13,16 @@ class State;
 class Player;
 class Eval;
 
+class Eval {
+public:
+	Eval() {}
+	~Eval() {}
+
+	double shortest_path(State& s , int _pn);
+	double diff_shortest_path(State& s);
+	double eval_move(State& s , Move& mov);
+};
+
 #define COMMA ","
 
 class Position{
@@ -63,7 +73,8 @@ public:
 	bool is_up_left(Position& p) {  return (((*this).r==(p.r-1))&&((*this).c==(p.c-1)))  ;}
 	bool is_down_right(Position& p) { return (((*this).r==(p.r+1))&&((*this).c==(p.c+1))) ; }
 	bool is_down_left(Position& p) { return (((*this).r==(p.r+1))&&((*this).c==(p.c-1)))  ;}
-
+	int dist_l1(Position& p) { return ( abs(r-p.r) + abs(c-p.c) ); }
+	double dist_l2(Position& p) { return ( pow(r-p.r,2) + pow(c-p.c,2) ) ;}
 };
 
 class Move {
@@ -82,6 +93,9 @@ public:
 	
 	Move& operator=(const Move& _m) { m=_m.m; r=_m.r; c=_m.c; pn=_m.pn; from=_m.from; to=_m.to; return *this; }
 	bool operator==(const Move& _m) { return ((m==_m.m)&&(r==_m.r)&&(c==_m.c)&&(pn==_m.pn)&&(from==_m.from)&&(to==_m.to)); }
+	bool operator<(const Move& _m) { return eval < _m.eval ;}
+	bool operator>(const Move& _m) { return eval > _m.eval ;}
+
 
 	bool is_jump() { return m==0; }
 	bool is_hor_wall() { return m==1; }
@@ -90,8 +104,10 @@ public:
 
 class State {
 public:
+	Eval evaluator;
 	int N,M,K;
 	int pn , mypn;
+	int plies;
 	Position pos_present , pos_other;
 	int n_present_walls , n_other_walls;
 
@@ -188,21 +204,14 @@ public:
 	void get_all_jumps(vector<Move>& moves);
 	void get_all_jumps(vector<Move>& moves , Position& p);	
 	void get_all_walls(vector<Move>& moves);
-	void get_all_moves(vector<Move>& moves) { get_all_jumps(moves);get_all_walls(moves);}
+	void get_all_moves(vector<Move>& moves) { get_all_jumps(moves);get_all_walls(moves); }
 
 	double evaluate();
 };
 
-class Eval {
-public:
-	Eval() {}
-	~Eval() {}
-
-	double shortest_path(State& s , int _pn);
-	double diff_shortest_path(State& s) { return (shortest_path(s,((s.pn==1)?(2):(1)))) - shortest_path(s,s.pn) ; } 
-};
 class Player {
-public: 
+public:
+	int plies; 
 	State gblState , locState;
 	int pn;
 	double total_time;
