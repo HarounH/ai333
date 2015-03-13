@@ -16,9 +16,9 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c) {
 
 	Move res;
 	//terminal_input(m,r,c);					// SNair - made edits here for using minimax
-	cout << "starting minimax\n";
+	// cout << "starting minimax\n";
 	res = minimax(2,10);
-	cout << "et fini minimax\n";
+	// cout << "et fini minimax\n";
 	//Preserve.
 		m = best_move.m;
 		r = best_move.r;

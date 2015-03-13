@@ -91,7 +91,7 @@ public:
 class State {
 public:
 	int N,M,K;
-	int pn;
+	int pn , mypn;
 	Position pos_present , pos_other;
 	int n_present_walls , n_other_walls;
 
@@ -103,7 +103,7 @@ public:
 
 	State() {}
 	~State() {}
-	void init(int n, int m , int k);
+	void init(int n, int m , int k , int _mypn);
 
 	State& operator=(const State& s);
 

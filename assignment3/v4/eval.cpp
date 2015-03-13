@@ -11,8 +11,8 @@ double State::evaluate()
  	double b = -w.shortest_path(*this,this->pn);
  	double c = w.shortest_path(*this,(this->pn==1)?(2):(1));
 
- 	if (b==-1) return 100000;
- 	if (c==1) return -100000;
+ 	if (is_win() && (mypn==pn)) { return 100000;}
+ 	if (is_loss() && (mypn==pn) ) { return -100000;}
 	
  	return a*abs(a) + b ;
 	// double ans = w.diff_shortest_path(*this);

@@ -35,11 +35,12 @@ void State::print(bool sp) {
 	}
 }
 
-void State::init(int n, int m , int k) {
+void State::init(int n, int m , int k , int _mypn) {
 	N = n;
 	M = m;
 	K = k;
 	pn = 1;
+	mypn = _mypn;
 	n_present_walls = K; n_other_walls = K;
 	pos_present = make_pair(1,(M+1)/2);
 	pos_other = make_pair(N, (M+1)/2 );
@@ -60,7 +61,7 @@ void State::init(int n, int m , int k) {
 
 State& State::operator=(const State& s) {
 	N = s.N; M = s.M; K = s.K; pn = s.pn;
-	
+	mypn = s.mypn;
 	pos_present = s.pos_present;
 	pos_other = s.pos_other;
 	n_present_walls = s.n_present_walls;
@@ -79,8 +80,8 @@ void Player::init( int _N , int _M , int _K , int _pn , float max_time ) {
 	total_time = max_time;
 	remaining_time = max_time;
 	remaining_walls = _K;
-	gblState.init(_N,_M,_K);
-	locState.init(_N,_M,_K);
+	gblState.init(_N,_M,_K , pn);
+	locState.init(_N,_M,_K , pn);
 	//Add stuff?
 
 	gblState.print(S_PRINT);
