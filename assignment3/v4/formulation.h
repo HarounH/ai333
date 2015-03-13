@@ -114,6 +114,37 @@ public:
 	bool is_endgame() { if ( pn==1 ) { return ((pos_present.r==N)||(pos_other.r==1)); } else {return ((pos_present.r==1)||(pos_other.r==N)); }}
 	bool is_win() { if ( pn==1 ) { return (pos_present.r==N); } else {return (pos_present.r==1); }}
 	bool is_loss() { if ( pn==1) { return ((pos_other.r==1)); } else {return ((pos_other.r==N)); }}
+	
+	bool I_won() 
+	{
+		if (mypn == pn)
+		{
+			if (mypn == 1) return pos_present.r == N;
+			else 		   return pos_present.r == 1;
+		}
+		
+		else
+		{
+			if (mypn == 1) return pos_other.r == N;
+			else		   return pos_other.r == 1;
+		}
+	}
+	
+	bool I_lost() 
+	{
+		if (mypn == pn)
+		{
+			if (mypn == 1) return pos_other.r == 1;
+			else 		   return pos_other.r == N;
+		}
+		
+		else
+		{
+			if (mypn == 1) return pos_present.r == 1;
+			else		   return pos_present.r == N;
+		}
+	}
+	
 	void print(bool pr);
 	void toggle_player();
 

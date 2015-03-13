@@ -7,14 +7,14 @@ double State::evaluate()
 {
 	 Eval w;
 	 
- 	double a = w.diff_shortest_path(*this);
- 	double b = -w.shortest_path(*this,this->pn);
- 	double c = w.shortest_path(*this,(this->pn==1)?(2):(1));
-
- 	if (is_win() && (mypn==pn)) { return 100000;}
- 	if (is_loss() && (mypn==pn) ) { return -100000;}
-	
- 	return a*abs(a) + b ;
+ 	double b = w.shortest_path(*this,this->mypn);							// my shortest path to goal
+ 	double c = w.shortest_path(*this,(this->mypn==1)?(2):(1));				// opp shortest path to goal
+	double a = b-c;															// my shortest path - opp shortest path
+	cout << "----------\n"; cout << "b= " << b << " " << "c= " << c << " a= " << a << "\n"; pos_present.print(true) ; cout << endl ; pos_other.print(true) ; cout << endl;
+ 	if (I_won()) { cout <<"eval: " << 100000<<endl; return (100000 + a);}
+ 	if (I_lost()) {cout <<"eval: " << 100000<<endl; return (-100000 + a );}
+	cout <<"eval: " << a*abs(a) - b<<endl;
+ 	return 5*a*abs(a) - b ;
 	// double ans = w.diff_shortest_path(*this);
 	// return ans;
 //	return (rand()%10) ;
@@ -41,7 +41,7 @@ double Eval::shortest_path(State& s , int _pn)
 		q.push(s.pos_present);
 		visited[s.pos_present.r][s.pos_present.c] = true;
 		mindist[s.pos_present.r][s.pos_present.c] = 0;
-		if ((s.pn==1 and s.pos_present.r==s.N) or (s.pn==2 and s.pos_present.r==1)) found_present = true;
+		if ((s.pn==1 and s.pos_present.r==s.N) or (s.pn==2 and s.pos_present.r==1)) {found_present = true ; return 0;}
 		
 		else
 		{
@@ -83,7 +83,7 @@ double Eval::shortest_path(State& s , int _pn)
 		Q.push(s.pos_other);
 		visited[s.pos_other.r][s.pos_other.c] = true;
 		mindist[s.pos_other.r][s.pos_other.c] = 0;
-		if ((s.pn==1 and s.pos_other.r==1) or (s.pn==2 and s.pos_other.r==s.N)) found_other = true;
+		if ((s.pn==1 and s.pos_other.r==1) or (s.pn==2 and s.pos_other.r==s.N)) {found_other = true ; return 0;}
 		
 		else
 		{
@@ -121,7 +121,7 @@ double Eval::shortest_path(State& s , int _pn)
 		}
 	}
 	// // check for s.pos_other
-	return -1.0;
+	return -69;
 		
 	
 	// return true;
