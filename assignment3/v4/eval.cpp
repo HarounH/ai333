@@ -9,12 +9,12 @@ double State::evaluate()
 	 
  	double b = w.shortest_path(*this,this->mypn);							// my shortest path to goal
  	double c = w.shortest_path(*this,(this->mypn==1)?(2):(1));				// opp shortest path to goal
-	double a = b-c;															// my shortest path - opp shortest path
+	double a = c-b;															// my shortest path - opp shortest path
 	cout << "----------\n"; cout << "b= " << b << " " << "c= " << c << " a= " << a << "\n"; pos_present.print(true) ; cout << endl ; pos_other.print(true) ; cout << endl;
  	if (I_won()) { cout <<"eval: " << 100000<<endl; return (100000 + a);}
  	if (I_lost()) {cout <<"eval: " << 100000<<endl; return (-100000 + a );}
 	cout <<"eval: " << a*abs(a) - b<<endl;
- 	return 5*a*abs(a) - b ;
+ 	return a*abs(a) - 5*b ;
 	// double ans = w.diff_shortest_path(*this);
 	// return ans;
 //	return (rand()%10) ;
