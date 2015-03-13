@@ -3,6 +3,13 @@
 
 #include <time.h>
 
+double nmt_cal(int diff)
+{
+	if (diff<=1) return 0;
+	
+	else return (diff-1)*(diff-1);
+}
+
 double State::evaluate()
 {
 	 Eval w;
@@ -10,11 +17,18 @@ double State::evaluate()
  	double b = w.shortest_path(*this,this->mypn);							// my shortest path to goal
  	double c = w.shortest_path(*this,(this->mypn==1)?(2):(1));				// opp shortest path to goal
 	double a = c-b;															// my shortest path - opp shortest path
-	cout << "----------\n"; cout << "b= " << b << " " << "c= " << c << " a= " << a << "\n"; pos_present.print(true) ; cout << endl ; pos_other.print(true) ; cout << endl;
- 	if (I_won()) { cout <<"eval: " << 100000<<endl; return (100000 + a);}
- 	if (I_lost()) {cout <<"eval: " << 100000<<endl; return (-100000 + a );}
-	cout <<"eval: " << a*abs(a) - b<<endl;
- 	return a*abs(a) - 5*b ;
+//	cout << "----------\n"; cout << "b= " << b << " " << "c= " << c << " a= " << a << "\n"; pos_present.print(true) ; cout << endl ; pos_other.print(true) ; cout << endl;
+ 	if (I_won()) { /*cout <<"eval: " << 100000<<endl; */return (100000 + a);}
+ 	if (I_lost()) {/*cout <<"eval: " << 100000<<endl;*/ return (-100000 + a );}
+
+
+	double wc = ((50-plies)/50)*((50-plies)/50)*((this->mypn==this->pn)?(this->n_present_walls):(this->n_other_walls));	// only for the walls I used (wall_cost)
+	
+	double nmt = ((this->mypn==this->pn)?(this->n_other_walls - this->n_present_walls):(this->n_present_walls-this->n_other_walls));	
+	nmt = nmt_cal(nmt);
+	// not more than three walls than oponent
+		
+ 	return a*abs(a) - 5*b + 3*wc - 3.5*nmt;
 	// double ans = w.diff_shortest_path(*this);
 	// return ans;
 //	return (rand()%10) ;
@@ -24,6 +38,8 @@ double State::evaluate()
 	// 	return (pos_present.r - N)*(-1.0)*(rand()%100);
 	// }
 }
+
+
 
 double Eval::shortest_path(State& s , int _pn)
 {

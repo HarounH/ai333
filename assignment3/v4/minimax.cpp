@@ -31,7 +31,12 @@ double Player::max_value(double alpha, double beta, int cutoff, int curDepth, fl
 	// locState.print(S_PRINT);
 	// cout << " ########### END OF LOC STATE in max_value ########## \n";
 	double v = -INFTY;
-	
+	for(int i=0; i<moves.size(); ++i) {
+		locState.apply_move(moves[i]);
+		moves[i].eval = locState.evaluate();
+		locState.unapply_move(moves[i]);
+	}
+	sort(moves.begin(), moves.end() , [](Move l,Move r){return l.eval>r.eval;} );
 	for (vector<Move>::iterator it = moves.begin() ; it!=moves.end() ;it++)
 	{
 		Move t = *it;  // H - Changed the free usage of *it to a "save the value and do shit" because iterators can be scary things.
@@ -69,7 +74,12 @@ double Player::min_value(double alpha, double beta, int cutoff, int curDepth, fl
 	// cout << " ########### BEGIN LOC_STATE in min_value of depth="<<curDepth<<"########### \n";
 	// locState.print(S_PRINT);
 	// cout << " ########### END OF LOC STATE in min_value ########## \n";
-
+	for(int i=0; i<moves.size(); ++i) {
+		locState.apply_move(moves[i]);
+		moves[i].eval = locState.evaluate();
+		locState.unapply_move(moves[i]);
+	}
+	std::sort(moves.begin() , moves.end() , [](Move l,Move r){return l.eval>r.eval;} );
 	double v = +INFTY;
 	
 	for (vector<Move>::iterator it = moves.begin() ; it!=moves.end() ;it++)

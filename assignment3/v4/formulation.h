@@ -91,7 +91,7 @@ public:
 	~Move() {}
 	Move(int _m, int _r , int _c) { m = _m; r=_r; c=_c; to.r = r; to.c = c; }
 	
-	Move& operator=(const Move& _m) { m=_m.m; r=_m.r; c=_m.c; pn=_m.pn; from=_m.from; to=_m.to; return *this; }
+	Move& operator=(const Move& _m) { m=_m.m; r=_m.r; c=_m.c; pn=_m.pn; from=_m.from; eval = _m.eval; to=_m.to; return *this; }
 	bool operator==(const Move& _m) { return ((m==_m.m)&&(r==_m.r)&&(c==_m.c)&&(pn==_m.pn)&&(from==_m.from)&&(to==_m.to)); }
 	bool operator<(const Move& _m) { return eval < _m.eval ;}
 	bool operator>(const Move& _m) { return eval > _m.eval ;}
@@ -204,7 +204,11 @@ public:
 	void get_all_jumps(vector<Move>& moves);
 	void get_all_jumps(vector<Move>& moves , Position& p);	
 	void get_all_walls(vector<Move>& moves);
-	void get_all_moves(vector<Move>& moves) { get_all_jumps(moves);get_all_walls(moves); }
+	void get_all_moves(vector<Move>& moves) 
+	{ 
+		get_all_jumps(moves);get_all_walls(moves); 
+	//	std::sort(moves.begin() , moves.end() , [](Move a , Move b){return a.eval > b.eval;});
+	}
 
 	double evaluate();
 };

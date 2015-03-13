@@ -13,12 +13,12 @@ void State::get_all_walls(std::vector<Move>& moves) {
 
 			mov.m = 1;
 			if ( valid_wall(mov) ) {
-				moves.push_back(mov); evaluator.eval_move(*this , mov);
+				evaluator.eval_move(*this , mov);moves.push_back(mov); 
 				
 			}
 			mov.m = 2;
 			if ( valid_wall(mov) ) {
-				moves.push_back(mov); evaluator.eval_move(*this , mov);
+				evaluator.eval_move(*this , mov);moves.push_back(mov); 
 				
 			}
 		}
@@ -43,7 +43,7 @@ void State::get_all_jumps(std::vector<Move>& moves) {
 		mov.to = mov.from.up();
 		mov.r = mov.to.r;
 		mov.c = mov.to.c;
-		moves.push_back(mov); evaluator.eval_move(*this , mov);
+		evaluator.eval_move(*this , mov);moves.push_back(mov); 
 		
 	} else if ( flag ) {
 		if ( connected_d_up(mov.from) ) {
@@ -51,7 +51,7 @@ void State::get_all_jumps(std::vector<Move>& moves) {
 			mov.to = mov.from.d_up();
 			mov.r = mov.to.r;
 			mov.c=mov.to.c;
-			moves.push_back(mov); evaluator.eval_move(*this , mov);
+			evaluator.eval_move(*this , mov);moves.push_back(mov); 
 			
 			flag = false;
 		} else {
@@ -60,7 +60,7 @@ void State::get_all_jumps(std::vector<Move>& moves) {
 				mov.to = mov.from.up_right();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
-				moves.push_back(mov); evaluator.eval_move(*this , mov);
+				evaluator.eval_move(*this , mov);moves.push_back(mov); 
 				
 				flag = false;
 			}
@@ -69,7 +69,7 @@ void State::get_all_jumps(std::vector<Move>& moves) {
 				mov.to = mov.from.up_left();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
-				moves.push_back(mov); evaluator.eval_move(*this , mov);
+				evaluator.eval_move(*this , mov);moves.push_back(mov); 
 				
 				flag = false;
 			}
@@ -83,7 +83,7 @@ void State::get_all_jumps(std::vector<Move>& moves) {
 		mov.to = mov.from.down();
 		mov.r = mov.to.r;
 		mov.c = mov.to.c;
-		moves.push_back(mov); evaluator.eval_move(*this , mov);
+		evaluator.eval_move(*this , mov);moves.push_back(mov); 
 		
 	} else if ( flag ) {
 		if ( connected_d_down(mov.from) ) {
@@ -91,7 +91,7 @@ void State::get_all_jumps(std::vector<Move>& moves) {
 			mov.to = mov.from.d_down();
 			mov.r = mov.to.r;
 			mov.c=mov.to.c;
-			moves.push_back(mov); evaluator.eval_move(*this , mov);
+			evaluator.eval_move(*this , mov);moves.push_back(mov); 
 			
 			flag = false;
 		} else {
@@ -100,7 +100,7 @@ void State::get_all_jumps(std::vector<Move>& moves) {
 				mov.to = mov.from.down_right();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
-				moves.push_back(mov); evaluator.eval_move(*this , mov);
+				evaluator.eval_move(*this , mov);moves.push_back(mov); 
 				
 				flag = false;
 			}
@@ -109,7 +109,7 @@ void State::get_all_jumps(std::vector<Move>& moves) {
 				mov.to = mov.from.down_left();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
-				moves.push_back(mov); evaluator.eval_move(*this , mov);
+				evaluator.eval_move(*this , mov);moves.push_back(mov); 
 
 				flag = false;	
 			}
@@ -122,14 +122,14 @@ void State::get_all_jumps(std::vector<Move>& moves) {
 		mov.to = mov.from.right();
 		mov.r = mov.to.r;
 		mov.c = mov.to.c;
-		moves.push_back(mov); evaluator.eval_move(*this , mov);
+		evaluator.eval_move(*this , mov);moves.push_back(mov); 
 	} else if ( flag ) {
 		if ( connected_d_right(mov.from) ) {
 			// cout << "::: connect_d_right() :::\n";
 			mov.to = mov.from.d_right();
 			mov.r = mov.to.r;
 			mov.c=mov.to.c;
-			moves.push_back(mov); evaluator.eval_move(*this , mov);
+			evaluator.eval_move(*this , mov);moves.push_back(mov); 
 			flag = false;
 		} else {
 			if ( connected_up_right(mov.from) ) {
@@ -137,7 +137,7 @@ void State::get_all_jumps(std::vector<Move>& moves) {
 				mov.to = mov.from.up_right();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
-				moves.push_back(mov); evaluator.eval_move(*this , mov);
+				evaluator.eval_move(*this , mov);moves.push_back(mov); 
 				flag = false;
 			}
 			if ( connected_down_right(mov.from) ) {
@@ -145,7 +145,7 @@ void State::get_all_jumps(std::vector<Move>& moves) {
 				mov.to = mov.from.down_right();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
-				moves.push_back(mov); evaluator.eval_move(*this , mov);
+				evaluator.eval_move(*this , mov);moves.push_back(mov); 
 				flag = false;	
 			}
 		}
@@ -157,14 +157,14 @@ void State::get_all_jumps(std::vector<Move>& moves) {
 		mov.to = mov.from.left();
 		mov.r = mov.to.r;
 		mov.c = mov.to.c;
-		moves.push_back(mov); evaluator.eval_move(*this , mov);
+		evaluator.eval_move(*this , mov);moves.push_back(mov); 
 	} else if ( flag ) {
 		if ( connected_d_left(mov.from) ) {
 			// cout << "::: connect_d_left() :::\n";
 			mov.to = mov.from.d_left();
 			mov.r = mov.to.r;
 			mov.c=mov.to.c;
-			moves.push_back(mov); evaluator.eval_move(*this , mov);
+			evaluator.eval_move(*this , mov);moves.push_back(mov); 
 			flag = false;
 		} else {
 			if ( connected_up_left(mov.from) ) {
@@ -172,7 +172,7 @@ void State::get_all_jumps(std::vector<Move>& moves) {
 				mov.to = mov.from.up_left();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
-				moves.push_back(mov); evaluator.eval_move(*this , mov);
+				evaluator.eval_move(*this , mov);moves.push_back(mov); 
 				flag = false;
 			}
 			if ( connected_down_left(mov.from) ) {
@@ -180,7 +180,7 @@ void State::get_all_jumps(std::vector<Move>& moves) {
 				mov.to = mov.from.down_left();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
-				moves.push_back(mov); evaluator.eval_move(*this , mov);
+				evaluator.eval_move(*this , mov);moves.push_back(mov); 
 				flag = false;	
 			}
 		}
@@ -202,27 +202,27 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 		mov.to = mov.from.up();
 		mov.r = mov.to.r;
 		mov.c = mov.to.c;
-		moves.push_back(mov); evaluator.eval_move(*this , mov);
+		evaluator.eval_move(*this , mov);moves.push_back(mov); 
 	} else if ( flag ) {
 		if ( connected_d_up(mov.from) ) {
 			mov.to = mov.from.d_up();
 			mov.r = mov.to.r;
 			mov.c=mov.to.c;
-			moves.push_back(mov); evaluator.eval_move(*this , mov);
+			evaluator.eval_move(*this , mov);moves.push_back(mov); 
 			flag = false;
 		} else {
 			if ( connected_up_right(mov.from) ) {
 				mov.to = mov.from.up_right();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
-				moves.push_back(mov); evaluator.eval_move(*this , mov);
+				evaluator.eval_move(*this , mov);moves.push_back(mov); 
 				flag = false;
 			}
 			if ( connected_up_left(mov.from) ) {
 				mov.to = mov.from.up_left();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
-				moves.push_back(mov); evaluator.eval_move(*this , mov);
+				evaluator.eval_move(*this , mov);moves.push_back(mov); 
 				flag = false;	
 			}
 		}
@@ -234,27 +234,27 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 		mov.to = mov.from.down();
 		mov.r = mov.to.r;
 		mov.c = mov.to.c;
-		moves.push_back(mov); evaluator.eval_move(*this , mov);
+		evaluator.eval_move(*this , mov);moves.push_back(mov); 
 	} else if ( flag ) {
 		if ( connected_d_down(mov.from) ) {
 			mov.to = mov.from.d_down();
 			mov.r = mov.to.r;
 			mov.c=mov.to.c;
-			moves.push_back(mov); evaluator.eval_move(*this , mov);
+			evaluator.eval_move(*this , mov);moves.push_back(mov); 
 			flag = false;
 		} else {
 			if ( connected_down_right(mov.from) ) {
 				mov.to = mov.from.down_right();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
-				moves.push_back(mov); evaluator.eval_move(*this , mov);
+				evaluator.eval_move(*this , mov);moves.push_back(mov); 
 				flag = false;
 			}
 			if ( connected_down_left(mov.from) ) {
 				mov.to = mov.from.down_left();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
-				moves.push_back(mov); evaluator.eval_move(*this , mov);
+				evaluator.eval_move(*this , mov);moves.push_back(mov); 
 				flag = false;	
 			}
 		}
@@ -265,27 +265,27 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 		mov.to = mov.from.right();
 		mov.r = mov.to.r;
 		mov.c = mov.to.c;
-		moves.push_back(mov); evaluator.eval_move(*this , mov);
+		evaluator.eval_move(*this , mov);moves.push_back(mov); 
 	} else if ( flag ) {
 		if ( connected_d_right(mov.from) ) {
 			mov.to = mov.from.d_right();
 			mov.r = mov.to.r;
 			mov.c=mov.to.c;
-			moves.push_back(mov); evaluator.eval_move(*this , mov);
+			evaluator.eval_move(*this , mov);moves.push_back(mov); 
 			flag = false;
 		} else {
 			if ( connected_up_right(mov.from) ) {
 				mov.to = mov.from.up_right();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
-				moves.push_back(mov); evaluator.eval_move(*this , mov);
+				evaluator.eval_move(*this , mov);moves.push_back(mov); 
 				flag = false;
 			}
 			if ( connected_down_right(mov.from) ) {
 				mov.to = mov.from.down_right();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
-				moves.push_back(mov); evaluator.eval_move(*this , mov);
+				evaluator.eval_move(*this , mov);moves.push_back(mov); 
 				flag = false;	
 			}
 		}
@@ -296,27 +296,27 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 		mov.to = mov.from.left();
 		mov.r = mov.to.r;
 		mov.c = mov.to.c;
-		moves.push_back(mov); evaluator.eval_move(*this , mov);
+		evaluator.eval_move(*this , mov);moves.push_back(mov); 
 	} else if ( flag ) {
 		if ( connected_d_left(mov.from) ) {
 			mov.to = mov.from.d_left();
 			mov.r = mov.to.r;
 			mov.c=mov.to.c;
-			moves.push_back(mov); evaluator.eval_move(*this , mov);
+			evaluator.eval_move(*this , mov);moves.push_back(mov); 
 			flag = false;
 		} else {
 			if ( connected_up_left(mov.from) ) {
 				mov.to = mov.from.up_left();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
-				moves.push_back(mov); evaluator.eval_move(*this , mov);
+				evaluator.eval_move(*this , mov);moves.push_back(mov); 
 				flag = false;
 			}
 			if ( connected_down_left(mov.from) ) {
 				mov.to = mov.from.down_left();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
-				moves.push_back(mov); evaluator.eval_move(*this , mov);
+				evaluator.eval_move(*this , mov);moves.push_back(mov); 
 				flag = false;	
 			}
 		}
