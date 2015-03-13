@@ -1,25 +1,63 @@
 #ifndef MOVE_GEN_CPP
 #define MOVE_GEN_CPP
 
+bool State::touchesWall(int r, int c) 		// r,c 1->10
+{
+	bool flag = false;
+	Position p;
+	
+	p.r = r ; p.c =c;
+	if (in_bounds(p)) {flag = (is_wall_H[r][c] and is_wall_V[r][c]);}
+	if (flag) return flag;
+
+	p.r = r-1 ; p.c =c;
+	if (in_bounds(p)) flag = is_wall_V[r-1][c];
+	if (flag) return flag;
+	
+	p.r = r+1 ; p.c =c;
+	if (in_bounds(p)) flag = is_wall_V[r+1][c];
+	if (flag) return flag;
+	
+	p.r = r ; p.c =c-1;
+	if (in_bounds(p)) flag = is_wall_H[r][c-1];
+	if (flag) return flag;
+	
+	p.r = r ; p.c =c+1;
+	if (in_bounds(p)) flag = is_wall_H[r][c+1];
+	return flag;
+}
+
+bool State::inLocality(int r, int c) 		// r,c 2->9
+{
+	int p_r = pos_present.r;
+	int p_c = pos_present.c;
+	int o_r = pos_other.r;
+	int o_c = pos_other.c;
+	
+	if ((r-p_r)>=-1 and (r-p_r<=2) and (c-p_c)>=-1 and (c-p_c<=2)) return true;
+	if ((r-o_r)>=-1 and (r-o_r<=2) and (c-o_c)>=-1 and (c-o_c<=2)) return true;
+	
+	return (touchesWall(r-1,c-1) or touchesWall(r-1,c) or touchesWall(r-1,c+1) or touchesWall(r,c-1) or touchesWall(r,c+1) or touchesWall(r+1,c-1) or touchesWall(r+1,c) or touchesWall(r+1,c+1));	
+}
+
 void State::get_all_walls(std::vector<Move>& moves) {
 		Move mov;
 		mov.pn = pn;
 		mov.from = pos_present;
 	for( int r = 2; r<=N; r++) {
 		for(int c=2; c<=M; c++) {
-			mov.to = make_pair(r,c);
-			mov.r = r;
-			mov.c = c;
+				mov.to = make_pair(r,c);
+				mov.r = r;
+				mov.c = c;
 
-			mov.m = 1;
-			if ( valid_wall(mov) ) {
-				evaluator.eval_move(*this , mov);moves.push_back(mov); 
+				mov.m = 1;
+				if ( (plies>50 or inLocality(r,c)) and valid_wall(mov) ) {
+					evaluator.eval_move(*this , mov);moves.push_back(mov); 
 				
-			}
-			mov.m = 2;
-			if ( valid_wall(mov) ) {
-				evaluator.eval_move(*this , mov);moves.push_back(mov); 
-				
+				}
+				mov.m = 2;
+				if ( (plies>50 or inLocality(r,c)) and valid_wall(mov) ) {
+					evaluator.eval_move(*this , mov);moves.push_back(mov); 
 			}
 		}
 	}

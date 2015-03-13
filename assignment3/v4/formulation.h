@@ -207,10 +207,13 @@ public:
 	void get_all_moves(vector<Move>& moves) 
 	{ 
 		get_all_jumps(moves);get_all_walls(moves); 
+	//	cout << "branches this time : " << moves.size() << endl;
 	//	std::sort(moves.begin() , moves.end() , [](Move a , Move b){return a.eval > b.eval;});
 	}
 
 	double evaluate();
+	bool touchesWall(int r, int c);
+	bool inLocality(int r, int c);
 };
 
 class Player {

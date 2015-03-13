@@ -8,27 +8,37 @@ int main(int argc, char** argv) {
 	w.init(9,9,10,2);
 	w.pos_present.r = 8;
 	w.pos_present.c = 6;
-	w.pos_other.r = 9;
-	w.pos_other.c = 6;
-	// w.is_wall_H[2][5] = true;
-	// w.wall_H.insert(make_pair(2,5));
-	// w.is_wall_V[2][7] = true;
-// 	w.wall_V.insert(make_pair(2,7));
-//// w.is_wall_V[6][6] = true;
-	// w.wall_V.insert(make_pair(6,6));
+	w.pos_other.r = 4;
+	w.pos_other.c = 1;
+	w.is_wall_H[2][5] = true;
+	w.wall_H.insert(make_pair(2,5));
+	w.is_wall_V[2][7] = true;
+	w.wall_V.insert(make_pair(2,7));
+	 w.is_wall_V[6][6] = true;
+	w.wall_V.insert(make_pair(6,6));
 	w.print(true);
 
 	w.pn = 2;
-	vector<Move> movs;
-	w.get_all_jumps(movs);
-	Eval e;
-	for(int i=0; i<movs.size(); ++i) {
-		movs[i].print(true);
-		cout << w.evaluate() << " upon not applying\n";
-		w.apply_move(movs[i]);
-		cout << w.evaluate() << " upon applying\n";
-		w.unapply_move(movs[i]);
+	
+	for (int r = 1; r<=w.N ; r++)
+	{
+		for (int c=1 ; c<=w.N ; c++)
+		{
+			cout << w.inLocality(r,c) << " " ;
+		}
+		cout << endl;
 	}
+			
+	// vector<Move> movs;
+	// w.get_all_walls(movs);
+// 	Eval e;
+// 	for(int i=0; i<movs.size(); ++i) {
+// 		movs[i].print(true);
+// 		cout << w.evaluate() << " upon not applying\n";
+// 		w.apply_move(movs[i]);
+// 		cout << w.evaluate() << " upon applying\n";
+// 		w.unapply_move(movs[i]);
+// 	}
 	// if ( M_PRINT ) {
 	// 	cout << "-----------------------\n";
 	// 	vector<Move> moves;
