@@ -5,15 +5,15 @@
 
 double State::evaluate()
 {
-	Eval w;
-	double ans = w.diff_shortest_path(*this);
-	return ans;
-	return (rand()%100) ;
-	if ( pn==1 ) {
-		return (pos_present.r - 1)*(rand()%100);
-	} else {
-		return (pos_present.r - N)*(-1.0)*(rand()%100);
-	}
+	// Eval w;
+	// double ans = w.diff_shortest_path(*this);
+	// return ans;
+	return (rand()%10) ;
+	// if ( pn==1 ) {
+	// 	return (pos_present.r - 1)*(rand()%100);
+	// } else {
+	// 	return (pos_present.r - N)*(-1.0)*(rand()%100);
+	// }
 }
 
 double Eval::shortest_path(State& s , int _pn)

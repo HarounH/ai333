@@ -93,6 +93,7 @@ bool State::connected_up_right(Position& p) {
 		if ( pos_other==up ) { //Case1 : Blocked above.
 			return (
 				(!wall_up(p))
+				&& wall_d_up(p)
 				&& (!wall_right(up) )
 				);
 		}
@@ -100,6 +101,7 @@ bool State::connected_up_right(Position& p) {
 		else if ( pos_other==right ) { //Case2 : Blocked to the right.
 			return (
 				(!wall_right(p))
+				&& wall_d_right(p)
 				&& (!wall_up(right) )
 				);
 		} else {
@@ -120,6 +122,7 @@ bool State::connected_up_left(Position& p) {
 		if ( pos_other==up ) { //Case1 : Blocked above.
 			return (
 				(!wall_up(p))
+				&& wall_d_up(p)
 				&& (!wall_left(up) )
 				);
 		}
@@ -127,6 +130,7 @@ bool State::connected_up_left(Position& p) {
 		else if ( pos_other==left ) { //Case2 : Blocked to the right.
 			return (
 				(!wall_left(p))
+				&& wall_d_left(p)
 				&& (!wall_up(left) )
 				);
 		} else {
@@ -147,6 +151,7 @@ bool State::connected_down_right(Position& p) {
 		if ( pos_other==down ) { //Case1 : Blocked above.
 			return (
 				(!wall_down(p))
+				&& wall_d_down(p)
 				&& (!wall_right(down) )
 				);
 		}
@@ -154,6 +159,7 @@ bool State::connected_down_right(Position& p) {
 		else if ( pos_other==right ) { //Case2 : Blocked to the right.
 			return (
 				(!wall_right(p))
+				&& wall_d_right(p)
 				&& (!wall_down(right) )
 				);
 		} else {
@@ -174,6 +180,7 @@ bool State::connected_down_left(Position& p) {
 		if ( pos_other==down ) { //Case1 : Blocked above.
 			return (
 				(!wall_down(p))
+				&& wall_d_down(p)
 				&& (!wall_left(down) )
 				);
 		}
@@ -181,6 +188,7 @@ bool State::connected_down_left(Position& p) {
 		else if ( pos_other==left ) { //Case2 : Blocked to the right.
 			return (
 				(!wall_left(p))
+				&& wall_d_left(p)
 				&& (!wall_down(left) )
 				);
 		} else {
