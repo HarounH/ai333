@@ -3,7 +3,7 @@
 /* All functions that return moves from a state (sometimes,given a position.) */
 
 /* All jumps from a specific starting point. */
-void State::get_all_walls( std::vector<Move> moves ) {
+void State::get_all_walls( std::vector<Move>& moves ) {
 	Move mov;
 	mov.pn = pn;
 	mov.from = pos_present;
@@ -15,11 +15,20 @@ void State::get_all_walls( std::vector<Move> moves ) {
 
 				mov.m = 1;
 				if ( (plies>50 or inLocality(r,c)) and valid_wall(mov) ) {
+					apply_move(mov);
+					mov.my_shortest_path=shortest_path(mypn);
+					mov.op_shortest_path=shortest_path(opn);
+					unapply_move(mov);
 					moves.push_back(mov);
 				
 				}
 				mov.m = 2;
 				if ( (plies>50 or inLocality(r,c)) and valid_wall(mov) ) {
+					apply_move(mov);
+					mov.my_shortest_path=shortest_path(mypn);
+					mov.op_shortest_path=shortest_path(opn);
+					unapply_move(mov);
+
 					moves.push_back(mov); 
 			}
 		}
@@ -39,12 +48,14 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 		mov.to = mov.from.up();
 		mov.r = mov.to.r;
 		mov.c = mov.to.c;
+
 		moves.push_back(mov); 
 	} else if ( flag ) {
 		if ( connected_d_up(mov.from) ) {
 			mov.to = mov.from.d_up();
 			mov.r = mov.to.r;
 			mov.c=mov.to.c;
+
 			moves.push_back(mov); 
 			flag = false;
 		} else {
@@ -52,6 +63,7 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 				mov.to = mov.from.up_right();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
+
 				moves.push_back(mov); 
 				flag = false;
 			}
@@ -59,6 +71,7 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 				mov.to = mov.from.up_left();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
+
 				moves.push_back(mov); 
 				flag = false;	
 			}
@@ -71,12 +84,14 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 		mov.to = mov.from.down();
 		mov.r = mov.to.r;
 		mov.c = mov.to.c;
+
 		moves.push_back(mov); 
 	} else if ( flag ) {
 		if ( connected_d_down(mov.from) ) {
 			mov.to = mov.from.d_down();
 			mov.r = mov.to.r;
 			mov.c=mov.to.c;
+
 			moves.push_back(mov); 
 			flag = false;
 		} else {
@@ -84,6 +99,7 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 				mov.to = mov.from.down_right();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
+
 				moves.push_back(mov); 
 				flag = false;
 			}
@@ -91,6 +107,7 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 				mov.to = mov.from.down_left();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
+
 				moves.push_back(mov); 
 				flag = false;	
 			}
@@ -102,12 +119,14 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 		mov.to = mov.from.right();
 		mov.r = mov.to.r;
 		mov.c = mov.to.c;
+
 		moves.push_back(mov); 
 	} else if ( flag ) {
 		if ( connected_d_right(mov.from) ) {
 			mov.to = mov.from.d_right();
 			mov.r = mov.to.r;
 			mov.c=mov.to.c;
+
 			moves.push_back(mov); 
 			flag = false;
 		} else {
@@ -115,6 +134,7 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 				mov.to = mov.from.up_right();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
+
 				moves.push_back(mov); 
 				flag = false;
 			}
@@ -122,6 +142,7 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 				mov.to = mov.from.down_right();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
+
 				moves.push_back(mov); 
 				flag = false;	
 			}
@@ -133,12 +154,14 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 		mov.to = mov.from.left();
 		mov.r = mov.to.r;
 		mov.c = mov.to.c;
+
 		moves.push_back(mov); 
 	} else if ( flag ) {
 		if ( connected_d_left(mov.from) ) {
 			mov.to = mov.from.d_left();
 			mov.r = mov.to.r;
 			mov.c=mov.to.c;
+
 			moves.push_back(mov); 
 			flag = false;
 		} else {
@@ -146,6 +169,7 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 				mov.to = mov.from.up_left();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
+
 				moves.push_back(mov); 
 				flag = false;
 			}
@@ -153,6 +177,7 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 				mov.to = mov.from.down_left();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
+
 				moves.push_back(mov); 
 				flag = false;	
 			}
@@ -162,8 +187,10 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 }
 
 /* All jumps for present */
-void State::get_all_jumps(std::vector<Move> mov) {
+void State::get_all_jumps(std::vector<Move>& mov) {
 	if (present_won()) { //He can pass.
+		cout << "hi, present won \n";
+		Move pas;
 		pas.from = pos_present;
 		pas.m = 0; pas.r=0; pas.c=0; pas.to=pas.from;
 		mov.push_back(pas);

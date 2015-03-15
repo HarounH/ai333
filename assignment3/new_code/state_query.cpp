@@ -7,29 +7,35 @@
 /* ----add here ----*/
 /* validity queries .*/
 bool State::valid_wall(Move& m) { //Also calculates the shortest paths. (it does this for bfs anyway. )
+	cout << "###brk1\n";
 	if ( is_wall_H[m.r][m.c] || is_wall_V[m.r][m.c] || (!(n_present_walls>0))) { 
 		return false;
 	}
-
+	cout << "###brk2\n";
 	if (m.m == 1) {
 		if ( (m.c==1) || (m.c==M+1) || is_wall_H[m.r][m.c-1] || is_wall_H[m.r][m.c+1] ) {
 			return false;
 		} else {
+			cout << "###brk3\n";
 			apply_move(m);
-			my_shortest_path=shortest_path(mypn);
-			op_shortest_path=shortest_path(opn);
+			cout << "###brk4\n";
+			m.my_shortest_path=shortest_path(mypn);
+			cout << "###brk5\n";
+			m.op_shortest_path=shortest_path(opn);
+			cout << "###brk6\n";
 			unapply_move(m);
-			return ((op_shortest_path>=0)&&(my_shortest_path>=0));
+			cout << "###brk7\n";
+			return ((m.op_shortest_path>=0)&&(m.my_shortest_path>=0));
 		}
 	} else if ( m.m == 2) {
 		if ( (m.r==1) || (m.r==N+1) || is_wall_V[m.r-1][m.c] || is_wall_V[m.r+1][m.c] ) {
 			return false;
 		} else {
 			apply_move(m);
-			my_shortest_path=shortest_path(mypn);
-			op_shortest_path=shortest_path(opn);
+			m.my_shortest_path=shortest_path(mypn);
+			m.op_shortest_path=shortest_path(opn);
 			unapply_move(m);
-			return ((op_shortest_path>=0)&&(my_shortest_path>=0));	
+			return ((m.op_shortest_path>=0)&&(m.my_shortest_path>=0));	
 		}
 	} else { //Pass or jump.
 		return true;
@@ -134,7 +140,7 @@ bool State::i_won() {
 		else		   return pos_other.r == 1;
 	}
 }
-bool i_lost() {
+bool State::i_lost() {
 	if (mypn == pn) {
 		if (mypn == 1) return pos_other.r == 1;
 		else 		   return pos_other.r == N;
@@ -146,12 +152,12 @@ bool i_lost() {
 
 bool State::present_won() {
 	if (pn==1) { return pos_present.r == N; }
-	else { return pos_present == 1 ;}
+	else { return pos_present.r == 1 ;}
 }
 
 bool State::present_lost() {
 	if (pn==1) { return pos_other.r == 1; }
-	else { return pos_other == N ;}
+	else { return pos_other.r == N ;}
 }
 
 bool State::in_bounds(Position& p) {
@@ -160,6 +166,14 @@ bool State::in_bounds(Position& p) {
 
 bool State::in_bounds_wall(Position& p) {
 	return ( (p.r>1)&&(p.r<=N)&&(p.c>1)&&(p.c<=M) );	
+}
+
+bool State::in_bounds(int r, int c) {
+	return ( (r>0)&&(r<=N)&&(c>0)&&(c<=M) );
+}
+
+bool State::in_bounds_wall(int r , int c) {
+	return ( (r>1)&&(r<=N)&&(c>1)&&(c<=M) );	
 }
 
 /* Connectivity Follows */
@@ -339,7 +353,7 @@ bool State::connected_down_left(Position& p) {
 		//Destination isn't blocked.
 		
 		Position down = p.down();
-		Position left = p.left();
+		Position left_l = p.left();
 		if ( pos_other==down ) { //Case1 : Blocked above.
 			return (
 				(!wall_down(p))
@@ -348,11 +362,11 @@ bool State::connected_down_left(Position& p) {
 				);
 		}
 		
-		else if ( pos_other==left ) { //Case2 : Blocked to the right.
+		else if ( pos_other==left_l ) { //Case2 : Blocked to the right.
 			return (
 				(!wall_left(p))
 				&& wall_d_left(p)
-				&& (!wall_down(left) )
+				&& (!wall_down(left_l) )
 				);
 		} else {
 			return false;

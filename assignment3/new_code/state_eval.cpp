@@ -13,12 +13,18 @@ double nmt_cal(int diff)
 double State::evaluate()
 {
  
- 	double b = shortest_path(*this,this->mypn);							// my shortest path to goal
- 	double c = shortest_path(*this,(this->mypn==1)?(2):(1));				// opp shortest path to goal
+ 	double b = causal_moves.top().my_shortest_path;							// my shortest path to goal
+ 	double c = causal_moves.top().op_shortest_path;							// opp shortest path to goal
+ 	if ( b==-1 ) {
+ 		b = shortest_path(mypn);
+ 	}
+ 	if ( c==-1) {
+ 		c = shortest_path(opn);
+ 	}
 	double a = c-b;															// my shortest path - opp shortest path
 //	cout << "----------\n"; cout << "b= " << b << " " << "c= " << c << " a= " << a << "\n"; pos_present.print(true) ; cout << endl ; pos_other.print(true) ; cout << endl;
- 	if (I_won()) { /*cout <<"eval: " << 100000<<endl; */return (100000 + a);}
- 	if (I_lost()) {/*cout <<"eval: " << 100000<<endl;*/ return (-100000 + a );}
+ 	if (i_won()) { /*cout <<"eval: " << 100000<<endl; */return (100000 + a);}
+ 	if (i_lost()) {/*cout <<"eval: " << 100000<<endl;*/ return (-100000 + a );}
 
 
 	double wc = ((50-plies)/50)*((50-plies)/50)*((this->mypn==this->pn)?(this->n_present_walls):(this->n_other_walls));	// only for the walls I used (wall_cost)

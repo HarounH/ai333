@@ -9,10 +9,7 @@ void Position::print() {
 void Move::print() {
 	cout << "Move("<<m<<","<<r<<","<<c<<")"<<"shortpath="<<my_shortest_path<<","<<op_shortest_path<<" from="; from.print(); 
 }
-void State::print() {
-
-}
-void Player::print(bool pr) {
+void Player::print() {
 	cout << "####PLAYER####\n";
 	cout << "\tpn="<<pn<<"\n";
 	cout << "\twls="<< remaining_walls << "\n";
@@ -37,6 +34,7 @@ void State::init(int n, int m , int k , int _mypn) {
 	K = k;
 	pn = 1;
 	mypn = _mypn;
+	opn = ((mypn==1)?(2):(1));
 	plies = 0;
 	n_present_walls = K; n_other_walls = K;
 	pos_present = make_pair(1,(M+1)/2);
@@ -47,6 +45,22 @@ void State::init(int n, int m , int k , int _mypn) {
 	is_wall_H = vector<vector<bool> >(N+3, vector<bool>(M+3,false));		// SNair - changed way of declaration
 	is_wall_V = vector<vector<bool> >(N+3, vector<bool>(M+3,false));		// H - likes this way of declaration.
 	return;
+}
+State& State::operator=(const State& s) {
+	N = s.N; M = s.M; K = s.K; pn = s.pn;
+	mypn = s.mypn; opn=s.opn;
+	causal_moves = s.causal_moves;
+	plies = s.plies;
+	pos_present = s.pos_present;
+	pos_other = s.pos_other;
+	n_present_walls = s.n_present_walls;
+	n_other_walls = s.n_other_walls;
+
+	is_wall_H = s.is_wall_H;
+	is_wall_V = s.is_wall_V;
+	wall_H = s.wall_H;
+	wall_V = s.wall_V;
+	return *this;
 }
 
 void State::toggle_player() {
@@ -80,10 +94,13 @@ void State::apply_move(Move& m) { //assumes that the move is valid
 	}
 	toggle_player();
 	plies++;
+	causal_moves.push(m);
 }
 
 void State::unapply_move(Move& m) {
 	//Doesn't need changes to handle passing.
+	causal_moves.pop(); //Requires that the move played be correct.
+	plies--;
 	toggle_player();						// SNair - moved toggle up
 	if ( m.m==0 ) {
 		pos_present = m.from;
@@ -96,6 +113,5 @@ void State::unapply_move(Move& m) {
 		is_wall_V[m.r][m.c] = false;
 		wall_V.erase( make_pair(m.r,m.c) );
 	}
-	plies--;
 }
 #endif

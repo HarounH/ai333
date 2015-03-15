@@ -1,7 +1,7 @@
 #ifndef STATE_MOVES_STACK_CPP
 #define STATE_MOVES_STACK_CPP
 #endif
-void State::get_all_walls( std::stack<Move> moves ) {
+void State::get_all_walls_stack( std::stack<Move>& moves ) {
 	Move mov;
 	mov.pn = pn;
 	mov.from = pos_present;
@@ -24,7 +24,7 @@ void State::get_all_walls( std::stack<Move> moves ) {
 	}
 	return;	
 }
-void State::get_all_jumps( std::stack<Move>& moves , Position& _from ) {
+void State::get_all_jumps_stack( std::stack<Move>& moves , Position& _from ) {
 	Move mov;
 		mov.m = 0;
 		mov.pn = pn;
@@ -160,15 +160,17 @@ void State::get_all_jumps( std::stack<Move>& moves , Position& _from ) {
 }
 
 /* All jumps for present */
-void State::get_all_jumps(std::stack<Move> mov) {
+void State::get_all_jumps_stack(std::stack<Move>& mov) {
+	
 	if (present_won()) { //He can pass.
+		Move pas;
 		pas.from = pos_present;
 		pas.m = 0; pas.r=0; pas.c=0; pas.to=pas.from;
 		mov.push(pas);
 		return; 
 	}
 	else {
-		get_all_jumps(mov , pos_present);
+		get_all_jumps_stack(mov , pos_present);
 		return;
 	}
 }

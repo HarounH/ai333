@@ -6,21 +6,32 @@
 Why? Because i want to remember which table was the best path. 
 */
 #define INF 100000000
-enum NODE_TYPE {MAX_NODE, MIN_NODE};
-Move Player::iterative_mmx( int d , double t) { //Cares not for time limit.
-	//Requires that the moves always turn up in the same order.
-	NODE_TYPE node = MAX_NODE; //Initialize it to my pn.
-	stack<Move> fringe;
+/*enum NODE_TYPE {MAX_NODE, MIN_NODE} - I dont need it because My depth tells me whether I'm a minnode or a max node
+	even depth means that I'm at a max node. Odd depth means that i'm at a min node.
+*/
 
-	std::vector<Move> node_children;
-	/*Initialize loc state.
-		Dont need to because the player already has locState.
-	*/
-	locState.get_all_moves(node_children);
-}
 
-/* Old minimax . */
-/* MINIMAX (with Alpha Beta Pruning, with cutoff)
+//UNCOMMENT THE LOWER SECTION 
+// Move Player::iterative_mmx( int d , double t) { //Cares not for time limit.
+// 	//Requires that the moves always turn up in the same order.
+// 	double alpha = -INF;
+// 	double beta  = +INF;
+	
+// 	stack<Move> fringe; //Implementing a dfs, basically.
+// 	stack<Move> path_taken; //Remembers the path taken so far.
+// 	std::vector<Move> node_children;
+// 	/*Initialize loc state.
+// 		Dont need to because the player already has locState.
+// 	*/
+// 	locState.get_all_moves(fringe); //Put all the moves into the stack
+	
+// 	do {
+
+// 	}while();
+// }
+
+/* Old minimax . 
+*//* MINIMAX (with Alpha Beta Pruning, with cutoff)
  *-------------------------------------------------
  * Recursive implementation
  * idea is to use local state element and pass it around in the tree
@@ -30,7 +41,7 @@ Move Player::iterative_mmx( int d , double t) { //Cares not for time limit.
  * INVARIANT: max_value and min_value return state unchanged in the end	
  * ------------------------------------------------- */									
 #define INFTY 100000000
-Move Player::minimax( int depth , float time_limit )
+Move Player::ordinary_mmx( int depth , float time_limit )
 {
 	// locState = gblState;		// init
 	
@@ -53,7 +64,7 @@ double Player::max_value(double alpha, double beta, int cutoff, int curDepth, fl
 	// 	moves[i].eval = locState.evaluate();
 	// 	locState.unapply_move(moves[i]);
 	// }
-	// sort(moves.begin(), moves.end() , [](Move lhs,Move rhs){return lhs.eval>rhs.eval;} );
+	std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return ((lhs.op_shortest_path-lhs.my_shortest_path)>(rhs.op_shortest_path-rhs.my_shortest_path)) ;} );
 	for (vector<Move>::iterator it = moves.begin() ; it!=moves.end() ;it++)
 	{
 		Move t = *it;  // H - Changed the free usage of *it to a "save the value and do shit" because iterators can be scary things.
@@ -96,7 +107,7 @@ double Player::min_value(double alpha, double beta, int cutoff, int curDepth, fl
 	// 	moves[i].eval = locState.evaluate();
 	// 	locState.unapply_move(moves[i]);
 	// }
-	// std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return lhs.eval>rhs.eval;} );
+	std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return ((lhs.op_shortest_path-lhs.my_shortest_path)>(rhs.op_shortest_path-rhs.my_shortest_path)) ;} );
 	double v = +INFTY;
 	
 	for (vector<Move>::iterator it = moves.begin() ; it!=moves.end() ;it++)
