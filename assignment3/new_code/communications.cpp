@@ -41,8 +41,8 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c) {
 	if (gblState.plies/2==3 and !snair_flag and phc[3])
 	{
 		phc[3] = false;
-		Move iftwo(1,8,5);
-		Move ifone(1,3,5);
+		Move iftwo(1,7,5);
+		Move ifone(1,4,5);
 		//cout << "mypn " << gblState.mypn << " valid move : " << gblState.valid_move(iftwo) << endl;
 		if ((gblState.mypn==1) and gblState.valid_move(ifone)) {best_move.m=0;best_move = ifone; shouldimmx=false;}
 		else if ((gblState.mypn==2) and gblState.valid_move(iftwo)) {best_move.m=0;best_move = iftwo; shouldimmx=false;}
@@ -61,13 +61,13 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c) {
 // 		snair_flag = true;		// making it false, last hard coded move
 // 	} //Safely disregarding time for hard coded moves.
  	
-	if (snair_flag && shouldimmx and plies<45) {
- 		cout << "yo" << endl;
+	if ((snair_flag && shouldimmx) and !(gblState.n_present_walls == 0 or gblState.n_other_walls==0)) {
+ 		//cout << "yo" << endl;
  		res = ordinary_mmx(2,10); /* H - Need to make changes here. */
  	}
 	
-	if (snair_flag && shouldimmx and plies>=45) {
- 		cout << "muahahaha" << endl;
+	if (snair_flag && shouldimmx and (gblState.n_present_walls == 0 or gblState.n_other_walls==0)) {
+ 		cout << "depth 4 ahoy!" << endl;
  		res = ordinary_mmx(4,10); /* H - Need to make changes here. */
  	}
 	
@@ -87,7 +87,7 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c) {
 	locState.apply_move(res);
 	plies++;
 	
-	cout << "Move played " <<  m << " " << r << " " << c << " and bestmove=";
+	cout << "Move played " <<  m << " " << r << " " << c << "\n";
 	
 	// gblState.print(S_PRINT);
 	return;
