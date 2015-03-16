@@ -116,10 +116,11 @@ bool State::inLocality(int r, int c) 		// r,c 2->9
 	int o_c = pos_other.c;
 	//if ((r-p_r)>=-1 and (r-p_r<=2) and (c-p_c)>=-1 and (c-p_c<=2)) return true;
 	//if ((r-o_r)>=-1 and (r-o_r<=2) and (c-o_c)>=-1 and (c-o_c<=2)) return true;
-	//return (touchesWall(r-1,c-1) or touchesWall(r-1,c) or touchesWall(r-1,c+1) or touchesWall(r,c-1) or touchesWall(r,c+1) or touchesWall(r+1,c-1) or touchesWall(r+1,c) or touchesWall(r+1,c+1));		
+	//return (touchesWall(r-1,c) or touchesWall(r,c-1) or touchesWall(r,c+1)  or touchesWall(r+1,c) );	
+	
 	if ((r-p_r)>=-1 and (r-p_r<=2) and (c-p_c)>=-1 and (c-p_c<=2)) return true;
-	if ((r-o_r)>=-1 and (r-o_r<=2) and (c-o_c)>=-1 and (c-o_c<=2)) return true;
-	return (touchesWall(r-1,c) or touchesWall(r,c-1) or touchesWall(r,c+1)  or touchesWall(r+1,c) );	
+	if ((r-o_r)>=-1 and (r-o_r<=2) and (c-o_c)>=-1 and (c-o_c<=2)) return true;	
+	return (touchesWall(r-1,c-1) or touchesWall(r-1,c) or touchesWall(r-1,c+1) or touchesWall(r,c-1) or touchesWall(r,c+1) or touchesWall(r+1,c-1) or touchesWall(r+1,c) or touchesWall(r+1,c+1));		
 }
 
 /* General queries. */

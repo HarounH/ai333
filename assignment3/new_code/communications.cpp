@@ -77,7 +77,8 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c) {
 		
 	gblState.apply_move(res);
 	locState.apply_move(res);
-
+	plies++;
+	
 	cout << "Move played " <<  m << " " << r << " " << c << " and bestmove=";
 	best_move.print();
 	
@@ -100,7 +101,7 @@ void Player::read_move_from_client_cpp(int& m ,int& r, int& c) {
 		res.eval = -1.0;
 	gblState.apply_move(res);
 	locState.apply_move(res);
-
+	plies++;
 	// gblState.print(S_PRINT);
 	return;
 }
