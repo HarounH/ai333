@@ -189,7 +189,7 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 /* All jumps for present */
 void State::get_all_jumps(std::vector<Move>& mov) {
 	if (present_won()) { //He can pass.
-		cout << "hi, present won \n";
+		//cout << "hi, present won \n";
 		Move pas;
 		pas.from = pos_present;
 		pas.m = 0; pas.r=0; pas.c=0; pas.to=pas.from;

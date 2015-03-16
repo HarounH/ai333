@@ -82,7 +82,11 @@ void State::toggle_player() {
 void State::apply_move(Move& m) { //assumes that the move is valid
 	//Doesnt need changes to handle passing.
 	if ( m.m==0 ) {
-		pos_present = m.to;
+		if ( m.c==0 && m.r == 0) {
+			//
+		} else {
+			pos_present = m.to;
+		}
 	} else if ( m.m==1 ) {
 		n_present_walls--;
 		is_wall_H[m.r][m.c] = true;
@@ -92,6 +96,7 @@ void State::apply_move(Move& m) { //assumes that the move is valid
 		is_wall_V[m.r][m.c] = true;
 		wall_V.insert( make_pair(m.r,m.c) );
 	}
+
 	toggle_player();
 	plies++;
 	causal_moves.push(m);
@@ -103,7 +108,12 @@ void State::unapply_move(Move& m) {
 	plies--;
 	toggle_player();						// SNair - moved toggle up
 	if ( m.m==0 ) {
-		pos_present = m.from;
+		if (m.r==0 && m.c==0) {
+			
+		} else {
+			pos_present = m.from;
+		}
+		
 	} else if ( m.m==1 ) {
 		n_present_walls++;
 		is_wall_H[m.r][m.c] = false;

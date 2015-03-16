@@ -34,7 +34,6 @@ double State::evaluate()
  	if (i_won()) { /*cout <<"eval: " << 100000<<endl; */return (100000 + a);}
  	if (i_lost()) {/*cout <<"eval: " << 100000<<endl;*/ return (-100000 + a);}
 
-
 	double wc;
 
 	if (plies<50) {wc = ((50-plies)/50)*((50-plies)/50)*((this->mypn==this->pn)?(this->n_present_walls):(this->n_other_walls));}	// only for the walls I used (wall_cost)

@@ -46,29 +46,30 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c) {
 		//cout << "mypn " << gblState.mypn << " valid move : " << gblState.valid_move(iftwo) << endl;
 		if ((gblState.mypn==1) and gblState.valid_move(ifone)) {best_move.m=0;best_move = ifone; shouldimmx=false;}
 		else if ((gblState.mypn==2) and gblState.valid_move(iftwo)) {best_move.m=0;best_move = iftwo; shouldimmx=false;}
-		else snair_flag = true;
+		
+		snair_flag = true;
 	}
-	if (gblState.plies/2==4 and !snair_flag and phc[4])
-	{
-		phc[4] =false;
-		Move iftwo(1,8,3);
-		Move ifone(1,3,3);
-		//cout << "mypn " << gblState.mypn << " valid move : " << gblState.valid_move(iftwo) << endl;
-		if ((gblState.mypn==1) and gblState.valid_move(ifone)) {best_move.m=0;best_move = ifone; shouldimmx=false;}
-		else if ((gblState.mypn==2) and gblState.valid_move(iftwo)) {best_move.m=0;best_move = iftwo; shouldimmx=false;}
-
-		snair_flag = true;		// making it false, last hard coded move
-	} //Safely disregarding time for hard coded moves.
+	// if (gblState.plies/2==4 and !snair_flag and phc[4])
+// 	{
+// 		phc[4] =false;
+// 		Move iftwo(1,8,3);
+// 		Move ifone(1,3,3);
+// 		//cout << "mypn " << gblState.mypn << " valid move : " << gblState.valid_move(iftwo) << endl;
+// 		if ((gblState.mypn==1) and gblState.valid_move(ifone)) {best_move.m=0;best_move = ifone; shouldimmx=false;}
+// 		else if ((gblState.mypn==2) and gblState.valid_move(iftwo)) {best_move.m=0;best_move = iftwo; shouldimmx=false;}
+//
+// 		snair_flag = true;		// making it false, last hard coded move
+// 	} //Safely disregarding time for hard coded moves.
  	
-	if (snair_flag && shouldimmx and plies<50) {
+	if (snair_flag && shouldimmx /*and plies<45*/) {
  		cout << "yo" << endl;
  		res = ordinary_mmx(2,10); /* H - Need to make changes here. */
  	}
 	
-	if (snair_flag && shouldimmx and plies>=50) {
- 		cout << "muahahaha" << endl;
- 		res = ordinary_mmx(4,10); /* H - Need to make changes here. */
- 	}
+	// if (snair_flag && shouldimmx and plies>=45) {
+	//  		cout << "muahahaha" << endl;
+	//  		res = ordinary_mmx(4,10); /* H - Need to make changes here. */
+	//  	}
 	
 
 		res.m = best_move.m;
@@ -87,7 +88,6 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c) {
 	plies++;
 	
 	cout << "Move played " <<  m << " " << r << " " << c << " and bestmove=";
-	best_move.print();
 	
 	// gblState.print(S_PRINT);
 	return;
