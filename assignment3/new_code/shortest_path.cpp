@@ -1,6 +1,8 @@
 #ifndef SHORTEST_PATH_CPP
 #define SHORTEST_PATH_CPP
 /* Functions that compute shortest path. */
+/* We use bfs instead of A* etc, because it really shouldn't matter.
+Also, the moves are returned as : up/down/left/right. */
 double State::shortest_path(int _for) {
 	// cout << "####shortest_path_brk1\t _for=" << _for << "\n";
 	Position cur;

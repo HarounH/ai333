@@ -7,24 +7,24 @@
 /* ----add here ----*/
 /* validity queries .*/
 bool State::valid_wall(Move& m) { //Also calculates the shortest paths. (it does this for bfs anyway. )
-	cout << "###brk1\n";
+	// cout << "###brk1\n";
 	if ( is_wall_H[m.r][m.c] || is_wall_V[m.r][m.c] || (!(n_present_walls>0))) { 
 		return false;
 	}
-	cout << "###brk2\n";
+	// cout << "###brk2\n";
 	if (m.m == 1) {
 		if ( (m.c==1) || (m.c==M+1) || is_wall_H[m.r][m.c-1] || is_wall_H[m.r][m.c+1] ) {
 			return false;
 		} else {
-			cout << "###brk3\n";
+			// cout << "###brk3\n";
 			apply_move(m);
-			cout << "###brk4\n";
+			// cout << "###brk4\n";
 			m.my_shortest_path=shortest_path(mypn);
-			cout << "###brk5\n";
+			// cout << "###brk5\n";
 			m.op_shortest_path=shortest_path(opn);
-			cout << "###brk6\n";
+			// cout << "###brk6\n";
 			unapply_move(m);
-			cout << "###brk7\n";
+			// cout << "###brk7\n";
 			return ((m.op_shortest_path>=0)&&(m.my_shortest_path>=0));
 		}
 	} else if ( m.m == 2) {

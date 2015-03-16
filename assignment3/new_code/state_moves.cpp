@@ -2,6 +2,7 @@
 #define STATE_MOVES
 /* All functions that return moves from a state (sometimes,given a position.) */
 
+/* Function edite so that the jumps are returned in the up-right-left-down order. */
 /* All jumps from a specific starting point. */
 void State::get_all_walls( std::vector<Move>& moves ) {
 	Move mov;
@@ -78,42 +79,6 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 		}
 	}
 
-
-	//Downward!
-	if ( connected_down(mov.from) ) {
-		mov.to = mov.from.down();
-		mov.r = mov.to.r;
-		mov.c = mov.to.c;
-
-		moves.push_back(mov); 
-	} else if ( flag ) {
-		if ( connected_d_down(mov.from) ) {
-			mov.to = mov.from.d_down();
-			mov.r = mov.to.r;
-			mov.c=mov.to.c;
-
-			moves.push_back(mov); 
-			flag = false;
-		} else {
-			if ( connected_down_right(mov.from) ) {
-				mov.to = mov.from.down_right();
-				mov.r = mov.to.r;
-				mov.c=mov.to.c;
-
-				moves.push_back(mov); 
-				flag = false;
-			}
-			if ( connected_down_left(mov.from) ) {
-				mov.to = mov.from.down_left();
-				mov.r = mov.to.r;
-				mov.c=mov.to.c;
-
-				moves.push_back(mov); 
-				flag = false;	
-			}
-		}
-	}
-
 	//Rightward!
 	if ( connected_right(mov.from) ) {
 		mov.to = mov.from.right();
@@ -167,6 +132,41 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 		} else {
 			if ( connected_up_left(mov.from) ) {
 				mov.to = mov.from.up_left();
+				mov.r = mov.to.r;
+				mov.c=mov.to.c;
+
+				moves.push_back(mov); 
+				flag = false;
+			}
+			if ( connected_down_left(mov.from) ) {
+				mov.to = mov.from.down_left();
+				mov.r = mov.to.r;
+				mov.c=mov.to.c;
+
+				moves.push_back(mov); 
+				flag = false;	
+			}
+		}
+	}
+
+	//Downward!
+	if ( connected_down(mov.from) ) {
+		mov.to = mov.from.down();
+		mov.r = mov.to.r;
+		mov.c = mov.to.c;
+
+		moves.push_back(mov); 
+	} else if ( flag ) {
+		if ( connected_d_down(mov.from) ) {
+			mov.to = mov.from.d_down();
+			mov.r = mov.to.r;
+			mov.c=mov.to.c;
+
+			moves.push_back(mov); 
+			flag = false;
+		} else {
+			if ( connected_down_right(mov.from) ) {
+				mov.to = mov.from.down_right();
 				mov.r = mov.to.r;
 				mov.c=mov.to.c;
 

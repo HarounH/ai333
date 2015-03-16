@@ -107,7 +107,7 @@ double Player::min_value(double alpha, double beta, int cutoff, int curDepth, fl
 	// 	moves[i].eval = locState.evaluate();
 	// 	locState.unapply_move(moves[i]);
 	// }
-	std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return ((lhs.op_shortest_path-lhs.my_shortest_path)>(rhs.op_shortest_path-rhs.my_shortest_path)) ;} );
+	std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return ((lhs.op_shortest_path-lhs.my_shortest_path)<(rhs.op_shortest_path-rhs.my_shortest_path)) ;} );
 	double v = +INFTY;
 	
 	for (vector<Move>::iterator it = moves.begin() ; it!=moves.end() ;it++)

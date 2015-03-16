@@ -68,9 +68,9 @@ public:
 	double my_shortest_path, op_shortest_path;
 	int mmx_d; //Depth in the game tree.
 
-	Move() { mmx_d = -1; }
+	Move() { mmx_d = -1; my_shortest_path = -1;op_shortest_path=-1; }
 	~Move() {}
-	Move(int M, int R, int C) 	{ m=M; to.r = R; to.c = C; r=R; c=C; mmx_d = -1; }
+	Move(int M, int R, int C) 	{ m=M; to.r = R; to.c = C; r=R; c=C; mmx_d = -1; my_shortest_path = -1; op_shortest_path=-1; }
 	Move& operator=(Move mov) 	{ /* SORT and MMX had problems with this. So I want to make sure that this is correct. each time. */
 		m=mov.m; 
 		pn=mov.pn; 
