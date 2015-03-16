@@ -52,7 +52,7 @@ Move Player::ordinary_mmx( int depth , float time_limit )
 
 double Player::max_value(double alpha, double beta, int cutoff, int curDepth, float time_limit)
 {
-	if (cutoff == curDepth or locState.is_endgame()) return locState.evaluate();
+	if (cutoff == curDepth or locState.i_won() or locState.i_lost() ) return locState.evaluate();
 
 	vector<Move> moves; locState.get_all_moves(moves);
 	// cout << " ########### BEGIN LOC_STATE in max_value of depth="<<curDepth<<"########### \n";
@@ -96,7 +96,7 @@ double Player::max_value(double alpha, double beta, int cutoff, int curDepth, fl
 
 double Player::min_value(double alpha, double beta, int cutoff, int curDepth, float time_limit)
 {
-	if (cutoff == curDepth or  locState.is_endgame()) return locState.evaluate();
+	if (cutoff == curDepth or locState.i_won() or locState.i_lost()) return locState.evaluate();
 	
 	vector<Move> moves; locState.get_all_moves(moves);
 	// cout << " ########### BEGIN LOC_STATE in min_value of depth="<<curDepth<<"########### \n";

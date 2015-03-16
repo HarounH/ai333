@@ -61,15 +61,15 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c) {
 // 		snair_flag = true;		// making it false, last hard coded move
 // 	} //Safely disregarding time for hard coded moves.
  	
-	if (snair_flag && shouldimmx /*and plies<45*/) {
+	if (snair_flag && shouldimmx and plies<45) {
  		cout << "yo" << endl;
  		res = ordinary_mmx(2,10); /* H - Need to make changes here. */
  	}
 	
-	// if (snair_flag && shouldimmx and plies>=45) {
-	//  		cout << "muahahaha" << endl;
-	//  		res = ordinary_mmx(4,10); /* H - Need to make changes here. */
-	//  	}
+	if (snair_flag && shouldimmx and plies>=45) {
+ 		cout << "muahahaha" << endl;
+ 		res = ordinary_mmx(4,10); /* H - Need to make changes here. */
+ 	}
 	
 
 		res.m = best_move.m;
