@@ -159,7 +159,18 @@ public:
 	void get_all_jumps(vector<Move>& moves);
 	void get_all_jumps(vector<Move>& moves , Position& p);	
 	void get_all_walls(vector<Move>& moves);
-	void get_all_moves(vector<Move>& moves) { get_all_jumps(moves); get_all_walls(moves); /*cout << "branching factor : " << moves.size()  << endl; */}
+	void get_all_moves(vector<Move>& moves) 
+	{ 
+		get_all_jumps(moves); 
+		
+// 		for (int i = 0 ; i<moves.size() ; i++)
+// 			moves[i].print();
+// 		cout << "\n" ;
+		
+		get_all_walls(moves);
+		
+		/*cout << "branching factor : " << moves.size()  << endl; */
+	}
 
 	void get_all_jumps_stack(stack<Move>& moves);
 	void get_all_jumps_stack(stack<Move>& moves , Position& p);	

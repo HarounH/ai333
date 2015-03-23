@@ -41,8 +41,8 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c) {
 	if (gblState.plies/2==3 and !snair_flag and phc[3])
 	{
 		phc[3] = false;
-		Move iftwo(1,7,5);
-		Move ifone(1,4,5);
+		Move iftwo(1,8,5);
+		Move ifone(1,3,5);
 		//cout << "mypn " << gblState.mypn << " valid move : " << gblState.valid_move(iftwo) << endl;
 		if ((gblState.mypn==1) and gblState.valid_move(ifone)) {best_move.m=0;best_move = ifone; shouldimmx=false;}
 		else if ((gblState.mypn==2) and gblState.valid_move(iftwo)) {best_move.m=0;best_move = iftwo; shouldimmx=false;}
@@ -52,8 +52,8 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c) {
 	// if (gblState.plies/2==4 and !snair_flag and phc[4])
 // 	{
 // 		phc[4] =false;
-// 		Move iftwo(1,8,3);
-// 		Move ifone(1,3,3);
+// 		Move iftwo(1,7,7);
+// 		Move ifone(1,4,7);
 // 		//cout << "mypn " << gblState.mypn << " valid move : " << gblState.valid_move(iftwo) << endl;
 // 		if ((gblState.mypn==1) and gblState.valid_move(ifone)) {best_move.m=0;best_move = ifone; shouldimmx=false;}
 // 		else if ((gblState.mypn==2) and gblState.valid_move(iftwo)) {best_move.m=0;best_move = iftwo; shouldimmx=false;}
