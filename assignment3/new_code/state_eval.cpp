@@ -55,7 +55,7 @@ double State::evaluate()
 	nmt = nmt_cal(nmt);
 	// not more than three walls than oponent
 		
- 	double e=  a*abs(a) - 5*b + 3*wc - 3.5*nmt - causal_moves.size();
+ 	double e=  a*abs(a) - 5*b + 3*wc - 3.5*nmt ;
 	Move temp = causal_moves.top();
 	causal_moves.pop();
 	temp.eval = e;

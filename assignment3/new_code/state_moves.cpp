@@ -20,6 +20,8 @@ void State::get_all_walls( std::vector<Move>& moves ) {
 					apply_move(mov);
 					mov.my_shortest_path=shortest_path(mypn);
 					mov.op_shortest_path=shortest_path(opn);
+					causal_moves.pop();
+					causal_moves.push(mov);
 					mov.eval = evaluate();
 					unapply_move(mov);
 					moves.push_back(mov);
@@ -31,6 +33,8 @@ void State::get_all_walls( std::vector<Move>& moves ) {
 					apply_move(mov);
 					mov.my_shortest_path=shortest_path(mypn);
 					mov.op_shortest_path=shortest_path(opn);
+					causal_moves.pop();
+					causal_moves.push(mov);
 					mov.eval = evaluate();
 					unapply_move(mov);
 

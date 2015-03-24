@@ -24,7 +24,7 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c) {
 	{	phc[1] = false;
 		Move iftwo(0,7,5);iftwo.from = Position(8,5);iftwo.to = Position(7,5);
 		Move ifone(0,3,5);ifone.from = Position(2,5);ifone.to = Position(3,5);
-//		cout << "mypn " << gblState.mypn << " valid move : " << gblState.valid_move(iftwo) << endl;
+//		cout << "mypn " << gblState.mypn <<st " valid move : " << gblState.valid_move(iftwo) << endl;
 		if ((gblState.mypn==1) and gblState.valid_move(ifone)) {best_move.m=0;best_move = ifone; shouldimmx=false;}
 		else if ((gblState.mypn==2) and gblState.valid_move(iftwo)) {best_move.m=0;best_move = iftwo; shouldimmx=false;}
 		else snair_flag = true;
@@ -61,32 +61,16 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c) {
 // 		snair_flag = true;		// making it false, last hard coded move
 // 	} //Safely disregarding time for hard coded moves.
  	bool h_flag = true;
-	// if ((h_flag && snair_flag && shouldimmx && locState.i_lost())) {
+	
+	if ((h_flag && snair_flag && shouldimmx && locState.i_lost())) {
 		
-	// 	res = ordinary_mmx(1,10);
-	// 	h_flag = false;
-	// }
-	if ((h_flag && snair_flag && shouldimmx) and (!(gblState.n_present_walls <= 1 or gblState.n_other_walls<=1) || (remaining_time<10)) ) {
+		res = ordinary_mmx(1,10);
+		h_flag = false;
+	}
+	if (h_flag && snair_flag && shouldimmx) {
  		//cout << "yo" << endl;
  		res = ordinary_mmx(2,10); /* H - Need to make changes here. */
- 		h_flag = false;
  	}
- 	if ( h_flag &&  snair_flag && shouldimmx and (gblState.n_present_walls<=1 && gblState.n_other_walls<=1)) {
-		cout << "6 hi\n";
-		res = ordinary_mmx(6,10);
-		h_flag = false;
-	}
-	if ( h_flag &&  snair_flag && shouldimmx and (gblState.n_present_walls==1 || gblState.n_other_walls==1)) {
-		cout << "1 wall left hi\n";
-		res = ordinary_mmx(4,10);
-		h_flag = false;
-	}
-	if (h_flag &&  snair_flag && shouldimmx and (gblState.n_present_walls == 0 or gblState.n_other_walls==0)) {
- 		cout << "depth 4 ahoy!" << endl;
- 		res = ordinary_mmx(4,10); /* H - Need to make changes here. */
- 		h_flag = false;
- 	}
-	
 
 		res.m = best_move.m;
 		res.r = best_move.to.r;

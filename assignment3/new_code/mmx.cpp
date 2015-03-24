@@ -67,9 +67,9 @@ double Player::max_value(double alpha, double beta, int cutoff, int curDepth, fl
 	//std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return ((lhs.op_shortest_path-lhs.my_shortest_path)>(rhs.op_shortest_path-rhs.my_shortest_path)) ;} );
 	std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return (lhs.eval>rhs.eval) ;} );
 	vector<Move>::iterator mend = moves.end();
-	if ( curDepth > 4 ) {
-		mend = moves.begin() + 1 + (moves.size()/2);
-	}
+	// if ( curDepth > 4 ) {
+	// 	mend = moves.begin() + 1 + (moves.size()/2);
+	// }
 	for (vector<Move>::iterator it = moves.begin() ; it!=mend ;it++)
 	{
 		Move t = *it;  // H - Changed the free usage of *it to a "save the value and do shit" because iterators can be scary things.
@@ -117,9 +117,9 @@ double Player::min_value(double alpha, double beta, int cutoff, int curDepth, fl
 	std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return (lhs.eval<rhs.eval) ;} );
 	double v = +INFTY;
 	vector<Move>::iterator mend = moves.end();
-	if ( curDepth > 4 ) {
-		mend = moves.begin() + 1 + (moves.size()/2);
-	}
+	// if ( curDepth > 4 ) {
+	// 	mend = moves.begin() + 1 + (moves.size()/2);
+	// }
 
 	for (vector<Move>::iterator it = moves.begin() ; it!=mend ;it++)
 	{

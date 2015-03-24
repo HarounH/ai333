@@ -1,17 +1,100 @@
-\documentclass{article}
-\usepackage{graphicx}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Journal Article
+% LaTeX Template
+% Version 1.3 (9/9/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[twoside]{article}
+
+
+\usepackage[sc]{mathpazo} % Use the Palatino font
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\linespread{1.05} % Line spacing - Palatino needs more space between lines
+\usepackage{microtype} % Slightly tweak font spacing for aesthetics
+
+\usepackage[hmarginratio=1:1,top=25mm,columnsep=20pt]{geometry} % Document margins
+\usepackage{multicol} % Used for the two-column layout of the document
+\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % Custom captions under/above floats in tables or figures
+\usepackage{booktabs} % Horizontal rules in tables
+\usepackage{float} % Required for tables and figures in the multi-column environment - they need to be placed in specific locations with the [H] (e.g. \begin{table}[H])
+\usepackage{hyperref} % For hyperlinks in the PDF
+
+\usepackage{lettrine} % The lettrine is the first enlarged letter at the beginning of the text
+\usepackage{paralist} % Used for the compactitem environment which makes bullet points with less space between them
+
+\usepackage{abstract} % Allows abstract customization
+\renewcommand{\abstractnamefont}{\normalfont\bfseries} % Set the "Abstract" text to bold
+\renewcommand{\abstracttextfont}{\normalfont\small\itshape} % Set the abstract itself to small italic text
+
+\usepackage{titlesec} % Allows customization of titles
+\renewcommand\thesection{\Roman{section}} % Roman numerals for the sections
+\renewcommand\thesubsection{\Roman{subsection}} % Roman numerals for subsections
+\titleformat{\section}[block]{\large\scshape\centering}{\thesection.}{1em}{} % Change the look of the section titles
+\titleformat{\subsection}[block]{\large}{\thesubsection.}{1em}{} % Change the look of the section titles
+
+\usepackage{fancyhdr} % Headers and footers
+\pagestyle{fancy} % All pages have headers and footers
+\fancyhead{} % Blank out the default header
+\fancyfoot{} % Blank out the default footer
+\fancyhead[C]{CSL333 Artificial Intelligence - Assignment 3} % Custom header text
+\fancyfoot[RO,LE]{\thepage} % Custom footer text
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\title{\vspace{-15mm}\fontsize{24pt}{10pt}\selectfont\textbf{Quoridor}} % Article title
+\date{}
+
+%----------------------------------------------------------------------------------------
+
 \begin{document}
-
-\title{ CSL333:Quoridor AI, Phase 1}
-\author{\textbf{Surag Nair}\\2013EE10xxx
-\and
-\textbf{Haroun Habeeb}\\2013CS10225}
-\maketitle
-
+\author{
+\textsc{Haroun Habeeb} \\{2013CS10225} \and \textsc{Surag Nair} \\{2013EE10504} 
+}
+\pagenumbering{gobble}
+\maketitle % Insert title
+\thispagestyle{fancy} % All pages have headers and footers
 \section{Algorithm}
-Minimax with alpha-beta pruning was used.
+The player employs a Minimax Search with Alpha Beta Pruning of depth 2. We haven't been able to search deeper given the time constraints, so that's one area where we would want to improve.
+
+\section{Implementation}
+The game has been modelled as a graph with edges between two points on the grid being a boolean. All necessary checks are made to ensure a valid move is played.
 
 \section{Evaluation Function}
+A crude evaluation function has been used for the purpose of this assignment. The weights have been chosen somewhat arbitrarily and we did not get the time to  implement learning of coefficients. Our evaluation function takes into consideration 
 
-\section{Acknowledgements}
+\begin{itemize}
+\item the shortest distance to goal
+
+\item the difference of the shortest distances of both players to goal
+
+\item makes walls more expensive in the beginning of the game
+
+\item tries not to use a lot more walls than the opponent. 
+\end{itemize}
+\vspace{0.5cm}
+Discussed with Akshay Gupta, Shreyas Padhy and Kabir Chhabra.
+%----------------------------------------------------------------------------------------
+%	REFERENCE LIST
+%----------------------------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------------------------
+
+
 \end{document}
