@@ -53,7 +53,7 @@ Move Player::ordinary_mmx( int depth , float time_limit )
 double Player::max_value(double alpha, double beta, int cutoff, int curDepth, float time_limit)
 {
 	//if (cutoff == curDepth or locState.i_won() or locState.i_lost() ) return locState.evaluate();
-	if (cutoff == curDepth or locState.is_endgame() /*or locState.i_won()*/) return locState.evaluate();
+	if (cutoff == curDepth or locState.is_endgame() or (locState.i_won() and !locState.i_lost())) return locState.evaluate();
 	
 	vector<Move> moves; locState.get_all_moves(moves);
 	// cout << " ########### BEGIN LOC_STATE in max_value of depth="<<curDepth<<"########### \n";
@@ -65,7 +65,7 @@ double Player::max_value(double alpha, double beta, int cutoff, int curDepth, fl
 	// 	moves[i].eval = locState.evaluate();
 	// 	locState.unapply_move(moves[i]);
 	// }
-	std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return ((lhs.op_shortest_path-lhs.my_shortest_path)>(rhs.op_shortest_path-rhs.my_shortest_path)) ;} );
+	//std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return ((lhs.op_shortest_path-lhs.my_shortest_path)>(rhs.op_shortest_path-rhs.my_shortest_path)) ;} );
 	for (vector<Move>::iterator it = moves.begin() ; it!=moves.end() ;it++)
 	{
 		Move t = *it;  // H - Changed the free usage of *it to a "save the value and do shit" because iterators can be scary things.
@@ -98,7 +98,7 @@ double Player::max_value(double alpha, double beta, int cutoff, int curDepth, fl
 double Player::min_value(double alpha, double beta, int cutoff, int curDepth, float time_limit)
 {
 	//if (cutoff == curDepth or locState.i_won() or locState.i_lost()) return locState.evaluate();
-	if (cutoff == curDepth or locState.is_endgame() /*or locState.i_won()*/) return locState.evaluate();
+	if (cutoff == curDepth or locState.is_endgame() or (locState.i_won() and !locState.i_lost())) return locState.evaluate();
 	
 	vector<Move> moves; locState.get_all_moves(moves);
 	// cout << " ########### BEGIN LOC_STATE in min_value of depth="<<curDepth<<"########### \n";
@@ -109,7 +109,7 @@ double Player::min_value(double alpha, double beta, int cutoff, int curDepth, fl
 	// 	moves[i].eval = locState.evaluate();
 	// 	locState.unapply_move(moves[i]);
 	// }
-	std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return ((lhs.op_shortest_path-lhs.my_shortest_path)<(rhs.op_shortest_path-rhs.my_shortest_path)) ;} );
+	//std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return ((lhs.op_shortest_path-lhs.my_shortest_path)<(rhs.op_shortest_path-rhs.my_shortest_path)) ;} );
 	double v = +INFTY;
 	
 	for (vector<Move>::iterator it = moves.begin() ; it!=moves.end() ;it++)
