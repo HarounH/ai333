@@ -12,6 +12,8 @@
 #include <cstdlib>
 #include <queue>
 
+#include <ctime>
+
 using namespace std;
 /* Complete the function below to print 1 integer which will be your next move 
    */

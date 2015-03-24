@@ -87,7 +87,7 @@ bool State::touchesWall(int r, int c) 		// r,c 1->10
 	Position p;
 	
 	p.r = r ; p.c =c;
-	if (in_bounds(p)) {flag = (is_wall_H[r][c] and is_wall_V[r][c]);}
+	if (in_bounds(p)) {flag = (is_wall_H[r][c] or is_wall_V[r][c]);}
 	if (flag) return flag;
 
 	p.r = r-1 ; p.c =c;

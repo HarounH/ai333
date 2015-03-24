@@ -60,15 +60,31 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c) {
 //
 // 		snair_flag = true;		// making it false, last hard coded move
 // 	} //Safely disregarding time for hard coded moves.
- 	
-	if ((snair_flag && shouldimmx) and !(gblState.n_present_walls == 0 or gblState.n_other_walls==0)) {
+ 	bool h_flag = true;
+	// if ((h_flag && snair_flag && shouldimmx && locState.i_lost())) {
+		
+	// 	res = ordinary_mmx(1,10);
+	// 	h_flag = false;
+	// }
+	if ((h_flag && snair_flag && shouldimmx) and (!(gblState.n_present_walls <= 1 or gblState.n_other_walls<=1) || (remaining_time<10)) ) {
  		//cout << "yo" << endl;
  		res = ordinary_mmx(2,10); /* H - Need to make changes here. */
+ 		h_flag = false;
  	}
-	
-	if (snair_flag && shouldimmx and (gblState.n_present_walls == 0 or gblState.n_other_walls==0)) {
+ 	if ( h_flag &&  snair_flag && shouldimmx and (gblState.n_present_walls<=1 && gblState.n_other_walls<=1)) {
+		cout << "6 hi\n";
+		res = ordinary_mmx(6,10);
+		h_flag = false;
+	}
+	if ( h_flag &&  snair_flag && shouldimmx and (gblState.n_present_walls==1 || gblState.n_other_walls==1)) {
+		cout << "1 wall left hi\n";
+		res = ordinary_mmx(4,10);
+		h_flag = false;
+	}
+	if (h_flag &&  snair_flag && shouldimmx and (gblState.n_present_walls == 0 or gblState.n_other_walls==0)) {
  		cout << "depth 4 ahoy!" << endl;
  		res = ordinary_mmx(4,10); /* H - Need to make changes here. */
+ 		h_flag = false;
  	}
 	
 

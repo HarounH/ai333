@@ -16,18 +16,22 @@ void State::get_all_walls( std::vector<Move>& moves ) {
 
 				mov.m = 1;
 				if ( (plies>40 or inLocality(r,c)) and valid_wall(mov) ) {
+					mov.eval = -1;
 					apply_move(mov);
 					mov.my_shortest_path=shortest_path(mypn);
 					mov.op_shortest_path=shortest_path(opn);
+					mov.eval = evaluate();
 					unapply_move(mov);
 					moves.push_back(mov);
 				
 				}
 				mov.m = 2;
 				if ( (plies>40 or inLocality(r,c)) and valid_wall(mov) ) {
+					mov.eval = -1;
 					apply_move(mov);
 					mov.my_shortest_path=shortest_path(mypn);
 					mov.op_shortest_path=shortest_path(opn);
+					mov.eval = evaluate();
 					unapply_move(mov);
 
 					moves.push_back(mov); 

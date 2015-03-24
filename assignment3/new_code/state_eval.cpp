@@ -12,6 +12,10 @@ double nmt_cal(int diff)
 
 double State::evaluate()
 {
+	Move mov = causal_moves.top();
+	if(mov.m!=0 && mov.eval!=-1 ) { //Return asap.
+		return mov.eval;
+	}
  
  	double b = causal_moves.top().my_shortest_path;							// my shortest path to goal
  	double c = causal_moves.top().op_shortest_path;							// opp shortest path to goal
@@ -36,19 +40,27 @@ double State::evaluate()
  	}
 	double a = c-b;															// my shortest path - opp shortest path
 //	cout << "----------\n"; cout << "b= " << b << " " << "c= " << c << " a= " << a << "\n"; pos_present.print(true) ; cout << endl ; pos_other.print(true) ; cout << endl;
+	if (is_endgame()) { return 1000000; }
  	if (i_won()) { /*cout <<"eval: " << 100000<<endl; */return (100000 + a);}
- 	if (i_lost()) {/*cout <<"eval: " << 100000<<endl;*/ return (-100000 - b);}
+ 	if (i_lost()) {/*cout <<"eval: " << 100000<<endl;*/ return (-100000 + a);}
 
 	double wc;
 
-	if (plies<50) {wc = ((50-plies)/50)*((50-plies)/50)*((this->mypn==this->pn)?(this->n_present_walls):(this->n_other_walls));}	// only for the walls I used (wall_cost)
+	if (plies<50) {
+		wc = ((50-plies)/50)*((50-plies)/50)*((this->mypn==this->pn)?(this->n_present_walls):(this->n_other_walls));
+	}	// only for the walls I used (wall_cost)
 	else wc = 0.0;
 	
 	double nmt = ((this->mypn==this->pn)?(this->n_other_walls - this->n_present_walls):(this->n_present_walls-this->n_other_walls));	
 	nmt = nmt_cal(nmt);
 	// not more than three walls than oponent
 		
- 	return a*abs(a) - 5*b + 3*wc - 3.5*nmt - causal_moves.size();
+ 	double e=  a*abs(a) - 5*b + 3*wc - 3.5*nmt - causal_moves.size();
+	Move temp = causal_moves.top();
+	causal_moves.pop();
+	temp.eval = e;
+	causal_moves.push(temp);
+	return e;
 	// double ans = w.diff_shortest_path(*this);
 	// return ans;
 //	return (rand()%10) ;

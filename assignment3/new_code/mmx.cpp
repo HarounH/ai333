@@ -46,14 +46,13 @@ Move Player::ordinary_mmx( int depth , float time_limit )
 	// locState = gblState;		// init
 	
 	max_value( -INFTY, +INFTY , depth, 0, time_limit);								// FIX {do a find and replace for all -INFTY, +INFTY}
-	
 	return best_move;
 }
 
 double Player::max_value(double alpha, double beta, int cutoff, int curDepth, float time_limit)
 {
 	//if (cutoff == curDepth or locState.i_won() or locState.i_lost() ) return locState.evaluate();
-	if (cutoff == curDepth or locState.is_endgame() or (locState.i_won() and !locState.i_lost())) return locState.evaluate();
+	if (cutoff == curDepth or locState.is_endgame() or (locState.i_won() /*and !locState.i_lost()*/)) return locState.evaluate();
 	
 	vector<Move> moves; locState.get_all_moves(moves);
 	// cout << " ########### BEGIN LOC_STATE in max_value of depth="<<curDepth<<"########### \n";
@@ -66,7 +65,12 @@ double Player::max_value(double alpha, double beta, int cutoff, int curDepth, fl
 	// 	locState.unapply_move(moves[i]);
 	// }
 	//std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return ((lhs.op_shortest_path-lhs.my_shortest_path)>(rhs.op_shortest_path-rhs.my_shortest_path)) ;} );
-	for (vector<Move>::iterator it = moves.begin() ; it!=moves.end() ;it++)
+	std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return (lhs.eval>rhs.eval) ;} );
+	vector<Move>::iterator mend = moves.end();
+	if ( curDepth > 4 ) {
+		mend = moves.begin() + 1 + (moves.size()/2);
+	}
+	for (vector<Move>::iterator it = moves.begin() ; it!=mend ;it++)
 	{
 		Move t = *it;  // H - Changed the free usage of *it to a "save the value and do shit" because iterators can be scary things.
 		locState.apply_move(t);
@@ -98,7 +102,7 @@ double Player::max_value(double alpha, double beta, int cutoff, int curDepth, fl
 double Player::min_value(double alpha, double beta, int cutoff, int curDepth, float time_limit)
 {
 	//if (cutoff == curDepth or locState.i_won() or locState.i_lost()) return locState.evaluate();
-	if (cutoff == curDepth or locState.is_endgame() or (locState.i_won() and !locState.i_lost())) return locState.evaluate();
+	if (cutoff == curDepth or locState.is_endgame() or (locState.i_won() /*and !locState.i_lost()*/)) return locState.evaluate();
 	
 	vector<Move> moves; locState.get_all_moves(moves);
 	// cout << " ########### BEGIN LOC_STATE in min_value of depth="<<curDepth<<"########### \n";
@@ -110,9 +114,14 @@ double Player::min_value(double alpha, double beta, int cutoff, int curDepth, fl
 	// 	locState.unapply_move(moves[i]);
 	// }
 	//std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return ((lhs.op_shortest_path-lhs.my_shortest_path)<(rhs.op_shortest_path-rhs.my_shortest_path)) ;} );
+	std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return (lhs.eval<rhs.eval) ;} );
 	double v = +INFTY;
-	
-	for (vector<Move>::iterator it = moves.begin() ; it!=moves.end() ;it++)
+	vector<Move>::iterator mend = moves.end();
+	if ( curDepth > 4 ) {
+		mend = moves.begin() + 1 + (moves.size()/2);
+	}
+
+	for (vector<Move>::iterator it = moves.begin() ; it!=mend ;it++)
 	{
 		Move t = *it; 	// H - Changed the free usage of *it to a "save the value and do shit" because iterators can be scary things.
 		locState.apply_move(t);
