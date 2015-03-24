@@ -43,7 +43,11 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 		mov.from = _from;
 
 	bool flag = true;
-
+	Position temp=pos_other;
+	if (i_lost()) {
+		pos_other.r = 0;
+		pos_other.c = 0;
+	}
 	//Upward!
 	if ( connected_up(mov.from) ) {
 		mov.to = mov.from.up();
@@ -183,6 +187,7 @@ void State::get_all_jumps( std::vector<Move>& moves , Position& _from ) {
 			}
 		}
 	}
+	pos_other = temp;
 	return;
 }
 

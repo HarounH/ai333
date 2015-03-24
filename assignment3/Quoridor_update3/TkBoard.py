@@ -127,7 +127,7 @@ class TkBoard():
 	turn = 0
 	timeout=60.0
 	trackTime1=60.0
-	trackTime2=60.0	
+	trackTime2=60.0
 	global message
 	global message2
 	for player in socket_list:
