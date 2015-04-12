@@ -181,8 +181,9 @@ public:
 	/* State evaluation. */
 	double evaluate();
 	
-	double shortest_path(int forpn); //Gets the shortest path to goal for the given player.
-	double shortest_path(int forpn , Position& goal); //Gets the shortest path to goal for the given player to the goal state.
+	double shortest_path(int forpn); 						// Gets the shortest path to goal for the given player.
+	double shortest_path_Astar(int forpn);					// A*, duh 
+	double shortest_path(int forpn , Position& goal);	 	// Gets the shortest path to goal for the given player to the goal state.
 	
 	bool touchesWall(int r, int c);
 	bool inLocality(int r, int c);

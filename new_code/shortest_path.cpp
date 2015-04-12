@@ -5,20 +5,20 @@
 Also, the moves are returned as : up/down/left/right. */
 double State::shortest_path(int _for) {
 	// cout << "####shortest_path_brk1\t _for=" << _for << "\n";
-	Position cur;
-	vector< vector<bool> > visited(N+1 , std::vector<bool>(M+1,false));
-	std::vector< std::vector<int> > mindist(N+1 , std::vector<int>(M+1,-1));
-	queue<Position> fringe;
-	vector<Move> moves;
-	std::vector<Move>::iterator it,endv;
+	Position 					cur;											// SNair added a lot of space. Looks better, na?
+	vector<vector<bool> > 		visited(N+1 , vector<bool>(M+1,false));
+	vector<vector<int> >  		mindist(N+1 , vector<int> (M+1,-1));
+	queue<Position> 	  		fringe;
+	vector<Move> 				moves;
+	vector<Move>::iterator 		it, endv;
+	                        	
 	//Initiatilzation.
 	int goalr = ((_for==1)?(N):(1));
 	int goalc = 0;
-	if ( _for==pn ) {
-		cur = pos_present;
-	} else {
-		cur = pos_other;
-	}
+	
+	if ( _for==pn ) cur = pos_present;
+	else cur = pos_other;
+	
 	fringe.push(cur);
 	visited[cur.r][cur.c] = true;
 	mindist[cur.r][cur.c] = 0;
@@ -50,13 +50,74 @@ double State::shortest_path(int _for) {
 	return mindist[goalc][goalr];
 }
 
+//--------------------------------------	A_Star territory	------------------------------------------------- //	SNair --- pls check
+
+bool operator<(const pair<Position,pair<int,int> >& lhs, const pair<Position,pair<int,int> >& rhs)		// Position, cost_yet, heuristic
+{
+	return lhs.second.second > rhs.second.second;
+}
+
+double State::shortest_path_Astar(int _for) 
+{
+	Position 					cur;									
+	vector<Move> 				moves;
+	vector<Move>::iterator 		it, endv;
+	vector<vector<bool> > 		explored(N+1 , vector<bool>(M+1,false));
+	priority_queue<pair<Position,pair<int,int> > > fringe;									// sort by int value, which is cost_yet + heuristic
+	                        	
+	//Initiatilzation.
+	int goalr = ((_for==1)?(N):(1));
+	int goalc = 0;
+	
+	if ( _for == pn ) cur = pos_present;
+	else 			  cur = pos_other;
+	
+	fringe.push( pair<Position,pair<int,int> > (cur,pair<int,int>(0,abs(cur.r - goalr))) );
+	
+	pair<Position,pair<int,int> > current;
+
+	while(!fringe.empty()) 
+	{	
+		current = fringe.top();
+		fringe.pop();
+		
+		if (current.first.r == goalr) return current.second.first;			// cost to goal. Done!
+		if (explored[current.first.r][current.first.c]) continue;
+		else explored[current.first.r][current.first.c] = true;
+		
+		get_all_jumps(moves,current.first);
+		endv = moves.end(); //For the upcoming for loop. cache locality.
+
+		for( it=moves.begin() ; it!=endv; it++) 	
+			if (!explored[(*it).to.r][(*it).to.c]) {
+				fringe.push( pair<Position,pair<int,int> > ((*it).to, pair<int,int> (current.second.first+1, current.second.first+1+abs((*it).to.r - goalr))));
+			}
+		
+		explored[current.first.r][current.first.c] = true;
+		moves.clear(); //Empty the moves vector for the next iteration.
+
+		// priority_queue<pair<Position,pair<int,int> > > copy = fringe;
+		// cout << "pq  1 : " ;
+		// while (!copy.empty())
+		// {
+		// 	cout << copy.top().second.first << "(" << copy.top().second.second << ") " ;//"["<< copy.top().first.r << "," << copy.top().first.c << "] ";
+		// 	copy.pop();
+		// }
+		// cout << endl;
+	}	
+	return -1.0;
+}
+
+//---------------------------------  ^^^	A_Star territory	^^^  -------------------------------------------- //
+
 double State::shortest_path(int _for, Position& goal) { //Shortest path to any goal.
-	Position cur;
-	vector< vector<bool> > visited(N+1 , std::vector<bool>(M+1,false));
-	std::vector< std::vector<int> > mindist(N+1 , std::vector<int>(M+1,-1)); //initialized to -1.
-	queue<Position> fringe;
-	vector<Move> moves;
-	std::vector<Move>::iterator it,endv;
+	
+	Position 					cur;											
+	vector<vector<bool> > 		visited(N+1 , vector<bool>(M+1,false));
+	vector<vector<int> >  		mindist(N+1 , vector<int> (M+1,-1));
+	queue<Position> 	  		fringe;
+	vector<Move> 				moves;
+	vector<Move>::iterator 		it, endv;
 	//Initiatilzation.
 	int goalr = goal.r;
 	int goalc = goal.c;

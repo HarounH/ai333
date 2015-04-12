@@ -20,11 +20,17 @@ bool State::valid_wall(Move& m) { //Also calculates the shortest paths. (it does
 			apply_move(m);
 			// cout << "###brk4\n";
 			m.my_shortest_path=shortest_path(mypn);
+			
+			//double temp = shortest_path(mypn);			// SNair crap
+			//if(m.my_shortest_path != temp) cout << "damn Astar : " << m.my_shortest_path << " " << "normal : " << temp << "\n";
+			
 			// cout << "###brk5\n";
 			m.op_shortest_path=shortest_path(opn);
 			// cout << "###brk6\n";
+			
 			unapply_move(m);
 			// cout << "###brk7\n";
+			
 			return ((m.op_shortest_path>=0)&&(m.my_shortest_path>=0));
 		}
 	} else if ( m.m == 2) {
@@ -32,8 +38,8 @@ bool State::valid_wall(Move& m) { //Also calculates the shortest paths. (it does
 			return false;
 		} else {
 			apply_move(m);
-			m.my_shortest_path=shortest_path(mypn);
-			m.op_shortest_path=shortest_path(opn);
+			m.my_shortest_path=shortest_path_Astar(mypn);
+			m.op_shortest_path=shortest_path_Astar(opn);
 			unapply_move(m);
 			return ((m.op_shortest_path>=0)&&(m.my_shortest_path>=0));	
 		}
