@@ -77,7 +77,15 @@ void adjust_coeff(vector<double>& input_vals , vector<double>& coeffs , double f
 	cout << "what it should be   : " << final << "\n";
 	cout << "what it actually is : " << current << "\n";
 	
-	double acceptable_error = 0.3*final + 0.5;
+	double num_of_zeros = 0.0;
+	for (int i = 0 ; i<input_vals.size() ; i++)
+		if (input_vals[i] == 0.0)
+			num_of_zeros++;
+	
+	// greater the fraction of non-zero inputs => lesser the error tolerance
+	double change_frac = (num_of_zeros/(double) input_vals.size());
+	
+	double acceptable_error = (0.1*final)/(change_frac) + 0.5;
 	
 	while (fabs(error) > fabs(acceptable_error))
 	{

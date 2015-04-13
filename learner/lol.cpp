@@ -97,10 +97,10 @@ int main()
 {
 	srand((unsigned)time(NULL));
 	
-	vector<double> coeffs = {1,8,-5,3,-3.5};
+	vector<double> coeffs = {1,8,5,3,-3.5};
 	vector<double> input_vals = {0,1,5,0,0};
 	
-	adjust_coeff(input_vals,coeffs,-33 ,-17);
+	adjust_coeff(input_vals,coeffs,10000 ,33);
 	
 	// double final = 0;
 	// for (int i = 0 ; i<coeffs.size() ; i++)
@@ -115,7 +115,7 @@ int main()
 //	vector<double> temp  = read_coeff_from_file();
 
 	
-	// for (int i = 0 ; i<temp.size() ; i++)
-	// 	cout << temp[i] << " ";
-	// cout << "\n";
+	for (int i = 0 ; i<coeffs.size() ; i++)
+		cout << coeffs[i] << " ";
+	cout << "\n";
 }
