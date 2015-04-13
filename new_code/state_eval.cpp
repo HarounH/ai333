@@ -47,7 +47,7 @@ double State::evaluate()
 	double wc;
 
 	if (plies<50) {
-		wc = ((50-plies)/50)*((50-plies)/50)*((this->mypn==this->pn)?(this->n_present_walls):(this->n_other_walls));
+		wc = ((50.0-plies)/50.0)*((50.0-plies)/50.0)*((this->mypn==this->pn)?(this->n_present_walls):(this->n_other_walls));
 	}	// only for the walls I used (wall_cost)
 	else wc = 0.0;
 	
@@ -57,15 +57,19 @@ double State::evaluate()
 		
 	double bigInc;
 
-	if (a>7 or a<-4) bigInc=a*a*a;
+	if (a>7 or a<-4) bigInc=a*a;
 	else bigInc=0;
 
 
- 	double e=  bigInc + 8*a - 5*b + 3*wc - 3.5*nmt ;
+ 	double e=  2*bigInc + 8*a - 5*b + 3*wc - 3.5*nmt ;
+
 	Move temp = causal_moves.top();
 	causal_moves.pop();
 	temp.eval = e;
 	causal_moves.push(temp);
+
+
+
 	return e;
 	// double ans = w.diff_shortest_path(*this);
 	// return ans;
