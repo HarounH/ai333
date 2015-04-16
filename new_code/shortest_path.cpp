@@ -22,30 +22,23 @@ double State::shortest_path(int _for) {
 	fringe.push(cur);
 	visited[cur.r][cur.c] = true;
 	mindist[cur.r][cur.c] = 0;
-	// cout << "####brk2\t & cur=";
 	// cur.print(); cout << "\n";
 	while(!fringe.empty()) {
 		
 		cur = fringe.front();
 		fringe.pop();
-		// cout << "####brk3\t & cur=";
 		// cur.print(); cout << "\n";
 		get_all_jumps(moves,cur);
-		// cout << "####brk4\n";
 		endv = moves.end(); //For the upcoming for loop. cache locality.
-		// cout << "####brk5\n";
 		for( it=moves.begin() ; it!=endv; ++it) {
 			if ((*it).to.r == goalr ) { return (mindist[cur.r][cur.c]+1); } //DONE!
-			// cout << "####brk8 recursion! \n";
 			if (!visited[(*it).to.r][(*it).to.c]) {
 				visited[(*it).to.r][(*it).to.c] = true;
 				mindist[(*it).to.r][(*it).to.c] = mindist[cur.r][cur.c] + 1;
 				fringe.push((*it).to);
 			}
 		}
-		// cout << "####brk6\n";
 		moves.clear(); //Empty the moves vector for the next iteration.
-		// cout << "####brk7\n";
 	}
 	return mindist[goalc][goalr];
 }
@@ -93,7 +86,7 @@ double State::shortest_path_Astar(int _for)
 				fringe.push( pair<Position,pair<int,int> > ((*it).to, pair<int,int> (current.second.first+1, current.second.first+1+abs((*it).to.r - goalr))));
 			}
 		
-		explored[current.first.r][current.first.c] = true;
+		//explored[current.first.r][current.first.c] = true; <-- done up there.
 		moves.clear(); //Empty the moves vector for the next iteration.
 
 		// priority_queue<pair<Position,pair<int,int> > > copy = fringe;

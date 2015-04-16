@@ -18,27 +18,42 @@ void State::get_all_walls( std::vector<Move>& moves ) {
 				if ( (plies>50 or inLocality(r,c)) and valid_wall(mov) ) {
 					mov.eval = -1;
 					apply_move(mov);
-					mov.my_shortest_path=shortest_path(mypn);
-					mov.op_shortest_path=shortest_path(opn);
+					mov.my_shortest_path=shortest_path_Astar(mypn);
+					mov.op_shortest_path=shortest_path_Astar(opn);
+					/*TODO: Remove these repetitions 
+					mov.my_shortest_path=shortest_path_Astar(mypn);
+					mov.op_shortest_path=shortest_path_Astar(opn);
+					mov.my_shortest_path=shortest_path_Astar(mypn);
+					mov.op_shortest_path=shortest_path_Astar(opn);
+					mov.my_shortest_path=shortest_path_Astar(mypn);
+					mov.op_shortest_path=shortest_path_Astar(opn);
+					*/
 					causal_moves.pop();
 					causal_moves.push(mov);
-					mov.eval = evaluate();
-					unapply_move(mov);
-					moves.push_back(mov);
+					if ( mov.my_shortest_path>=0 && mov.op_shortest_path>=0 ) {
+						mov.eval = evaluate();
+						unapply_move(mov);
+						moves.push_back(mov);	
+					} else {
+						unapply_move(mov);
+					}
 				
 				}
 				mov.m = 2;
 				if ( (plies>50 or inLocality(r,c)) and valid_wall(mov) ) {
 					mov.eval = -1;
 					apply_move(mov);
-					mov.my_shortest_path=shortest_path(mypn);
-					mov.op_shortest_path=shortest_path(opn);
+					mov.my_shortest_path=shortest_path_Astar(mypn);
+					mov.op_shortest_path=shortest_path_Astar(opn);
 					causal_moves.pop();
 					causal_moves.push(mov);
-					mov.eval = evaluate();
-					unapply_move(mov);
-
-					moves.push_back(mov); 
+					if ( mov.my_shortest_path>=0 && mov.op_shortest_path>=0 ) {
+						mov.eval = evaluate();
+						unapply_move(mov);
+						moves.push_back(mov);	
+					} else {
+						unapply_move(mov);
+					}
 			}
 		}
 	}
