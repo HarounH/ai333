@@ -15,7 +15,7 @@ void State::get_all_walls( std::vector<Move>& moves ) {
 				mov.c = c;
 
 				mov.m = 1;
-				if ( (plies>50 or inLocality(r,c)) and valid_wall(mov) ) {
+				if ( /*(plies>50 or inLocality(r,c)) and*/ valid_wall(mov) ) {
 					mov.eval = -1;
 					apply_move(mov);
 					mov.my_shortest_path=shortest_path_Astar(mypn);
@@ -40,7 +40,7 @@ void State::get_all_walls( std::vector<Move>& moves ) {
 				
 				}
 				mov.m = 2;
-				if ( (plies>50 or inLocality(r,c)) and valid_wall(mov) ) {
+				if ( /*(plies>50 or inLocality(r,c)) and*/ valid_wall(mov) ) {
 					mov.eval = -1;
 					apply_move(mov);
 					mov.my_shortest_path=shortest_path_Astar(mypn);
@@ -340,7 +340,7 @@ Move State::get_complete_random_wall() {
 		// if (mov.r == 0 or mov.r ==1) mov.r = 2;
 		// if (mov.c == 0 or mov.c ==1) mov.c = 2;
 				
-		valid = in_bounds_wall(mov.r,mov.c)&&valid_wall(mov);
+		valid = in_bounds_wall(mov.r,mov.c)&&valid_wall(mov);/*&&(shortest_path_Astar(1)!=-1)&&(shortest_path_Astar(2)!=-1);*/
 	}
 	mov.to = Position(mov.r,mov.c);
 	return mov;
@@ -351,6 +351,8 @@ Move State::get_biased_random_wall() { //with a mean equal to the other players'
 	mov.pn = pn;
 	mov.from = pos_present;
 	bool valid = false;
+	int loopCount = 0;
+	
 	while(!valid) {
 		if ( rng() >0.5 ) {mov.m = 1;} else {mov.m = 2;}  //vertical v/s horizontal with P = 0.5
 		mov.r = pos_other.r + (N-2)*(rng() - 0.5); //goes between 2 -> N-1
@@ -360,8 +362,11 @@ Move State::get_biased_random_wall() { //with a mean equal to the other players'
 		// if (mov.c <= 1) mov.c = 2;
 		// if (mov.r >=N) mov.r = N;
 		// if (mov.c >= M) mov.c = M;
-
-		valid = in_bounds_wall(mov.r,mov.c)&&valid_wall(mov);
+		
+		valid = in_bounds_wall(mov.r,mov.c)&&valid_wall(mov);/*&&(shortest_path_Astar(1)!=-1)&&(shortest_path_Astar(2)!=-1);*/
+		loopCount++;
+		
+		if (loopCount==100) return get_complete_random_wall();
 	}
 	mov.to = Position(mov.r,mov.c);
 	return mov;	

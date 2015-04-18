@@ -81,8 +81,14 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c, MonteCarlo& monte
 	if (h_flag && snair_flag && shouldimmx) {
  		//cout << "yo" << endl;
  		
-		for (int i = 0 ; i<1000 ; i++)
+		for (int i = 0 ; i<2000 ; i++)
 			monte_carlo.MCTS(*this,monte_carlo.root,0,6,0.0);
+		
+		int total = 0;
+		for (int i = 0 ; i<monte_carlo.root->children.size() ; i++)
+			{cout << monte_carlo.root->times_moves_explored[i] << " (" << monte_carlo.root->avg_so_far[i] << ") "; total+= monte_carlo.root->times_moves_explored[i];}
+		cout << "\n"; cout << "total : " << total << "\n";
+		
 	//	cout << "before clean up : " << exploredNode::node_count << endl;
 		monte_carlo.change_root(*this, best_move);							// delete extra nodes
 	//	cout << "after clean up  : " << exploredNode::node_count << endl;

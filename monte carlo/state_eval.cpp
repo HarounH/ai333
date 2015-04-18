@@ -40,7 +40,7 @@ double State::evaluate()
  	}
 	double a = c-b;															// my shortest path - opp shortest path
 //	cout << "----------\n"; cout << "b= " << b << " " << "c= " << c << " a= " << a << "\n"; pos_present.print(true) ; cout << endl ; pos_other.print(true) ; cout << endl;
-	if (is_endgame()) { return 1000000; }
+	if (is_endgame()) { return 10000; }
  	if (i_won()) { /*cout <<"eval: " << 100000<<endl; */return (100000 + a);}
  	if (i_lost()) {/*cout <<"eval: " << 100000<<endl;*/ return (-100000 + a);}
 
@@ -57,11 +57,11 @@ double State::evaluate()
 		
 	double bigInc;
 
-	if (a>7 or a<-4) bigInc=a*a;
+	if (a>7 or a<-4) bigInc=a*a*a;
 	else bigInc=0;
 
 
- 	double e=  2*bigInc + 8*a - 5*b + 3*wc - 3.5*nmt ;
+ 	double e=  bigInc + 4*a - 5*b + 3*wc - 3.5*nmt ;
 
 	Move temp = causal_moves.top();
 	causal_moves.pop();

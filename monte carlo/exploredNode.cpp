@@ -2,7 +2,7 @@
 #define EXPLORED_NODE_CPP
 
 // FOR MCTS
-#define C 6
+#define C 12
 
 class exploredNode
 {
@@ -60,11 +60,11 @@ void exploredNode::book_keeping(int i , double backed_up)	// depends on whose mo
 	// -1 in denominator is to nullify initial count of 1
 	
 	next_move = 0;
-	vector<int> same_valued;
+//	vector<int> same_valued;
 	for (int j = 0 ; j<value_of_moves.size() ; j++)
 	{
-		if (is_my_move)	value_of_moves[j] = avg_so_far[j] + C*(log(total_times_explored)/times_moves_explored[j]);		// choosing max, so add
-		else			value_of_moves[j] = avg_so_far[j] - C*(log(total_times_explored)/times_moves_explored[j]);		// chooseing min, so subtract
+		if (is_my_move)	value_of_moves[j] = avg_so_far[j] + C*sqrt(log(total_times_explored)/times_moves_explored[j]);		// choosing max, so add
+		else			value_of_moves[j] = avg_so_far[j] - C*sqrt(log(total_times_explored)/times_moves_explored[j]);		// chooseing min, so subtract
 		
 		if 		(is_my_move  and (value_of_moves[j] > value_of_moves[next_move])) next_move = j;				// choose max
 		else if (!is_my_move and (value_of_moves[j] < value_of_moves[next_move])) next_move = j;				// choose min

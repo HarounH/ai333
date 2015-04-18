@@ -69,7 +69,7 @@ double MonteCarlo::MCTS(Player& p, exploredNode* current, int curDepth, int cuto
 // returns -1.0 if invalid movements => don't consider it
 double MonteCarlo::simulate(Player& p, int curDepth, int cutoff)
 {
-	if (curDepth > cutoff) return -1.0;			// {review if can be handled better}
+	if (curDepth > cutoff+3) return -1.0;			// {review if can be handled better}
 	
 	if (curDepth == cutoff or p.locState.is_endgame() or p.locState.i_won()) 	// terminal condition borrowed from mmx
 	{
@@ -94,9 +94,9 @@ double MonteCarlo::simulate(Player& p, int curDepth, int cutoff)
 	
 pair<bool,Move> MonteCarlo::gen_simu_move(Player& p)				// a sorta-random quick move generator
 {																	// first bool if true => definitely invalid state { opposite may not hold }
-	int temp = rand()%7;
+	int temp = rand()%20;
 	
-	if (temp<4)		// prob 4/7 move { randomly }
+	if (temp<12)		// prob 3/5 move { randomly }
 	{
 		vector<Move> jumps;
 		p.locState.get_all_jumps(jumps);
@@ -107,10 +107,10 @@ pair<bool,Move> MonteCarlo::gen_simu_move(Player& p)				// a sorta-random quick 
 		return pair<bool,Move>(true,jumps[cur]);
 	}
 	
-	else 		// prob 2/7, place wall close to opponent, 1/7 => completely random wall
+	else 		// prob 3/20, place wall close to opponent, 5/20 => completely random wall
 	{
-		if (p.locState.n_present_walls>0 and temp<6) return pair<bool,Move>(true,p.locState.get_biased_random_wall());
-		else if (p.locState.n_present_walls>0 and temp==6) return pair<bool,Move>(true,p.locState.get_complete_random_wall());
+		if (p.locState.n_present_walls>0 and temp<15) return pair<bool,Move>(true,p.locState.get_biased_random_wall());
+		else if (p.locState.n_present_walls>0 and temp<20) return pair<bool,Move>(true,p.locState.get_complete_random_wall());
 		
 		else		// jump
 		{

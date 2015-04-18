@@ -87,6 +87,7 @@ public:
 		return *this;
 	}
 	bool operator==(Move& mov) 	{ return ((m==mov.m) && (from==mov.from) && (to==mov.to) && (pn==mov.pn) && (mmx_d==mov.mmx_d));}
+	bool is_equal_to(Move& mov) { return (m==mov.m) && (r==mov.r) && (c==mov.c);}
 	// bool operator<(Move mov) 	{ return eval>mov.eval; }
 	// bool operator>(Move mov) 	{ return eval<mov.eval; }
 	void print();
