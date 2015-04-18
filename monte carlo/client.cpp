@@ -22,8 +22,9 @@ int N,M,K, time_left, player;
 
 #include "form.cpp" //Everything.
 
-//int exploredNode::node_count = 0;
+int exploredNode::node_count = 0;
 Player w;
+MonteCarlo monte_carlo;
 
 int main(int argc, char *argv[])
 {
@@ -85,7 +86,7 @@ int main(int argc, char *argv[])
         
         memset(sendBuff, '0', sizeof(sendBuff)); 
         string temp;
-        w.send_move_to_client_cpp(m,r,c);        
+        w.send_move_to_client_cpp(m,r,c,monte_carlo);        
         snprintf(sendBuff, sizeof(sendBuff), "%d %d %d", m, r , c);
         write(sockfd, sendBuff, strlen(sendBuff));
 
@@ -112,7 +113,7 @@ int main(int argc, char *argv[])
         n = read(sockfd, recvBuff, sizeof(recvBuff)-1);
         recvBuff[n] = 0;
         sscanf(recvBuff, "%d %d %d %d", &om,&oro,&oc,&d);
-        w.read_move_from_client_cpp(om,oro,oc);
+        w.read_move_from_client_cpp(om,oro,oc,monte_carlo);
         if(d==1)
     {
         cout<<"You win!! Yayee!! :D ";
@@ -125,7 +126,7 @@ int main(int argc, char *argv[])
     }
         memset(sendBuff, '0', sizeof(sendBuff)); 
         string temp;
-        w.send_move_to_client_cpp(m,r,c);        
+        w.send_move_to_client_cpp(m,r,c,monte_carlo);        
         snprintf(sendBuff, sizeof(sendBuff), "%d %d %d", m, r , c);
         write(sockfd, sendBuff, strlen(sendBuff));
 

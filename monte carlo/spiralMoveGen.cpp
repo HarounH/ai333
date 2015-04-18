@@ -48,6 +48,7 @@ void get_spiral_walls(std::vector<Move>& moves) {
 			if ( flagLULD ) {
 				mov.c=pos_other.c - delta;
 				mov.r=pos_other.r + i;
+				mov.m = 1;
 				if ( valid_wall(mov) && in_bounds_wall(mov.r,mov.c)) {
 					moves.push_back(mov);
 				}
@@ -59,6 +60,7 @@ void get_spiral_walls(std::vector<Move>& moves) {
 			if ( flagLDRD ) {
 				mov.r=pos_other.r - delta;
 				mov.c=pos_other.c + i;
+				mov.m = 1;
 				if ( valid_wall(mov) && in_bounds_wall(mov.r,mov.c)) {
 					moves.push_back(mov);
 				}
@@ -70,6 +72,7 @@ void get_spiral_walls(std::vector<Move>& moves) {
 			if ( flagRDRU ) {
 				mov.c=pos_other.c + delta;
 				mov.r=pos_other.r + i;
+				mov.m = 1;
 				if ( valid_wall(mov) && in_bounds_wall(mov.r,mov.c)) {
 					moves.push_back(mov);
 				}
