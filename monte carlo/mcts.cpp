@@ -5,7 +5,7 @@
 // MONTE CARLO TREE SEARCH
 // http://mcts.ai/about/index.html
 
-// cutoff might become neg, check!
+// curDepth might exceed current, check!
 
 class MonteCarlo
 {
@@ -94,7 +94,7 @@ double MonteCarlo::simulate(Player& p, int curDepth, int cutoff)
 	
 pair<bool,Move> MonteCarlo::gen_simu_move(Player& p)				// a sorta-random quick move generator
 {																	// first bool if true => definitely invalid state { opposite may not hold }
-	int temp = rand()%20;
+	int temp = fastrand()%20;
 	
 	if (temp<12)		// prob 3/5 move { randomly }
 	{
@@ -103,7 +103,7 @@ pair<bool,Move> MonteCarlo::gen_simu_move(Player& p)				// a sorta-random quick 
 		
 		if (jumps.size() == 0) return pair<bool,Move>(false,Move(6,6,6));
 		
-		int cur = rand()%jumps.size();
+		int cur = fastrand()%jumps.size();
 		return pair<bool,Move>(true,jumps[cur]);
 	}
 	
@@ -119,7 +119,7 @@ pair<bool,Move> MonteCarlo::gen_simu_move(Player& p)				// a sorta-random quick 
 		
 			if (jumps.size() == 0) return pair<bool,Move>(false,Move(6,6,6));
 		
-			int cur = rand()%jumps.size();
+			int cur = fastrand()%jumps.size();
 			return pair<bool,Move>(true,jumps[cur]);
 		}
 	}

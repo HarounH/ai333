@@ -2,23 +2,14 @@
 #define EXPLORED_NODE_CPP
 
 // FOR MCTS
-#define C 12
-
-static unsigned int g_seed;
-inline void fast_srand( int seed )
-	{g_seed = seed;}
-
-inline int fastrand() { 
-  g_seed = (214013*g_seed+2531011); 
-  return (g_seed>>16)&0x7FFF; 
-} 
+#define C 6
 
 class exploredNode
 {
 public:
 
 	exploredNode(Player& p);
-	//~exploredNode();
+	~exploredNode();
 	void recursive_delete();
 	
 	vector<exploredNode*> children;
@@ -29,9 +20,9 @@ public:
 	vector<double> value_of_moves;
 	bool is_my_move;								// choosing nodes depends on player
 		
-	int choose_move();								// return index of move
+	int choose_move() {return next_move;};			// return index of move
 	void book_keeping(int i, double backed_up);		// explored ith move
-	int next_move;									// update after every round of book keeping
+	int next_move;							// update after every round of book keeping
 	
 	static int node_count;
 	
@@ -41,18 +32,6 @@ public:
 	// relocate root pointer
 };
 
-int exploredNode::choose_move()
-{
-	int temp = fastrand()%10;
-	
-	if (temp<9) {return next_move;}			// 90% return best valued move
-	else 
-	{
-		int cur = fastrand()%moves.size();
-		return cur;
-	}
-}
-
 exploredNode::exploredNode(Player& p)
 {
 	p.locState.get_all_moves(moves);
@@ -60,14 +39,13 @@ exploredNode::exploredNode(Player& p)
 
 	times_moves_explored = vector<int>(moves.size(),1);
 	avg_so_far           = vector<double>(moves.size(),0.0);
-	value_of_moves       = vector<double>(moves.size(),log(total_times_explored));				// 0 == ln(total_times_explore)/1
+	value_of_moves       = vector<double>(moves.size(),log(total_times_explored));				// 0 == ln(1)/1
 	children             = vector<exploredNode*>(moves.size(), NULL);
 	is_my_move           = (p.locState.pn == p.locState.mypn);
 
 	node_count ++;
 	
-	// determine initial move {review}
-	next_move = 0;
+	// determine initial move
 }
 
 void exploredNode::book_keeping(int i , double backed_up)	// depends on whose move it is
@@ -81,18 +59,18 @@ void exploredNode::book_keeping(int i , double backed_up)	// depends on whose mo
 	// -1 in denominator is to nullify initial count of 1
 	
 	next_move = 0;
-//	vector<int> same_valued;
+	vector<int> same_valued;
 	for (int j = 0 ; j<value_of_moves.size() ; j++)
 	{
-		if (is_my_move)	value_of_moves[j] = avg_so_far[j] + C*sqrt(log(total_times_explored)/times_moves_explored[j]);		// choosing max, so add
-		else			value_of_moves[j] = avg_so_far[j] - C*sqrt(log(total_times_explored)/times_moves_explored[j]);		// chooseing min, so subtract
+		if (is_my_move)	value_of_moves[j] = avg_so_far[j] + C*(log(total_times_explored)/times_moves_explored[j]);		// choosing max, so add
+		else			value_of_moves[j] = avg_so_far[j] - C*(log(total_times_explored)/times_moves_explored[j]);		// chooseing min, so subtract
 		
-		if 		(is_my_move  and (value_of_moves[j] > value_of_moves[next_move])) next_move = j;				// choose max
-		else if (!is_my_move and (value_of_moves[j] < value_of_moves[next_move])) next_move = j;				// choose min
+		if (is_my_move  and (value_of_moves[j] > value_of_moves[next_move])) next_move = j;				// choose max
+		if (!is_my_move and (value_of_moves[j] < value_of_moves[next_move])) next_move = j;				// choose min
 		
 		else if (value_of_moves[j] == value_of_moves[next_move])			// with an 80% probability, swap			{ review }
 		{
-			int temp = fastrand()%5;
+			int temp = rand()/5;
 			if (temp != 4) next_move = j;
 		}
 	}
@@ -105,9 +83,8 @@ void exploredNode::recursive_delete()
 	{
 		if (!children[i]) { /*delete children[i] ;*/ }		// do nothing if pointer is NULL { or should I delete a NULL pointer? }
 		else children[i]->recursive_delete();
-
 	}
-
+	
 	delete this;	// I have lost the will to live, simply nothing more to gain
 					// there is nothing more for me, need the end to set me free 
 	node_count--;
