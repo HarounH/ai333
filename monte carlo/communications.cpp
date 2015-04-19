@@ -52,7 +52,7 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c, MonteCarlo& monte
 		Move ifone(1,3,5);
 		//cout << "mypn " << gblState.mypn << " valid move : " << gblState.valid_move(iftwo) << endl;
 		if ((gblState.mypn==1) and gblState.valid_move(ifone)) {best_move.m=0;best_move = ifone; shouldimmx=false;}
-		else if ((gblState.mypn==2) and gblState.valid_move(iftwo)) {best_move.m=0;best_move = iftwo; shouldimmx=false;}
+		else if ((gblState.mypn==2) and gblState.valid_move(iftwo)) {best_move.m=0;best_move = iftwo; shouldimmx=true;}		// SNair changed this
 		
 		snair_flag = true;
 	}
@@ -131,7 +131,7 @@ void Player::read_move_from_client_cpp(int& m ,int& r, int& c, MonteCarlo& monte
 		res.eval = -1.0;
 
 //	cout << "before clean up : " << exploredNode::node_count << endl;
-	if (init_count == 1 and !locState.i_lost()) monte_carlo.change_root(*this, res);	// deletions performed
+	if (init_count == 1 and !locState.i_lost() and !locState.i_won()) monte_carlo.change_root(*this, res);	// deletions performed
 //	cout << "after  clean up : " << exploredNode::node_count << endl;
 	
 	gblState.apply_move(res);
