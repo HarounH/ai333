@@ -61,7 +61,7 @@ double State::evaluate()
 	else bigInc=0;
 
 
- 	double e=  2*bigInc + 8*a - 5*b + 3*wc - 3.5*nmt ;
+ 	double e=  bigInc + 4*a - 5*b + 3*wc - 3.5*nmt ;
 
 	Move temp = causal_moves.top();
 	causal_moves.pop();
@@ -69,7 +69,7 @@ double State::evaluate()
 	causal_moves.push(temp);
 
 
-
+	cout << e <<"\n";
 	return e;
 	// double ans = w.diff_shortest_path(*this);
 	// return ans;

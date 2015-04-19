@@ -107,9 +107,9 @@ pair<bool,Move> MonteCarlo::gen_simu_move(Player& p)				// a sorta-random quick 
 		return pair<bool,Move>(true,jumps[cur]);
 	}
 	
-	else 		// prob 3/20, place wall close to opponent, 5/20 => completely random wall
+	else 		// prob 6/20, place wall close to opponent, 2/20 => completely random wall
 	{
-		if (p.locState.n_present_walls>0 and temp<15) return pair<bool,Move>(true,p.locState.get_biased_random_wall());
+		if (p.locState.n_present_walls>0 and temp<18) return pair<bool,Move>(true,p.locState.get_biased_random_wall());
 		else if (p.locState.n_present_walls>0 and temp<20) return pair<bool,Move>(true,p.locState.get_complete_random_wall());
 		
 		else		// jump
