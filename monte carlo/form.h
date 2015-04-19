@@ -21,6 +21,10 @@ public:
 	Position& operator=(pair<int,int>& o) { r=o.first; c=o.second; return *this;}
 	Position& operator=(const Position& o) { r=o.r; c=o.c; return *this;}
 	Position& operator=(const pair<int,int>& o) { r=o.first; c=o.second; return *this;}
+	// Position operator+(const Position& lhs , const Position& rhs) { Position p = Position(lhs.r+rhs.r , lhs.c+rhs.c); return p; }
+	// Position operator+ (const Position& lhs, const std::pair<int,int>& rhs)	{ Position p = Position(lhs.r+rhs.first , lhs.c+rhs.second); return p; }
+	// Position operator+ (const std::pair<int,int>& rhs,const Position& lhs)	{ Position p = Position(lhs.r+rhs.first , lhs.c+rhs.second); return p; }
+
 	// Position& operator=(Position& o) { r=o.r; c=o.c; return *this;}
 	// Position& operator=(pair<int,int> o) { r=o.first; c=o.second; return *this;}
 	bool operator==(const Position& _p) { return ((r==_p.r)&&(c==_p.c)); }
@@ -181,11 +185,10 @@ public:
 	
 	void get_all_moves_stack(stack<Move>& moves) { get_all_jumps_stack(moves); get_all_walls_stack(moves); }
 	
-//	void get_spiral_walls(std::vector<Move>& moves) ;
+	void get_spiral_walls(std::vector<Move>& moves) ;
 		
 	Move get_complete_random_wall(); 
 	Move get_biased_random_wall();
-	
 	
 	/* State evaluation. */
 	double evaluate();

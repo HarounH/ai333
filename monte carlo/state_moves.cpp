@@ -234,8 +234,8 @@ inline double rng() {
 	return ((double) rand() / (RAND_MAX));
 }
 
-/*
-void get_spiral_walls(std::vector<Move>& moves) {
+
+void State::get_spiral_walls(std::vector<Move>& moves) {
 	Move mov;
 	mov.pn = pn;
 	mov.from = pos_present;
@@ -249,68 +249,68 @@ void get_spiral_walls(std::vector<Move>& moves) {
 	bool flagRDRU , flagRULU , flagLULD , flagLDRD;
 	flagLDRD = flagRULU = flagLULD = flagRDRU = true;
 	while(possible) {
-		if (pos_other.r + delta > N) {
+		if (this->pos_other.r + delta > N) {
 			flagRULU = false;
 		}
-		if (pos_other.r - delta <=0 ) {
+		if (this->pos_other.r - delta <=0 ) {
 			flagLDRD = false;
 		}
-		if ( pos_other.c + delta > M) {
+		if ( this->pos_other.c + delta > M) {
 			flagRDRU = false;
 		}
-		if (pos_other.c - delta <= 0) {
+		if (this->pos_other.c - delta <= 0) {
 			flagLULD = false;
 		}
-		corners[RD] = pos_other + make_pair(delta,-delta);
-		corners[RU] = pos_other + make_pair(delta,delta);
-		corners[LU] = pos_other + make_pair(-delta,delta);
-		corners[LD] = pos_other + make_pair(-delta,-delta);
-		for(int i=-delta; i<=delta; ++i) {
+		corners[RD] = Position(this->pos_other.r + delta, this->pos_other.c - delta);
+		corners[RU] = Position(this->pos_other.r + delta, this->pos_other.c + delta);
+		corners[LU] = Position(this->pos_other.r - delta, this->pos_other.c + delta);
+		corners[LD] = Position(this->pos_other.r - delta, this->pos_other.c - delta);
+		for(int i=(0 - delta); i<=delta; ++i) {
 			if ( flagRULU ) {
-				mov.r=pos_other.r + delta;
-				mov.c=pos_other.c + i;
+				mov.r=this->pos_other.r + delta;
+				mov.c=this->pos_other.c + i;
 				mov.m=1;
-				if ( valid_wall(mov) && in_bounds_wall(mov.r,mov.c)) {
+				if ( in_bounds_wall(mov.r,mov.c) && valid_wall(mov) ) {
 					moves.push_back(mov);
 				}
 				mov.m=2;
-				if ( valid_wall(mov) && in_bounds_wall(mov.r,mov.c)) {
+				if ( in_bounds_wall(mov.r,mov.c) && valid_wall(mov) ) {
 					moves.push_back(mov);
 				}
 			}
 			if ( flagLULD ) {
-				mov.c=pos_other.c - delta;
-				mov.r=pos_other.r + i;
+				mov.c=this->pos_other.c - delta;
+				mov.r=this->pos_other.r + i;
 				mov.m = 1;
-				if ( valid_wall(mov) && in_bounds_wall(mov.r,mov.c)) {
+				if ( in_bounds_wall(mov.r,mov.c) && valid_wall(mov) ) {
 					moves.push_back(mov);
 				}
 				mov.m=2;
-				if ( valid_wall(mov) && in_bounds_wall(mov.r,mov.c)) {
+				if ( in_bounds_wall(mov.r,mov.c) && valid_wall(mov) ) {
 					moves.push_back(mov);
 				}
 			}
 			if ( flagLDRD ) {
-				mov.r=pos_other.r - delta;
-				mov.c=pos_other.c + i;
+				mov.r=this->pos_other.r - delta;
+				mov.c=this->pos_other.c + i;
 				mov.m = 1;
-				if ( valid_wall(mov) && in_bounds_wall(mov.r,mov.c)) {
+				if ( in_bounds_wall(mov.r,mov.c) && valid_wall(mov) ) {
 					moves.push_back(mov);
 				}
 				mov.m=2;
-				if ( valid_wall(mov) && in_bounds_wall(mov.r,mov.c)) {
+				if ( in_bounds_wall(mov.r,mov.c) && valid_wall(mov) ) {
 					moves.push_back(mov);
 				}
 			}
 			if ( flagRDRU ) {
-				mov.c=pos_other.c + delta;
-				mov.r=pos_other.r + i;
+				mov.c=this->pos_other.c + delta;
+				mov.r=this->pos_other.r + i;
 				mov.m = 1;
-				if ( valid_wall(mov) && in_bounds_wall(mov.r,mov.c)) {
+				if ( in_bounds_wall(mov.r,mov.c) && valid_wall(mov) ) {
 					moves.push_back(mov);
 				}
 				mov.m=2;
-				if ( valid_wall(mov) && in_bounds_wall(mov.r,mov.c)) {
+				if ( in_bounds_wall(mov.r,mov.c) && valid_wall(mov) ) {
 					moves.push_back(mov);
 				}
 			}
@@ -323,7 +323,7 @@ void get_spiral_walls(std::vector<Move>& moves) {
 	#undef RU
 	#undef LU
 	#undef LD
-}*/
+}
 
 
 
