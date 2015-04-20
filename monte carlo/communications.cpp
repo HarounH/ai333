@@ -90,7 +90,7 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c, MonteCarlo& monte
  		//cout << "yo" << endl;
  		timetaken_formove = clock();
 		for (int i = 0 ; i<2000 ; i++) {
-			monte_carlo.MCTS(*this,monte_carlo.root,0,4,0.0);
+			monte_carlo.MCTS(*this,monte_carlo.root,0,2,0.0);
 			//Observation : Each iteration takes ~0.005 seconds, which makes no sense.
 		}
 		timetaken_formove = (clock() - timetaken_formove)/(CLOCKS_PER_SEC);
@@ -148,11 +148,13 @@ void Player::read_move_from_client_cpp(int& m ,int& r, int& c, MonteCarlo& monte
 		res.from = locState.pos_present;
 		res.eval = -1.0;
 
+	
+	cout << "move read=(" << res.m << "," << res.r << "," << res.c << ")\n";
+	cout << "\t gamestate=(" << locState.is_endgame() << "," << locState.i_won() << "," << locState.i_lost() << ")\n";
 //	cout << "before clean up : " << exploredNode::node_count << endl;
 	if (init_count == 1 and !locState.i_lost() and !locState.i_won()) monte_carlo.change_root(*this, res);	// deletions performed
 //	cout << "after  clean up : " << exploredNode::node_count << endl;
 	
-	cout << "move read=(" << res.m << "," << res.r << "," << res.c << ")\n";
 	//gblState.apply_move(res);
 	locState.apply_move(res);
 	plies++;

@@ -47,7 +47,16 @@ Move Player::ordinary_mmx( int depth , float time_limit )
 	Move loltest = best_move;
 	max_value( -INFTY, +INFTY , depth, 0, time_limit);								// FIX {do a find and replace for all -INFTY, +INFTY}
 	if ( best_move.m==loltest.m && best_move.r==loltest.r && best_move.c==loltest.c ) {
-		cout << "loltest failed. maxvalue did nothing :P\n";
+		cout << "loltest failed. (check ordinary_mmx) ... maxvalue did nothing, jumping randomly now :P\n";
+		std::vector<Move> moves;
+		locState.get_all_jumps(moves);
+		//ASSERT : moves.size()!=0.
+		cout << "\t\tmoves.size()=" << moves.size() << "\n";
+		best_move = moves[ (fastrand()%(moves.size())) ];
+		cout << "i'm at " << locState.pos_present.r << "," << locState.pos_present.c << ")\n";
+		for(int i=0; i<moves.size(); ++i) {
+			cout << "move=(" << moves[i].m << "," << moves[i].r << "," << moves[i].c << ")\n";
+		}
 	}
 	return best_move;
 }

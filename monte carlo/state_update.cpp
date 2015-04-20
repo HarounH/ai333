@@ -83,10 +83,11 @@ void State::apply_move(Move& m) { //assumes that the move is valid
 	//Doesnt need changes to handle passing.
 
 	if ( m.m==0 ) {
-		if ( present_lost() ) {
+		if ( present_won() ) {
 			// Pass move.
 		}else {
-			pos_present = m.to;
+			pos_present.r = m.r;
+			pos_present.c = m.c;
 		}
 	} else if ( m.m==1 ) {
 		n_present_walls--;
@@ -109,7 +110,7 @@ void State::unapply_move(Move& m) {
 	plies--;
 	toggle_player();						// SNair - moved toggle up
 	if ( m.m==0 ) {
-		if ( present_lost() ) { //note, player has already been toggled.
+		if ( present_won() ) { //note, player has already been toggled.
 			
 		} else {
 			pos_present = m.from;
