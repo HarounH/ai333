@@ -90,7 +90,7 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c, MonteCarlo& monte
  		//cout << "yo" << endl;
  		timetaken_formove = clock();
 		for (int i = 0 ; i<2000 ; i++) {
-			monte_carlo.MCTS(*this,monte_carlo.root,0,6,0.0);
+			monte_carlo.MCTS(*this,monte_carlo.root,0,4,0.0);
 			//Observation : Each iteration takes ~0.005 seconds, which makes no sense.
 		}
 		timetaken_formove = (clock() - timetaken_formove)/(CLOCKS_PER_SEC);

@@ -82,10 +82,8 @@ void State::toggle_player() {
 void State::apply_move(Move& m) { //assumes that the move is valid
 	//Doesnt need changes to handle passing.
 
-	if ( i_lost() )
-
-	} else if ( m.m==0 ) {
-		if ( m.c==0 && m.r == 0) {
+	if ( m.m==0 ) {
+		if ( present_lost() ) {
 			// Pass move.
 		}else {
 			pos_present = m.to;
@@ -111,7 +109,7 @@ void State::unapply_move(Move& m) {
 	plies--;
 	toggle_player();						// SNair - moved toggle up
 	if ( m.m==0 ) {
-		if (m.r==0 && m.c==0) {
+		if ( present_lost() ) { //note, player has already been toggled.
 			
 		} else {
 			pos_present = m.from;
