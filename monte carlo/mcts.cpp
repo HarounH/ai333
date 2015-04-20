@@ -33,19 +33,18 @@ void MonteCarlo::init(Player& p)
 double MonteCarlo::MCTS(Player& p, exploredNode* current, int curDepth, int cutoff, float time_limit)	// update best_move!
 {
 	int i = current->choose_move();
+
 	double backed_up;
 
 	if (current->times_moves_explored[i] > 1)									// move has been explored (initialised to 1!)
 	{	
 		p.locState.apply_move(current->moves[i]);								// apply move
 		backed_up = MCTS(p, current->children[i], curDepth+1, cutoff,time_limit);	
-	}
-	
+	} 
 	else													// unexplored move
 	{
 		p.locState.apply_move(current->moves[i]);
 		current->children[i] = new exploredNode(p);			// making the new node, setting pointer 
-		
 		backed_up = simulate(p,curDepth+1,cutoff);
 	}
 	
@@ -69,23 +68,40 @@ double MonteCarlo::MCTS(Player& p, exploredNode* current, int curDepth, int cuto
 // returns -1.0 if invalid movements => don't consider it
 double MonteCarlo::simulate(Player& p, int curDepth, int cutoff)
 {
-	if (curDepth > cutoff+3) return -1.0;			// {review if can be handled better}
+	if (curDepth > cutoff+3) return -1.0;			// {review if can be handled better} - i'm not sure i get this.
 	
 	if (curDepth == cutoff or p.locState.is_endgame() or p.locState.i_won()) 	// terminal condition borrowed from mmx
 	{
-		if ((p.locState.shortest_path(1) == -1.0) or (p.locState.shortest_path(2) == -1.0)) return -1.0;		// => invalid move somewhere
-		else return p.locState.evaluate();
+		int sp1,sp2; //shortest paths for player 1 and player 2.
+		Move tempm = p.locState.causal_moves.top();
+		p.locState.causal_moves.pop();
+		//Set the move's my_shortest_path, op_shortest_path.
+		
+		
+		if ( tempm.my_shortest_path < 0) {
+			sp1 = p.locState.shortest_path_Astar(p.pn);
+			tempm.my_shortest_path = sp1;
+		}
+		if ( tempm.op_shortest_path < 0) {
+			sp2 = p.locState.shortest_path_Astar( ((p.pn==1)?(2):(1)) ); //other player.
+			tempm.op_shortest_path = sp2;	
+		}
+		
+		p.locState.causal_moves.push(tempm);
+
+		//CHECK FOR RECOMPUTATION.
+		if ((sp1 == -1.0) or (sp2 == -1.0)) return -1.0;		// => invalid move somewhere
+		else return p.locState.evaluate(); // no computation, hopefully.
 	}
 			
 	else
 	{
 		pair<bool,Move> cur = gen_simu_move(p);
-		
 		if (cur.first == false) return -1.0;
 		
+
 		p.locState.apply_move(cur.second);
 		double backed_up = simulate(p,curDepth+1,cutoff);
-		
 		p.locState.unapply_move(cur.second);
 		
 		return backed_up;		
@@ -95,8 +111,8 @@ double MonteCarlo::simulate(Player& p, int curDepth, int cutoff)
 pair<bool,Move> MonteCarlo::gen_simu_move(Player& p)				// a sorta-random quick move generator
 {																	// first bool if true => definitely invalid state { opposite may not hold }
 	int temp = fastrand()%20;
-	
-	if (temp<12)		// prob 3/5 move { randomly }
+	//after a win, simulate only walls.
+	if (!(p.locState.i_won()) || temp<12)		// prob 3/5 move { randomly }
 	{
 		vector<Move> jumps;
 		p.locState.get_all_jumps(jumps);
@@ -112,7 +128,7 @@ pair<bool,Move> MonteCarlo::gen_simu_move(Player& p)				// a sorta-random quick 
 		if (p.locState.n_present_walls>0 and temp<18) return pair<bool,Move>(true,p.locState.get_biased_random_wall());
 		else if (p.locState.n_present_walls>0 and temp<20) return pair<bool,Move>(true,p.locState.get_complete_random_wall());
 		
-		else		// jump
+		else if (!p.locState.i_won())		// jump only if i havent won.
 		{
 			vector<Move> jumps;
 			p.locState.get_all_jumps(jumps);
@@ -121,6 +137,15 @@ pair<bool,Move> MonteCarlo::gen_simu_move(Player& p)				// a sorta-random quick 
 		
 			int cur = fastrand()%jumps.size();
 			return pair<bool,Move>(true,jumps[cur]);
+		} 
+		else {
+			//I won.
+			Move m;
+			m.m=0;
+			m.r=0;
+			m.c=0;
+			return pair<bool,Move>(true,m); //returning the pass move.
+			//ASSERT : Possible cause of segfaults.
 		}
 	}
 }
@@ -131,9 +156,9 @@ void MonteCarlo::change_root(Player& p, Move m)
 	
 	for (int i = 0 ; i<root->children.size() ; i++)
 	{
-		if (root->moves[i] == m)
+		if (root->moves[i] == m) //NOTE : Prevents n nodes from being executed.
 		{
-			if(root->children[i]) new_root = root->children[i];			// if pointer is not NULL pointer
+			if(root->children[i]) new_root = root->children[i];			// if pointer is not NULL pointer --- H: its fine.
 			
 			else
 			{
@@ -142,11 +167,12 @@ void MonteCarlo::change_root(Player& p, Move m)
 				p.locState.unapply_move(m);
 			}
 		}
-		 
-		else if (root->children[i]) root->children[i]->recursive_delete();
+		//TODO: Insert this child into a hashtable of sorts? - just H thoughts. 
+		//TODO: Remove this? - surag hallucinations.
+		//else if (root->children[i]) root->children[i]->recursive_delete();
 	}
 	
-	delete root;	
+	//delete root;
 	exploredNode::node_count--;
 	root = new_root;
 }

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <limits>
 #include <cmath>
+#include <cstdlib>
 #include <algorithm>
 #include "Game.h"
 
@@ -32,7 +33,38 @@ public:
 		double v = -1000000;
 		vector<Move> possibleMoves;
 		cout << "Getting moves...\n";
-		gs.getValidMoves(possibleMoves);
+		if(myPlayer == 0 && gs.player1Win())
+		{
+			depth = 1;
+			if(gs.player1Walls() == 0)
+				return Move(0, 0, 0);
+			else
+				gs.getValidWallPlacements(possibleMoves);
+		}
+		else if(myPlayer == 1 && gs.player2Win())
+		{
+			depth = 1;
+			if(gs.player2Walls() == 0)
+				return Move(0, 0, 0);
+			else
+				gs.getValidWallPlacements(possibleMoves);
+		}
+		else if(myPlayer == 0 && gs.player2Win())
+		{
+			Pos mypos = gs.player1Pos();
+			Pos otherpos = make_pair(20, 20);
+			gs.getValidTraversals(possibleMoves, mypos, otherpos);
+			depth = 1;
+		}
+		else if(myPlayer == 1 && gs.player1Win())
+		{
+			Pos mypos = gs.player1Pos();
+			Pos otherpos = make_pair(20, 20);
+			gs.getValidTraversals(possibleMoves, mypos, otherpos);
+			depth = 1;
+		}
+		else
+			gs.getValidMoves(possibleMoves);
 		Move bestMove = *(possibleMoves.begin());
 		Pos p1 = gs.player1Pos();
 		Pos p2 = gs.player2Pos();

@@ -55,6 +55,8 @@ int exploredNode::choose_move()
 
 exploredNode::exploredNode(Player& p)
 {
+	//	double initprofile = clock(); // is any of this even avoidable?
+
 	p.locState.get_all_moves(moves);
 	total_times_explored = moves.size();
 
@@ -63,15 +65,18 @@ exploredNode::exploredNode(Player& p)
 	value_of_moves       = vector<double>(moves.size(),log(total_times_explored));				// 0 == ln(total_times_explore)/1
 	children             = vector<exploredNode*>(moves.size(), NULL);
 	is_my_move           = (p.locState.pn == p.locState.mypn);
-
 	node_count ++;
-	
 	// determine initial move {review}
 	next_move = 0;
+
+	//cout << "init profile= " << (clock()-initprofile)/(CLOCKS_PER_SEC) << "\n";
+	//RESULT: Takes about 0.005 seconds. EXTREMELY SLOW. DAFUQ? 
+
 }
 
 void exploredNode::book_keeping(int i , double backed_up)	// depends on whose move it is
 {
+	//double bookprofile = clock();
 	if (backed_up == -1.0) return;			// ignore
 	
 	total_times_explored++;
@@ -86,31 +91,43 @@ void exploredNode::book_keeping(int i , double backed_up)	// depends on whose mo
 	{
 		if (is_my_move)	value_of_moves[j] = avg_so_far[j] + C*sqrt(log(total_times_explored)/times_moves_explored[j]);		// choosing max, so add
 		else			value_of_moves[j] = avg_so_far[j] - C*sqrt(log(total_times_explored)/times_moves_explored[j]);		// chooseing min, so subtract
-		
+
+
 		if 		(is_my_move  and (value_of_moves[j] > value_of_moves[next_move])) next_move = j;				// choose max
 		else if (!is_my_move and (value_of_moves[j] < value_of_moves[next_move])) next_move = j;				// choose min
 		
+
 		else if (value_of_moves[j] == value_of_moves[next_move])			// with an 80% probability, swap			{ review }
 		{
 			int temp = fastrand()%5;
 			if (temp != 4) next_move = j;
 		}
 	}
+	
+	//cout << " iteration in book keeping takes time=" << (clock()-bookprofile)/(CLOCKS_PER_SEC) << "\n";
+	//RESULT OF PROFILE : Each call takes 0.00015 seconds, the log-wala part is half of that time.
+		//INFERENCE : Too fast to make a difference.
 	// next_move is ready to be called :D
 }
 
 void exploredNode::recursive_delete()
 {
+	
 	for (int i = 0 ; i<children.size() ; i++)
 	{
 		if (!children[i]) { /*delete children[i] ;*/ }		// do nothing if pointer is NULL { or should I delete a NULL pointer? }
+		
 		else children[i]->recursive_delete();
 
 	}
+	//cout << "recursive-delete profile=" << (clock()-rcprof)/(CLOCKS_PER_SEC) << "\n";
+	//RESULT OF PROFILE : Each reccursive delete takes between 1e-05 to 9e-06. However, there's a shit ton of these.
+	//RESULT PART2 : The entire thing, i.e, for the root, takes a grand total of 0.0005 seconds...about 5 times as much as the bookkeeping.
+		//INFERENCE : Maybe surag is right and we should bother about this.
 
+	node_count--;
 	delete this;	// I have lost the will to live, simply nothing more to gain
 					// there is nothing more for me, need the end to set me free 
-	node_count--;
 }
 
 

@@ -18,7 +18,9 @@ using namespace std;
 /* Complete the function below to print 1 integer which will be your next move 
    */
 int N,M,K, time_left, player;
-
+double timetaken_formove;
+#include <fstream>
+fstream logfile;
 
 #include "form.cpp" //Everything.
 

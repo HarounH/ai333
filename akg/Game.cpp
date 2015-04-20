@@ -2,9 +2,9 @@
 
 void GameState::applyMove(Move& move)
 {
-	if(move.choice == 0)
+	if(move.choice == 0 && move.pos != make_pair(0, 0))
 	{
-		if(currentPlayer() == 0) 
+		if(currentPlayer() == 0)
 			player1 = move.pos;
 		else
 			player2 = move.pos;
@@ -242,55 +242,61 @@ int GameState::shortestDistanceToGoal(Pos& start, int goalRow)
 {
 	int n = verWalls.size();
 	int m = verWalls[0].size();
-	queue<Pos> q;
-	q.push(start);
+	typedef pair<Pos, int> posInt;
+	priority_queue<posInt, vector<posInt>, PosComparator> q;
+	posInt startInt = make_pair(start, 0);
+	q.push(startInt);
 	unordered_map<Pos, int, PosHasher> distMap;
 	distMap[start] = 0;
 	while(!q.empty())
 	{
-		Pos p = q.front(); 
+		posInt p = q.top(); 
 		q.pop();
-		if(p.first == goalRow)
+		if(p.first.first == goalRow)
 		{
-			return distMap[p];
+			return distMap[p.first];
 		}
-		if( (p.first - 1 >= 0) && !horWalls[p.first][p.second] ) //move up
+		if( (p.first.first - 1 >= 0) && !horWalls[p.first.first][p.first.second] ) //move up
 		{
-			Pos np = make_pair(p.first-1, p.second);
+			Pos np = make_pair(p.first.first-1, p.first.second);
 			if(distMap.find(np) == distMap.end())
 			{
-				distMap[np] = distMap[p]+1;
-				q.push(np);
+				distMap[np] = distMap[p.first]+1;
+				posInt npp = (goalRow > p.first.first) ? make_pair(np, p.second + 2) : make_pair(np, p.second);
+				q.push(npp);
 			}
 		}
 		
-		if( (p.first + 1 < n) && !horWalls[p.first+1][p.second] ) //move down
+		if( (p.first.first + 1 < n) && !horWalls[p.first.first+1][p.first.second] ) //move down
 		{
-			Pos np = make_pair(p.first+1, p.second);
+			Pos np = make_pair(p.first.first+1, p.first.second);
 			if(distMap.find(np) == distMap.end())
 			{
-				distMap[np] = distMap[p]+1;
-				q.push(np);
+				distMap[np] = distMap[p.first]+1;
+				posInt npp = (goalRow > p.first.first) ? make_pair(np, p.second) : make_pair(np, p.second + 2);
+				q.push(npp);
 			}
 		}
 		
-		if( (p.second - 1 >= 0) && !verWalls[p.first][p.second] ) //move left
+		if( (p.first.second - 1 >= 0) && !verWalls[p.first.first][p.first.second] ) //move left
 		{
-			Pos np = make_pair(p.first, p.second-1);
+			Pos np = make_pair(p.first.first, p.first.second-1);
 			if(distMap.find(np) == distMap.end())
 			{
-				distMap[np] = distMap[p]+1;
-				q.push(np);
+				distMap[np] = distMap[p.first]+1;
+				posInt npp = make_pair(np, p.second + 1);
+				q.push(npp);
 			}
 		}
 		
-		if( (p.second + 1 < m) && !verWalls[p.first][p.second+1] ) //move right
+		if( (p.first.second + 1 < m) && !verWalls[p.first.first][p.first.second+1] ) //move right
 		{
-			Pos np = make_pair(p.first, p.second+1);
+			Pos np = make_pair(p.first.first, p.first.second+1);
 			if(distMap.find(np) == distMap.end())
 			{
-				distMap[np] = distMap[p]+1;
-				q.push(np);
+				distMap[np] = distMap[p.first]+1;
+				posInt npp = make_pair(np, p.second + 1);
+				q.push(npp);
 			}
 		}
 		

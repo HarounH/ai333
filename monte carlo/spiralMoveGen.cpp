@@ -1,5 +1,5 @@
 inline double rng(long acc=10000000) {
-	return (rand()%acc)/(double)acc;
+	return (fastrand()%acc)/(double)acc;
 }
 
 void get_spiral_walls(std::vector<Move>& moves) {

@@ -8,11 +8,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <arpa/inet.h> 
-#include <iostream>
-#include <ctime>
-#include "AIEngine.h"
-#include "Game.h"
-#include "Player.cpp"
+#include <bits/stdc++.h>
 
 using namespace std;
 /* Complete the function below to print 1 integer which will be your next move 
@@ -25,6 +21,7 @@ int N,M,K, time_left, player;
 
 int main(int argc, char *argv[])
 {
+    srand (time(NULL));
     int sockfd = 0, n = 0;
     char recvBuff[1024];
     char sendBuff[1025];
@@ -77,26 +74,16 @@ int main(int argc, char *argv[])
 	int d=3;
     char s[100];
 	int x=1;
-	
-	GameState gs(N, M, K);
-	BasePlayer b;
-	AIEngine<BasePlayer> ai(b, player-1);
-	int numplies = 0;
-	int depth = 3;
     if(player == 1)
     {
         
         memset(sendBuff, '0', sizeof(sendBuff)); 
         string temp;
-        Move mov = ai.minimax(gs, depth);
-		gs.applyMove(mov);
-		m = mov.choice;
-		r = mov.pos.first+1;
-		c = mov.pos.second+1;
-		cout << "Move: " << m <<" "<<r<<" "<<c<<"\n";
+	cin>>m>>r>>c;
+        
         snprintf(sendBuff, sizeof(sendBuff), "%d %d %d", m, r , c);
         write(sockfd, sendBuff, strlen(sendBuff));
-		numplies += 1;
+
 	memset(recvBuff, '0',sizeof(recvBuff));
         n = read(sockfd, recvBuff, sizeof(recvBuff)-1);
         recvBuff[n] = 0;
@@ -121,8 +108,6 @@ int main(int argc, char *argv[])
         recvBuff[n] = 0;
         sscanf(recvBuff, "%d %d %d %d", &om,&oro,&oc,&d);
 	cout << om<<" "<<oro<<" "<<oc << " "<<d<<endl;
-	    Move omov(om, oro-1, oc-1);
-		gs.applyMove(omov);
     	if(d==1)
 	{
 		cout<<"You win!! Yayee!! :D ";
@@ -135,26 +120,10 @@ int main(int argc, char *argv[])
 	}
         memset(sendBuff, '0', sizeof(sendBuff)); 
         string temp;
-		if(numplies == 4)
-			depth = 3;
-        if(TL < 2.0)
-            depth = 1;
-        else if(TL < 15.0)
-            depth = 2;
-        else if(TL < 25.0 && player == 1 && gs.player1Walls() >= 2)
-            depth = 2;
-        else if(TL < 25.0 && player == 2 && gs.player2Walls() >= 2)
-            depth = 2;
-
-        Move mov = ai.minimax(gs, depth);
-		gs.applyMove(mov);
-		m = mov.choice;
-		r = mov.pos.first+1;
-		c = mov.pos.second+1;
-		cout << "Move: " << m <<" "<<r<<" "<<c<<"\n\n\n\n";
+	cin>>m>>r>>c;
         snprintf(sendBuff, sizeof(sendBuff), "%d %d %d", m, r , c);
         write(sockfd, sendBuff, strlen(sendBuff));
-		numplies += 1;
+
 	memset(recvBuff, '0',sizeof(recvBuff));
         n = read(sockfd, recvBuff, sizeof(recvBuff)-1);
         recvBuff[n] = 0;

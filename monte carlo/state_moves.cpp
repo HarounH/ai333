@@ -231,7 +231,7 @@ void State::get_all_jumps(std::vector<Move>& mov) {
 }
 
 inline double rng() {
-	return ((double) rand() / (RAND_MAX));
+	return ((double) fastrand() / (RAND_MAX));
 }
 
 

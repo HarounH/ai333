@@ -13,6 +13,13 @@ struct PosHasher{
 	}
 };
 
+struct PosComparator {
+	bool operator()(const pair<Pos, int>& lhs, const pair<Pos, int>&rhs)
+	{
+		return lhs.second > rhs.second;
+	}
+};
+
 struct Move {
 	int choice;
 	Pos pos;
@@ -47,6 +54,12 @@ struct Move {
 		pos = other.pos;
 		return *this;
 	}
+};
+
+struct FullMove {
+	Move m;
+	int sd1;
+	int sd2;
 };
 
 #endif

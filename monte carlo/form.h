@@ -203,7 +203,7 @@ public:
 
 class Player { 
 public:
-	State gblState , locState;
+	State /*gblState ,*/ locState;
 	int pn,remaining_walls; float total_time; float remaining_time;
 	int plies;
 	
@@ -243,7 +243,7 @@ void Player::init( int _N , int _M , int _K , int _pn , float max_time ) {
 	remaining_time = max_time;
 	remaining_walls = _K;
 	plies = 0;
-	gblState.init(_N,_M,_K , pn);
+	//gblState.init(_N,_M,_K , pn);
 	locState.init(_N,_M,_K , pn);
 	//Add stuff?
 

@@ -44,8 +44,11 @@ Why? Because i want to remember which table was the best path.
 Move Player::ordinary_mmx( int depth , float time_limit )
 {
 	// locState = gblState;		// init
-
+	Move loltest = best_move;
 	max_value( -INFTY, +INFTY , depth, 0, time_limit);								// FIX {do a find and replace for all -INFTY, +INFTY}
+	if ( best_move.m==loltest.m && best_move.r==loltest.r && best_move.c==loltest.c ) {
+		cout << "loltest failed. maxvalue did nothing :P\n";
+	}
 	return best_move;
 }
 

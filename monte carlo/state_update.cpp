@@ -81,10 +81,13 @@ void State::toggle_player() {
 
 void State::apply_move(Move& m) { //assumes that the move is valid
 	//Doesnt need changes to handle passing.
-	if ( m.m==0 ) {
+
+	if ( i_lost() )
+
+	} else if ( m.m==0 ) {
 		if ( m.c==0 && m.r == 0) {
-			//
-		} else {
+			// Pass move.
+		}else {
 			pos_present = m.to;
 		}
 	} else if ( m.m==1 ) {
