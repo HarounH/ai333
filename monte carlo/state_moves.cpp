@@ -20,14 +20,6 @@ void State::get_all_walls( std::vector<Move>& moves ) {
 					apply_move(mov);
 					mov.my_shortest_path=shortest_path_Astar(mypn);
 					mov.op_shortest_path=shortest_path_Astar(opn);
-					/*TODO: Remove these repetitions 
-					mov.my_shortest_path=shortest_path_Astar(mypn);
-					mov.op_shortest_path=shortest_path_Astar(opn);
-					mov.my_shortest_path=shortest_path_Astar(mypn);
-					mov.op_shortest_path=shortest_path_Astar(opn);
-					mov.my_shortest_path=shortest_path_Astar(mypn);
-					mov.op_shortest_path=shortest_path_Astar(opn);
-					*/
 					causal_moves.pop();
 					causal_moves.push(mov);
 					if ( mov.my_shortest_path>=0 && mov.op_shortest_path>=0 ) {
@@ -332,15 +324,19 @@ Move State::get_complete_random_wall() {
 	mov.pn = pn;
 	mov.from = pos_present;
 	bool valid = false;
+	int toolong = 0;
 	while(!valid) {
 		if ( rng() >0.5 ) {mov.m = 1;} else {mov.m = 2;} //vertical v/s horizontal with P = 0.5
 		mov.r = 2 + (N-2)*rng(); //goes between 2 -> N-1
 		mov.c = 2 + (M-2)*rng();	
-		
-		// if (mov.r == 0 or mov.r ==1) mov.r = 2;
-		// if (mov.c == 0 or mov.c ==1) mov.c = 2;
-				
+					
 		valid = in_bounds_wall(mov.r,mov.c)&&valid_wall(mov);/*&&(shortest_path_Astar(1)!=-1)&&(shortest_path_Astar(2)!=-1);*/
+		if ( toolong > 100 ) {
+			std::vector<Move> v;
+			get_spiral_walls(v);
+			return v[0]; //TODO : Use a better strategy, man.
+		}
+		toolong++;
 	}
 	mov.to = Position(mov.r,mov.c);
 	return mov;
@@ -352,7 +348,8 @@ Move State::get_biased_random_wall() { //with a mean equal to the other players'
 	mov.from = pos_present;
 	bool valid = false;
 	int loopCount = 0;
-	
+	// cout << "\t#########presently in biased random wall.\n";
+	// cout << "\t######## pn=" << mov.pn << " posp=" << pos_present.r << "," << pos_present.c << ")\n";
 	while(!valid) {
 		if ( rng() >0.5 ) {mov.m = 1;} else {mov.m = 2;}  //vertical v/s horizontal with P = 0.5
 		mov.r = pos_other.r + (N-2)*(rng() - 0.5); //goes between 2 -> N-1
@@ -365,8 +362,10 @@ Move State::get_biased_random_wall() { //with a mean equal to the other players'
 		
 		valid = in_bounds_wall(mov.r,mov.c)&&valid_wall(mov);/*&&(shortest_path_Astar(1)!=-1)&&(shortest_path_Astar(2)!=-1);*/
 		loopCount++;
-		
-		if (loopCount==100) return get_complete_random_wall();
+		if (loopCount==100) {
+			// cout << "you've tried hard son, lets get you a random wall.\n";
+			return get_complete_random_wall();
+		}
 	}
 	mov.to = Position(mov.r,mov.c);
 	return mov;	

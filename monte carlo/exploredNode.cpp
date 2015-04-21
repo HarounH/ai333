@@ -65,7 +65,7 @@ exploredNode::exploredNode(Player& p)
 	value_of_moves       = vector<double>(moves.size(),log(total_times_explored));				// 0 == ln(total_times_explore)/1
 	children             = vector<exploredNode*>(moves.size(), NULL);
 	is_my_move           = (p.locState.pn == p.locState.mypn);
-	node_count ++;
+	node_count++;
 	// determine initial move {review}
 	next_move = 0;
 

@@ -1,0 +1,929 @@
+Quoridor will start...
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(1,5)
+OtherPlayer=	 	@(9,5)
+cond-present=(0,0)
+cond-i=(0,0,0)
+before mcts,Move(0,2,5)shortpath=-1,-1 from=_pos(1,5)
+after mcts,Move(0,2,5)shortpath=-1,-1 from=_pos(1,5)
+	#####Move played 0 2 5
+
+#####################
+entering readmove
+PresentPlayer=	2	@(9,5)
+OtherPlayer=	 	@(2,5)
+cond-present=(0,0)
+cond-i=(0,0,0)
+now, apply move=Move(0,8,5)shortpath=-1,-1 from=_pos(9,5)
+PresentPlayer=	1	@(2,5)
+OtherPlayer=	 	@(8,5)
+cond-present=(0,0)
+cond-i=(0,0,0)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(2,5)
+OtherPlayer=	 	@(8,5)
+cond-present=(0,0)
+cond-i=(0,0,0)
+before mcts,Move(0,3,5)shortpath=-1,-1 from=_pos(2,5)
+after mcts,Move(0,3,5)shortpath=-1,-1 from=_pos(2,5)
+	#####Move played 0 3 5
+
+#####################
+entering readmove
+PresentPlayer=	2	@(8,5)
+OtherPlayer=	 	@(3,5)
+cond-present=(0,0)
+cond-i=(0,0,0)
+now, apply move=Move(0,7,5)shortpath=-1,-1 from=_pos(8,5)
+PresentPlayer=	1	@(3,5)
+OtherPlayer=	 	@(7,5)
+cond-present=(0,0)
+cond-i=(0,0,0)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(3,5)
+OtherPlayer=	 	@(7,5)
+cond-present=(0,0)
+cond-i=(0,0,0)
+before mcts,Move(0,4,5)shortpath=-1,-1 from=_pos(3,5)
+after mcts,Move(0,4,5)shortpath=-1,-1 from=_pos(3,5)
+	#####Move played 0 4 5
+
+#####################
+entering readmove
+PresentPlayer=	2	@(7,5)
+OtherPlayer=	 	@(4,5)
+cond-present=(0,0)
+cond-i=(0,0,0)
+now, apply move=Move(0,6,5)shortpath=-1,-1 from=_pos(7,5)
+PresentPlayer=	1	@(4,5)
+OtherPlayer=	 	@(6,5)
+cond-present=(0,0)
+cond-i=(0,0,0)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(4,5)
+OtherPlayer=	 	@(6,5)
+cond-present=(0,0)
+cond-i=(0,0,0)
+before mcts,Move(1,3,5)shortpath=-1,-1 from=_pos(0,0)
+after mcts,Move(1,3,5)shortpath=-1,-1 from=_pos(0,0)
+	#####Move played 1 3 5
+
+#####################
+entering readmove
+PresentPlayer=	2	@(6,5)
+OtherPlayer=	 	@(4,5)
+cond-present=(0,0)
+cond-i=(0,0,0)
+now, apply move=Move(0,5,5)shortpath=-1,-1 from=_pos(6,5)
+PresentPlayer=	1	@(4,5)
+OtherPlayer=	 	@(5,5)
+cond-present=(0,0)
+cond-i=(0,0,0)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(4,5)
+OtherPlayer=	 	@(5,5)
+cond-present=(0,0)
+cond-i=(0,0,0)
+before mcts,Move(1,3,5)shortpath=-1,-1 from=_pos(0,0)
+time taken to pick move=8.56626
+after mcts,Move(1,4,6)shortpath=5,5 from=_pos(4,5)
+	#####Move played 1 4 6
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(4,5)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,4,4)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(4,5)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(4,5)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(1,4,6)shortpath=5,5 from=_pos(4,5)
+after ommx,Move(0,5,5)shortpath=-1,-1 from=_pos(4,5)
+before mcts,Move(0,5,5)shortpath=-1,-1 from=_pos(4,5)
+after mcts,Move(0,5,5)shortpath=-1,-1 from=_pos(4,5)
+	#####Move played 0 5 5
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(5,5)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,3,4)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(5,5)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(5,5)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,5,5)shortpath=-1,-1 from=_pos(4,5)
+after ommx,Move(0,6,5)shortpath=-1,-1 from=_pos(5,5)
+before mcts,Move(0,6,5)shortpath=-1,-1 from=_pos(5,5)
+after mcts,Move(0,6,5)shortpath=-1,-1 from=_pos(5,5)
+	#####Move played 0 6 5
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(6,5)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(1,8,5)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(6,5)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(6,5)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,6,5)shortpath=-1,-1 from=_pos(5,5)
+after ommx,Move(0,6,6)shortpath=-1,-1 from=_pos(6,5)
+before mcts,Move(0,6,6)shortpath=-1,-1 from=_pos(6,5)
+after mcts,Move(0,6,6)shortpath=-1,-1 from=_pos(6,5)
+	#####Move played 0 6 6
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(6,6)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(1,7,7)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(6,6)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(6,6)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,6,6)shortpath=-1,-1 from=_pos(6,5)
+after ommx,Move(0,6,7)shortpath=-1,-1 from=_pos(6,6)
+before mcts,Move(0,6,7)shortpath=-1,-1 from=_pos(6,6)
+after mcts,Move(0,6,7)shortpath=-1,-1 from=_pos(6,6)
+	#####Move played 0 6 7
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(6,7)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(1,7,9)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(6,7)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(6,7)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,6,7)shortpath=-1,-1 from=_pos(6,6)
+after ommx,Move(0,6,6)shortpath=-1,-1 from=_pos(6,7)
+before mcts,Move(0,6,6)shortpath=-1,-1 from=_pos(6,7)
+after mcts,Move(0,6,6)shortpath=-1,-1 from=_pos(6,7)
+	#####Move played 0 6 6
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(6,6)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(2,7,6)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(6,6)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(6,6)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,6,6)shortpath=-1,-1 from=_pos(6,7)
+after ommx,Move(0,5,6)shortpath=-1,-1 from=_pos(6,6)
+before mcts,Move(0,5,6)shortpath=-1,-1 from=_pos(6,6)
+after mcts,Move(0,5,6)shortpath=-1,-1 from=_pos(6,6)
+	#####Move played 0 5 6
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(5,6)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(2,5,6)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(5,6)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(5,6)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,5,6)shortpath=-1,-1 from=_pos(6,6)
+after ommx,Move(0,4,6)shortpath=-1,-1 from=_pos(5,6)
+before mcts,Move(0,4,6)shortpath=-1,-1 from=_pos(5,6)
+after mcts,Move(0,4,6)shortpath=-1,-1 from=_pos(5,6)
+	#####Move played 0 4 6
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(4,6)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(2,4,7)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(4,6)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(4,6)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,4,6)shortpath=-1,-1 from=_pos(5,6)
+after ommx,Move(0,5,6)shortpath=-1,-1 from=_pos(4,6)
+before mcts,Move(0,5,6)shortpath=-1,-1 from=_pos(4,6)
+after mcts,Move(0,5,6)shortpath=-1,-1 from=_pos(4,6)
+	#####Move played 0 5 6
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(5,6)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(1,3,8)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(5,6)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(5,6)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,5,6)shortpath=-1,-1 from=_pos(4,6)
+after ommx,Move(0,5,7)shortpath=-1,-1 from=_pos(5,6)
+before mcts,Move(0,5,7)shortpath=-1,-1 from=_pos(5,6)
+after mcts,Move(0,5,7)shortpath=-1,-1 from=_pos(5,6)
+	#####Move played 0 5 7
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(5,7)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,3,3)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(5,7)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(5,7)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,5,7)shortpath=-1,-1 from=_pos(5,6)
+after ommx,Move(0,4,7)shortpath=-1,-1 from=_pos(5,7)
+before mcts,Move(0,4,7)shortpath=-1,-1 from=_pos(5,7)
+after mcts,Move(0,4,7)shortpath=-1,-1 from=_pos(5,7)
+	#####Move played 0 4 7
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(4,7)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,2,3)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(4,7)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(4,7)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,4,7)shortpath=-1,-1 from=_pos(5,7)
+after ommx,Move(0,3,7)shortpath=-1,-1 from=_pos(4,7)
+before mcts,Move(0,3,7)shortpath=-1,-1 from=_pos(4,7)
+after mcts,Move(0,3,7)shortpath=-1,-1 from=_pos(4,7)
+	#####Move played 0 3 7
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(3,7)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,1,3)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(3,7)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(3,7)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,3,7)shortpath=-1,-1 from=_pos(4,7)
+after ommx,Move(0,3,8)shortpath=-1,-1 from=_pos(3,7)
+before mcts,Move(0,3,8)shortpath=-1,-1 from=_pos(3,7)
+after mcts,Move(0,3,8)shortpath=-1,-1 from=_pos(3,7)
+	#####Move played 0 3 8
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(3,8)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(2,4,9)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(3,8)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(3,8)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,3,8)shortpath=-1,-1 from=_pos(3,7)
+after ommx,Move(0,4,8)shortpath=-1,-1 from=_pos(3,8)
+before mcts,Move(0,4,8)shortpath=-1,-1 from=_pos(3,8)
+after mcts,Move(0,4,8)shortpath=-1,-1 from=_pos(3,8)
+	#####Move played 0 4 8
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(4,8)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(1,8,3)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(4,8)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(4,8)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,4,8)shortpath=-1,-1 from=_pos(3,8)
+after ommx,Move(0,5,8)shortpath=-1,-1 from=_pos(4,8)
+before mcts,Move(0,5,8)shortpath=-1,-1 from=_pos(4,8)
+after mcts,Move(0,5,8)shortpath=-1,-1 from=_pos(4,8)
+	#####Move played 0 5 8
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(5,8)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(2,3,4)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(5,8)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(5,8)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,5,8)shortpath=-1,-1 from=_pos(4,8)
+after ommx,Move(0,5,9)shortpath=-1,-1 from=_pos(5,8)
+before mcts,Move(0,5,9)shortpath=-1,-1 from=_pos(5,8)
+after mcts,Move(0,5,9)shortpath=-1,-1 from=_pos(5,8)
+	#####Move played 0 5 9
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(5,9)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,1,1)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(5,9)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(5,9)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,5,9)shortpath=-1,-1 from=_pos(5,8)
+after ommx,Move(0,4,9)shortpath=-1,-1 from=_pos(5,9)
+before mcts,Move(0,4,9)shortpath=-1,-1 from=_pos(5,9)
+after mcts,Move(0,4,9)shortpath=-1,-1 from=_pos(5,9)
+	#####Move played 0 4 9
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(4,9)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,1,1)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(4,9)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(4,9)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,4,9)shortpath=-1,-1 from=_pos(5,9)
+after ommx,Move(0,3,9)shortpath=-1,-1 from=_pos(4,9)
+before mcts,Move(0,3,9)shortpath=-1,-1 from=_pos(4,9)
+after mcts,Move(0,3,9)shortpath=-1,-1 from=_pos(4,9)
+	#####Move played 0 3 9
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(3,9)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,1,1)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(3,9)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(3,9)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,3,9)shortpath=-1,-1 from=_pos(4,9)
+after ommx,Move(0,2,9)shortpath=-1,-1 from=_pos(3,9)
+before mcts,Move(0,2,9)shortpath=-1,-1 from=_pos(3,9)
+after mcts,Move(0,2,9)shortpath=-1,-1 from=_pos(3,9)
+	#####Move played 0 2 9
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(2,9)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,1,1)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(2,9)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(2,9)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,2,9)shortpath=-1,-1 from=_pos(3,9)
+after ommx,Move(0,2,8)shortpath=-1,-1 from=_pos(2,9)
+before mcts,Move(0,2,8)shortpath=-1,-1 from=_pos(2,9)
+after mcts,Move(0,2,8)shortpath=-1,-1 from=_pos(2,9)
+	#####Move played 0 2 8
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(2,8)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,1,1)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(2,8)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(2,8)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,2,8)shortpath=-1,-1 from=_pos(2,9)
+after ommx,Move(0,2,7)shortpath=-1,-1 from=_pos(2,8)
+before mcts,Move(0,2,7)shortpath=-1,-1 from=_pos(2,8)
+after mcts,Move(0,2,7)shortpath=-1,-1 from=_pos(2,8)
+	#####Move played 0 2 7
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(2,7)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,1,1)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(2,7)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(2,7)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,2,7)shortpath=-1,-1 from=_pos(2,8)
+after ommx,Move(0,2,6)shortpath=-1,-1 from=_pos(2,7)
+before mcts,Move(0,2,6)shortpath=-1,-1 from=_pos(2,7)
+after mcts,Move(0,2,6)shortpath=-1,-1 from=_pos(2,7)
+	#####Move played 0 2 6
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(2,6)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,1,1)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(2,6)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(2,6)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,2,6)shortpath=-1,-1 from=_pos(2,7)
+after ommx,Move(0,3,6)shortpath=-1,-1 from=_pos(2,6)
+before mcts,Move(0,3,6)shortpath=-1,-1 from=_pos(2,6)
+after mcts,Move(0,3,6)shortpath=-1,-1 from=_pos(2,6)
+	#####Move played 0 3 6
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(3,6)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,1,1)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(3,6)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(3,6)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,3,6)shortpath=-1,-1 from=_pos(2,6)
+after ommx,Move(0,3,5)shortpath=-1,-1 from=_pos(3,6)
+before mcts,Move(0,3,5)shortpath=-1,-1 from=_pos(3,6)
+after mcts,Move(0,3,5)shortpath=-1,-1 from=_pos(3,6)
+	#####Move played 0 3 5
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(3,5)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,1,1)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(3,5)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(3,5)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,3,5)shortpath=-1,-1 from=_pos(3,6)
+after ommx,Move(0,3,4)shortpath=-1,-1 from=_pos(3,5)
+before mcts,Move(0,3,4)shortpath=-1,-1 from=_pos(3,5)
+after mcts,Move(0,3,4)shortpath=-1,-1 from=_pos(3,5)
+	#####Move played 0 3 4
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(3,4)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,1,1)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(3,4)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(3,4)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,3,4)shortpath=-1,-1 from=_pos(3,5)
+after ommx,Move(0,4,4)shortpath=-1,-1 from=_pos(3,4)
+before mcts,Move(0,4,4)shortpath=-1,-1 from=_pos(3,4)
+after mcts,Move(0,4,4)shortpath=-1,-1 from=_pos(3,4)
+	#####Move played 0 4 4
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(4,4)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,1,1)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(4,4)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(4,4)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,4,4)shortpath=-1,-1 from=_pos(3,4)
+after ommx,Move(0,4,3)shortpath=-1,-1 from=_pos(4,4)
+before mcts,Move(0,4,3)shortpath=-1,-1 from=_pos(4,4)
+after mcts,Move(0,4,3)shortpath=-1,-1 from=_pos(4,4)
+	#####Move played 0 4 3
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(4,3)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,1,1)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(4,3)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(4,3)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,4,3)shortpath=-1,-1 from=_pos(4,4)
+after ommx,Move(0,4,2)shortpath=-1,-1 from=_pos(4,3)
+before mcts,Move(0,4,2)shortpath=-1,-1 from=_pos(4,3)
+after mcts,Move(0,4,2)shortpath=-1,-1 from=_pos(4,3)
+	#####Move played 0 4 2
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(4,2)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,1,1)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(4,2)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(4,2)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,4,2)shortpath=-1,-1 from=_pos(4,3)
+after ommx,Move(0,4,1)shortpath=-1,-1 from=_pos(4,2)
+before mcts,Move(0,4,1)shortpath=-1,-1 from=_pos(4,2)
+after mcts,Move(0,4,1)shortpath=-1,-1 from=_pos(4,2)
+	#####Move played 0 4 1
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(4,1)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,1,1)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(4,1)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(4,1)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,4,1)shortpath=-1,-1 from=_pos(4,2)
+after ommx,Move(0,5,1)shortpath=-1,-1 from=_pos(4,1)
+before mcts,Move(0,5,1)shortpath=-1,-1 from=_pos(4,1)
+after mcts,Move(0,5,1)shortpath=-1,-1 from=_pos(4,1)
+	#####Move played 0 5 1
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(5,1)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,1,1)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(5,1)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(5,1)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,5,1)shortpath=-1,-1 from=_pos(4,1)
+after ommx,Move(0,6,1)shortpath=-1,-1 from=_pos(5,1)
+before mcts,Move(0,6,1)shortpath=-1,-1 from=_pos(5,1)
+after mcts,Move(0,6,1)shortpath=-1,-1 from=_pos(5,1)
+	#####Move played 0 6 1
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(6,1)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,1,1)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(6,1)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(6,1)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,6,1)shortpath=-1,-1 from=_pos(5,1)
+after ommx,Move(0,7,1)shortpath=-1,-1 from=_pos(6,1)
+before mcts,Move(0,7,1)shortpath=-1,-1 from=_pos(6,1)
+after mcts,Move(0,7,1)shortpath=-1,-1 from=_pos(6,1)
+	#####Move played 0 7 1
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(7,1)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,1,1)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(7,1)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(7,1)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,7,1)shortpath=-1,-1 from=_pos(6,1)
+after ommx,Move(0,8,1)shortpath=-1,-1 from=_pos(7,1)
+before mcts,Move(0,8,1)shortpath=-1,-1 from=_pos(7,1)
+after mcts,Move(0,8,1)shortpath=-1,-1 from=_pos(7,1)
+	#####Move played 0 8 1
+
+#####################
+entering readmove
+PresentPlayer=	2	@(1,7)
+OtherPlayer=	 	@(8,1)
+cond-present=(1,0)
+cond-i=(0,0,1)
+now, apply move=Move(0,1,1)shortpath=-1,-1 from=_pos(1,7)
+PresentPlayer=	1	@(8,1)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+
+leaving readmove 
+#####################
+beginning of send_move_to_client_cpp
+PresentPlayer=	1	@(8,1)
+OtherPlayer=	 	@(1,7)
+cond-present=(0,1)
+cond-i=(0,0,1)
+before ommx, Move(0,8,1)shortpath=-1,-1 from=_pos(7,1)
+after ommx,Move(0,9,1)shortpath=-1,-1 from=_pos(8,1)
+before mcts,Move(0,9,1)shortpath=-1,-1 from=_pos(8,1)
+after mcts,Move(0,9,1)shortpath=-1,-1 from=_pos(8,1)
+	#####Move played 0 9 1
+Loser :P 
+The End

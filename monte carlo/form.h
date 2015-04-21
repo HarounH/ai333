@@ -112,7 +112,13 @@ public:
 	~State() {}
 	void init( int _N , int _M , int _K , int _pn);// , float max_time );
 	State& operator=(const State& s);
-	
+	bool operator==(const State& s) {
+		return (/*(causal_moves == s.causal_moves) && */ (N==s.N) && (M=s.M) && (K==s.K) && (pn==s.pn) && (mypn==s.mypn) && (opn==s.opn)
+			&& (pos_other == s.pos_other) && (pos_present == s.pos_present) && (n_present_walls==s.n_present_walls) &&
+			(n_other_walls == s.n_other_walls) && (is_wall_H == s.is_wall_H) && (is_wall_V==s.is_wall_V)
+			&& (can_wall_H==s.can_wall_H) && (can_wall_V==s.can_wall_V)
+			);
+	}
 	void print(); //Yay! A print function!
 	/* Queries about game state. */
 	bool is_endgame();

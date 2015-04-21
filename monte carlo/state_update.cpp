@@ -18,15 +18,19 @@ void State::print() {
 	/*cout << " Present Player=" << pn << "\n";
 	pos_present.print();
 	cout << "\n Other Player @"; pos_other.print(); */ //H- toggled this out because annoying
-	std::set< pair<int,int> >::iterator it;
-	cout << "\n Horizontal walls at: \n";
-	for( it=wall_H.begin(); it != wall_H.end(); ++it) {
-		cout << "\t("<< (*it).first<<","<< (*it).second <<")\t"; 
-	}
-	cout << "\n Vertical walls at: \n";
-	for( it=wall_V.begin(); it != wall_V.end(); ++it) {
-		cout << "\t("<< (*it).first<<","<< (*it).second <<")\t";
-	}
+	cout << "PresentPlayer=\t" << pn << "\t@(" << pos_present.r << "," << pos_present.c << ")\n";
+	cout << "OtherPlayer=\t" << " " << "\t@(" << pos_other.r << "," << pos_other.c << ")\n";
+	cout << "cond-present=(" << present_won() << "," << present_lost() << ")\n";
+	cout << "cond-i=(" << is_endgame() << "," << i_won() << "," << i_lost() << ")\n";
+	// std::set< pair<int,int> >::iterator it;
+	// cout << "\n Horizontal walls at: \n";
+	// for( it=wall_H.begin(); it != wall_H.end(); ++it) {
+	// 	cout << "\t("<< (*it).first<<","<< (*it).second <<")\t"; 
+	// }
+	// cout << "\n Vertical walls at: \n";
+	// for( it=wall_V.begin(); it != wall_V.end(); ++it) {
+	// 	cout << "\t("<< (*it).first<<","<< (*it).second <<")\t";
+	// }
 }
 void State::init(int n, int m , int k , int _mypn) {
 	N = n;
@@ -85,6 +89,7 @@ void State::apply_move(Move& m) { //assumes that the move is valid
 	if ( m.m==0 ) {
 		if ( present_won() ) {
 			// Pass move.
+			m.from = pos_present;
 		}else {
 			pos_present.r = m.r;
 			pos_present.c = m.c;
@@ -106,24 +111,23 @@ void State::apply_move(Move& m) { //assumes that the move is valid
 
 void State::unapply_move(Move& m) {
 	//Doesn't need changes to handle passing.
+	Move topop = causal_moves.top();
+	//cout << " unapply request for move m, such that it is correct move=" << (topop == m) << "\n";
 	causal_moves.pop(); //Requires that the move played be correct.
 	plies--;
 	toggle_player();						// SNair - moved toggle up
-	if ( m.m==0 ) {
-		if ( present_won() ) { //note, player has already been toggled.
-			
-		} else {
-			pos_present = m.from;
-		}
-		
-	} else if ( m.m==1 ) {
+	#define TOPOP m
+	if ( TOPOP.m==0 ) {
+		pos_present = TOPOP.from;
+	} else if ( TOPOP.m==1 ) {
 		n_present_walls++;
-		is_wall_H[m.r][m.c] = false;
-		wall_H.erase( make_pair(m.r,m.c) );
-	} else if ( m.m==2 ) {
+		is_wall_H[TOPOP.r][TOPOP.c] = false;
+		wall_H.erase( make_pair(TOPOP.r,TOPOP.c) );
+	} else if ( TOPOP.m==2 ) {
 		n_present_walls++;
-		is_wall_V[m.r][m.c] = false;
-		wall_V.erase( make_pair(m.r,m.c) );
+		is_wall_V[TOPOP.r][TOPOP.c] = false;
+		wall_V.erase( make_pair(TOPOP.r,TOPOP.c) );
 	}
+	#undef TOPOP
 }
 #endif

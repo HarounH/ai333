@@ -47,16 +47,16 @@ Move Player::ordinary_mmx( int depth , float time_limit )
 	Move loltest = best_move;
 	max_value( -INFTY, +INFTY , depth, 0, time_limit);								// FIX {do a find and replace for all -INFTY, +INFTY}
 	if ( best_move.m==loltest.m && best_move.r==loltest.r && best_move.c==loltest.c ) {
-		cout << "loltest failed. (check ordinary_mmx) ... maxvalue did nothing, jumping randomly now :P\n";
+		// cout << "loltest failed. (check ordinary_mmx) ... maxvalue did nothing, jumping randomly now :P\n";
 		std::vector<Move> moves;
 		locState.get_all_jumps(moves);
 		//ASSERT : moves.size()!=0.
-		cout << "\t\tmoves.size()=" << moves.size() << "\n";
+		// cout << "\t\tmoves.size()=" << moves.size() << "\n";
 		best_move = moves[ (fastrand()%(moves.size())) ];
-		cout << "i'm at " << locState.pos_present.r << "," << locState.pos_present.c << ")\n";
-		for(int i=0; i<moves.size(); ++i) {
-			cout << "move=(" << moves[i].m << "," << moves[i].r << "," << moves[i].c << ")\n";
-		}
+		// cout << "i'm at " << locState.pos_present.r << "," << locState.pos_present.c << ")\n";
+		// for(int i=0; i<moves.size(); ++i) {
+		// 	cout << "move=(" << moves[i].m << "," << moves[i].r << "," << moves[i].c << ")\n";
+		// }
 	}
 	return best_move;
 }
@@ -64,7 +64,9 @@ Move Player::ordinary_mmx( int depth , float time_limit )
 double Player::max_value(double alpha, double beta, int cutoff, int curDepth, float time_limit)
 {
 	//if (cutoff == curDepth or locState.i_won() or locState.i_lost() ) return locState.evaluate();
-	if (cutoff == curDepth or locState.is_endgame() or (locState.i_won() /*and !locState.i_lost()*/)) return locState.evaluate();
+	if (cutoff == curDepth or locState.is_endgame() or (locState.i_won() /*and !locState.i_lost()*/)) {
+		return locState.evaluate();
+	}
 	
 	vector<Move> moves; locState.get_all_moves(moves);
 	// cout << " ########### BEGIN LOC_STATE in max_value of depth="<<curDepth<<"########### \n";
@@ -77,7 +79,7 @@ double Player::max_value(double alpha, double beta, int cutoff, int curDepth, fl
 	// 	locState.unapply_move(moves[i]);
 	// }
 	//std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return ((lhs.op_shortest_path-lhs.my_shortest_path)>(rhs.op_shortest_path-rhs.my_shortest_path)) ;} );
-	std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return (lhs.eval>rhs.eval) ;} );
+	//std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return (lhs.eval>rhs.eval) ;} );
 	
 	vector<Move>::iterator mend = moves.end();
 	// if ( curDepth > 4 ) {
@@ -116,7 +118,9 @@ double Player::max_value(double alpha, double beta, int cutoff, int curDepth, fl
 double Player::min_value(double alpha, double beta, int cutoff, int curDepth, float time_limit)
 {
 	//if (cutoff == curDepth or locState.i_won() or locState.i_lost()) return locState.evaluate();
-	if (cutoff == curDepth or locState.is_endgame() or (locState.i_won() /*and !locState.i_lost()*/)) return locState.evaluate();
+	if (cutoff == curDepth or locState.is_endgame() or (locState.i_won() /*and !locState.i_lost()*/)) {
+		return locState.evaluate();
+	}
 	
 	vector<Move> moves; locState.get_all_moves(moves);
 	// cout << " ########### BEGIN LOC_STATE in min_value of depth="<<curDepth<<"########### \n";
@@ -128,7 +132,7 @@ double Player::min_value(double alpha, double beta, int cutoff, int curDepth, fl
 	// 	locState.unapply_move(moves[i]);
 	// }
 	//std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return ((lhs.op_shortest_path-lhs.my_shortest_path)<(rhs.op_shortest_path-rhs.my_shortest_path)) ;} );
-	std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return (lhs.eval<rhs.eval) ;} );
+	//std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return (lhs.eval<rhs.eval) ;} );
 	double v = +INFTY;
 	
 	vector<Move>::iterator mend = moves.end();

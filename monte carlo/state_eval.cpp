@@ -10,6 +10,11 @@ double nmt_cal(int diff)
 	else return (diff-2)*(diff-2);
 }
 
+//Need a hasher for states.
+std::unordered_map<State,double> stateevals;
+std::unordered_map<State,int> pn1shortestpath;
+std::unordered_map<State,int> pn2shortestpath;
+
 double State::evaluate()
 {
 	Move mov = causal_moves.top();
@@ -20,7 +25,7 @@ double State::evaluate()
  	double b = causal_moves.top().my_shortest_path;							// my shortest path to goal
  	double c = causal_moves.top().op_shortest_path;							// opp shortest path to goal
  	if ( b==-1 ) {
- 		b = shortest_path(mypn);
+ 		b = shortest_path_Astar(mypn);
  		Move temp = causal_moves.top();
  		causal_moves.pop();
  		temp.my_shortest_path = b;
@@ -30,11 +35,12 @@ double State::evaluate()
  		}
  	}
  	if ( c==-1) {
- 		c = shortest_path(opn);
+ 		c = shortest_path_Astar(opn);
 		Move temp = causal_moves.top();
 		causal_moves.pop();
  		temp.my_shortest_path = c;
- 		causal_moves.push(temp); 		if ( c==-1 ) {
+ 		causal_moves.push(temp); 		
+ 		if ( c==-1 ) {
  			c= BIG_PATH; //This ensures that once you've lost, you're just trying to minimize your path.
  		}
  	}

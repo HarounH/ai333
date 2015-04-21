@@ -13,6 +13,10 @@ void Player::init_monte_carlo(MonteCarlo& mc)
 }
 
 void Player::send_move_to_client_cpp(int& m , int& r , int& c, MonteCarlo& monte_carlo) {
+	
+	// cout << "beginning of send_move_to_client_cpp\n";
+	// locState.print(); 
+
 	Move res;
 	
 	//terminal_input(m,r,c);					// SNair - made edits here for using minimax
@@ -54,10 +58,10 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c, MonteCarlo& monte
 		//cout << "mypn " << gblState.mypn << " valid move : " << gblState.valid_move(iftwo) << endl;
 		if ((locState.mypn==1) and locState.valid_move(ifone)) {best_move.m=0;best_move = ifone; shouldimmx=false;}
 		else if ((locState.mypn==2) and locState.valid_move(iftwo)) {best_move.m=0;best_move = iftwo; shouldimmx=true;}		// SNair changed this
-		
+			//here, shouldimmx is set to true so that the player thinks about the move later.
 		snair_flag = true;
 	}
-	// if (locState.plies/2==4 and !snair_flag and phc[4])
+//	if (locState.plies/2==4 and !snair_flag and phc[4])
 // 	{
 // 		phc[4] =false;
 // 		Move iftwo(1,7,7);
@@ -76,59 +80,66 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c, MonteCarlo& monte
 	
  	bool h_flag = true;
 	
- 	cout << "game state=" << locState.is_endgame() << "," << locState.i_won() << "," << locState.i_lost() << "\n";
- 	cout << "other player=(" << locState.pos_other.r << "," << locState.pos_other.c << ")\n";
 	if ((h_flag && snair_flag && shouldimmx && locState.i_lost())) {
+		
+		cout << "##############################\nbefore ommx ####\n";
+		timetaken_formove = clock();
 		res = ordinary_mmx(1,10); //if i've lost, just do a normal minimax.
-		h_flag = false;
+		h_flag = false; //prevents the player from doing mcts.
+		
+
+		timetaken_formove = (clock()-timetaken_formove)/CLOCKS_PER_SEC;
+		cout << "\ttime taken to pick move=" << timetaken_formove << "\n";
+		cout << "##################################\n\n";
 	}
 	
 
 	
 	//ASSERT : all profiling happens within the functions.
 	if (h_flag && snair_flag && shouldimmx) {
- 		//cout << "yo" << endl;
+
  		timetaken_formove = clock();
+		cout << "##############################\nbefore mcts####\n";
+		//locState.print();
 		for (int i = 0 ; i<2000 ; i++) {
-			monte_carlo.MCTS(*this,monte_carlo.root,0,2,0.0);
+			// cout << "\t in -";
+			monte_carlo.MCTS(*this,monte_carlo.root,0,8,0.0);
 			//Observation : Each iteration takes ~0.005 seconds, which makes no sense.
+			// cout << "-out \t";
 		}
 		timetaken_formove = (clock() - timetaken_formove)/(CLOCKS_PER_SEC);
-		
-		cout << "time taken to pick move=" << timetaken_formove << "\n";
-		
-
+		cout << "\ttime taken to pick move=" << timetaken_formove << "\n";
+		//cout << " ---- done with mcts ----\n";
+		// locState.print();
+		cout << "##################################\n\n";
 		//Printing out the result of searching. 	
-		int total = 0;
-		/*for (int i = 0 ; i<monte_carlo.root->children.size() ; i++) {
+		/*int total = 0;
+		for (int i = 0 ; i<monte_carlo.root->children.size() ; i++) {
 			{cout << monte_carlo.root->times_moves_explored[i] << " (" << monte_carlo.root->avg_so_far[i] << ") "; total+= monte_carlo.root->times_moves_explored[i];}
 		}
-		cout << "\n"; cout << "total : " << total << "\n";*/
-		
-	//	cout << "before clean up : " << exploredNode::node_count << endl;
+		cout << "\n"; cout << "total : " << total << "\n";*/	
 		monte_carlo.change_root(*this, best_move);							// delete extra nodes
-	//	cout << "after clean up  : " << exploredNode::node_count << endl;
-		
- 	}
+	}
+	// cout << "after mcts,"; best_move.print();
 
-		res.m = best_move.m;
-		res.r = best_move.to.r;
-		res.c = best_move.to.c;
-		res.pn = locState.pn;
-		res.to = make_pair(best_move.r,best_move.c);
-		res.from = locState.pos_present;
-		res.my_shortest_path = best_move.my_shortest_path;
-		res.op_shortest_path = best_move.op_shortest_path;
-		res.eval = best_move.eval;
-		m = best_move.m;
-		r = best_move.r;
-		c = best_move.c;
+	res.m = best_move.m;
+	res.r = best_move.to.r;
+	res.c = best_move.to.c;
+	res.pn = locState.pn;
+	res.to = make_pair(best_move.r,best_move.c);
+	res.from = locState.pos_present;
+	res.my_shortest_path = best_move.my_shortest_path;
+	res.op_shortest_path = best_move.op_shortest_path;
+	res.eval = best_move.eval;
+	m = best_move.m;
+	r = best_move.r;
+	c = best_move.c;
 		
 	//gblState.apply_move(res);
 	locState.apply_move(res);
 	plies++;
 	
-	cout << "Move played " <<  m << " " << r << " " << c << "\n";
+	cout << "\t#####Move played " <<  m << " " << r << " " << c << "\n";
 	
 	// gblState.print(S_PRINT);
 	return;
@@ -139,6 +150,9 @@ void Player::read_time_left_from_client_cpp(float _t) {
 }
 
 void Player::read_move_from_client_cpp(int& m ,int& r, int& c, MonteCarlo& monte_carlo) {
+	
+	// cout << "\n#####################\nentering readmove\n";
+	// locState.print();
 	Move res;
 		res.m = m;
 		res.r = r;
@@ -148,15 +162,15 @@ void Player::read_move_from_client_cpp(int& m ,int& r, int& c, MonteCarlo& monte
 		res.from = locState.pos_present;
 		res.eval = -1.0;
 
-	
-	cout << "move read=(" << res.m << "," << res.r << "," << res.c << ")\n";
-	cout << "\t gamestate=(" << locState.is_endgame() << "," << locState.i_won() << "," << locState.i_lost() << ")\n";
-//	cout << "before clean up : " << exploredNode::node_count << endl;
-	if (init_count == 1 and !locState.i_lost() and !locState.i_won()) monte_carlo.change_root(*this, res);	// deletions performed
-//	cout << "after  clean up : " << exploredNode::node_count << endl;
+	//	cout << "before clean up : " << exploredNode::node_count << endl;
+	if (init_count == 1 and !locState.i_lost() /*and !locState.i_won()*/) monte_carlo.change_root(*this, res);	// deletions performed
+	//	cout << "after  clean up : " << exploredNode::node_count << endl;
 	
 	//gblState.apply_move(res);
 	locState.apply_move(res);
+	// cout << "now, apply move="; res.print();
+	// locState.print();
+	// cout << "\nleaving readmove \n#####################\n";
 	plies++;
 	// gblState.print(S_PRINT);
 	return;
