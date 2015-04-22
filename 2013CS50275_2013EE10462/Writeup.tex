@@ -1,0 +1,30 @@
+\documentclass[]{article}
+\usepackage[margin=1.5in]{geometry}
+\usepackage{amsmath}
+\begin{document}
+\title{CSL333 - Assignment 3\\ Quoridor}
+\author{Akshay Kumar Gupta\\\texttt{2013CS50275} \and  J. Shikhar Murty\\\texttt{2013EE10462}}
+\date{}
+\maketitle
+\section{Game State Representation}
+Our game state is quite lightweight and consists of the following :
+\begin{itemize}
+\item Positions of both players.
+\item No. of walls left of both players.
+\item The player whose turn it is.
+\item Two 2-d vectors of booleans which represents the walls placed so far.
+\end{itemize}
+\section{Algorithm}
+We use minimax with alpha-beta pruning with a depth cutoff of 3 for the most part (This varies slightly based on time left). We went for depth 3 because it performed better than depth 2 in practice and because depth 4 timed out in a few cases. Instead of generating new game states, we modify a single goal state by applying and un-applying moves, which speeds up the search.
+\section{Evaluation Function}
+We use a fairly simple evaluation function which is a combination of the following features:
+\begin{itemize}
+\item Shortest path difference : Difference between the shortest paths of the first and the second player.
+\item Wall difference : Difference in the number of walls of the first and second player.
+\item Winning : A move resulting in a win has large positive incentive while a move resulting in a loss has large negative penalty.
+\end{itemize}
+The weights for these features have currently been set by us and not been learnt.
+\\
+\\
+Discussed assignment with : Surag Nair, Kabir Chhabra, Haroun Habeeb, Shreyas Padhy
+\end{document}

@@ -103,21 +103,22 @@ void Player::send_move_to_client_cpp(int& m , int& r , int& c, MonteCarlo& monte
 		//locState.print();
 		for (int i = 0 ; i<2000 ; i++) {
 			// cout << "\t in -";
-			monte_carlo.MCTS(*this,monte_carlo.root,0,8,0.0);
+			monte_carlo.MCTS(*this,monte_carlo.root,0,6,0.0);
 			//Observation : Each iteration takes ~0.005 seconds, which makes no sense.
 			// cout << "-out \t";
 		}
+		
 		timetaken_formove = (clock() - timetaken_formove)/(CLOCKS_PER_SEC);
 		cout << "\ttime taken to pick move=" << timetaken_formove << "\n";
 		//cout << " ---- done with mcts ----\n";
 		// locState.print();
 		cout << "##################################\n\n";
 		//Printing out the result of searching. 	
-		/*int total = 0;
+		int total = 0;
 		for (int i = 0 ; i<monte_carlo.root->children.size() ; i++) {
 			{cout << monte_carlo.root->times_moves_explored[i] << " (" << monte_carlo.root->avg_so_far[i] << ") "; total+= monte_carlo.root->times_moves_explored[i];}
 		}
-		cout << "\n"; cout << "total : " << total << "\n";*/	
+		cout << "\n"; cout << "total : " << total << "\n";
 		monte_carlo.change_root(*this, best_move);							// delete extra nodes
 	}
 	// cout << "after mcts,"; best_move.print();

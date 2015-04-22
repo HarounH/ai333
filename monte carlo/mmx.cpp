@@ -79,7 +79,7 @@ double Player::max_value(double alpha, double beta, int cutoff, int curDepth, fl
 	// 	locState.unapply_move(moves[i]);
 	// }
 	//std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return ((lhs.op_shortest_path-lhs.my_shortest_path)>(rhs.op_shortest_path-rhs.my_shortest_path)) ;} );
-	//std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return (lhs.eval>rhs.eval) ;} );
+	std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return (lhs.eval>rhs.eval) ;} );
 	
 	vector<Move>::iterator mend = moves.end();
 	// if ( curDepth > 4 ) {
@@ -132,7 +132,7 @@ double Player::min_value(double alpha, double beta, int cutoff, int curDepth, fl
 	// 	locState.unapply_move(moves[i]);
 	// }
 	//std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return ((lhs.op_shortest_path-lhs.my_shortest_path)<(rhs.op_shortest_path-rhs.my_shortest_path)) ;} );
-	//std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return (lhs.eval<rhs.eval) ;} );
+	std::sort(moves.begin() , moves.end() , [](Move lhs,Move rhs){return (lhs.eval<rhs.eval) ;} );
 	double v = +INFTY;
 	
 	vector<Move>::iterator mend = moves.end();

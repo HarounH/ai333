@@ -45,7 +45,7 @@ int exploredNode::choose_move()
 {
 	int temp = fastrand()%10;
 	
-	if (temp<9) {return next_move;}			// 90% return best valued move
+	if (temp<8) {return next_move;}			// 80% return best valued move
 	else 
 	{
 		int cur = fastrand()%moves.size();
@@ -62,13 +62,13 @@ exploredNode::exploredNode(Player& p)
 
 	times_moves_explored = vector<int>(moves.size(),1);
 	avg_so_far           = vector<double>(moves.size(),0.0);
-	value_of_moves       = vector<double>(moves.size(),log(total_times_explored));				// 0 == ln(total_times_explore)/1
+	//value_of_moves       = vector<double>(moves.size(),log(total_times_explored));				// 0 == ln(total_times_explore)/1
 	children             = vector<exploredNode*>(moves.size(), NULL);
 	is_my_move           = (p.locState.pn == p.locState.mypn);
 	node_count++;
 	// determine initial move {review}
 	next_move = 0;
-
+	
 	//cout << "init profile= " << (clock()-initprofile)/(CLOCKS_PER_SEC) << "\n";
 	//RESULT: Takes about 0.005 seconds. EXTREMELY SLOW. DAFUQ? 
 
@@ -86,18 +86,25 @@ void exploredNode::book_keeping(int i , double backed_up)	// depends on whose mo
 	// -1 in denominator is to nullify initial count of 1
 	
 	next_move = 0;
+	double best;
+		
+	if (is_my_move)	best = avg_so_far[0] + C*(log(total_times_explored)/times_moves_explored[0]);		// choosing max, so add
+	else			best = avg_so_far[0] - C*(log(total_times_explored)/times_moves_explored[0]);		// chooseing min, so subtract
+	
 //	vector<int> same_valued;
-	for (int j = 0 ; j<value_of_moves.size() ; j++)
-	{
-		if (is_my_move)	value_of_moves[j] = avg_so_far[j] + C*sqrt(log(total_times_explored)/times_moves_explored[j]);		// choosing max, so add
-		else			value_of_moves[j] = avg_so_far[j] - C*sqrt(log(total_times_explored)/times_moves_explored[j]);		// chooseing min, so subtract
+	for (int j = 1 ; j<avg_so_far.size() ; j++)
+	{		
+		double cur;
+		
+		if (is_my_move)	cur = avg_so_far[j] + C*(log(total_times_explored)/times_moves_explored[j]);		// choosing max, so add
+		else			cur = avg_so_far[j] - C*(log(total_times_explored)/times_moves_explored[j]);		// chooseing min, so subtract
 
 
-		if 		(is_my_move  and (value_of_moves[j] > value_of_moves[next_move])) next_move = j;				// choose max
-		else if (!is_my_move and (value_of_moves[j] < value_of_moves[next_move])) next_move = j;				// choose min
+		if 		(is_my_move  and (cur > best)) { next_move = j; best = cur; }				// choose max
+		else if (!is_my_move and (cur < best)) { next_move = j; best = cur; }				// choose min
 		
 
-		else if (value_of_moves[j] == value_of_moves[next_move])			// with an 80% probability, swap			{ review }
+		else if (cur == best)			// with an 80% probability, swap			{ review }
 		{
 			int temp = fastrand()%5;
 			if (temp != 4) next_move = j;

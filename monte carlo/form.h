@@ -195,6 +195,7 @@ public:
 		
 	Move get_complete_random_wall(); 
 	Move get_biased_random_wall();
+	Move get_locality_random_wall();
 	
 	/* State evaluation. */
 	double evaluate();

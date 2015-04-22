@@ -11,9 +11,9 @@ double nmt_cal(int diff)
 }
 
 //Need a hasher for states.
-std::unordered_map<State,double> stateevals;
-std::unordered_map<State,int> pn1shortestpath;
-std::unordered_map<State,int> pn2shortestpath;
+// std::unordered_map<State,double> stateevals;
+// std::unordered_map<State,int> pn1shortestpath;
+// std::unordered_map<State,int> pn2shortestpath;
 
 double State::evaluate()
 {
@@ -63,11 +63,11 @@ double State::evaluate()
 		
 	double bigInc;
 
-	if (a>7 or a<-4) bigInc=a*a*a;
+	if (a>5 or a<-3) bigInc=a*a*a;
 	else bigInc=0;
 
-
- 	double e=  bigInc + 4*a - 5*b + 3*wc - 3.5*nmt ;
+	wc = 0;
+ 	double e=  bigInc + 5*a - 5*b + 3*wc - 3.5*nmt ;
 
 	Move temp = causal_moves.top();
 	causal_moves.pop();

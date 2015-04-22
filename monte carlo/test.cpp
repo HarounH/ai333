@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
 	w.pos_other = make_pair(2,5);
 	w.n_present_walls = 4;
 	w.n_other_walls = 3;
-	w.toggle_player();
+	w.toggle_player(
 
 
 	Move m(0,1,5);

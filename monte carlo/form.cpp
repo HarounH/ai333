@@ -1,6 +1,7 @@
 #ifndef FORM_CPP
 #define FORM_CPP
 using namespace std;
+#include <unordered_map>
 #include "form.h"
 #include "position.cpp"
 #include "mcts.cpp"

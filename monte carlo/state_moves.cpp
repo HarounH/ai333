@@ -342,6 +342,30 @@ Move State::get_complete_random_wall() {
 	return mov;
 }
 
+Move State::get_locality_random_wall() {
+	Move mov;
+	mov.pn = pn;
+	mov.from = pos_present;
+	bool valid = false;
+	int toolong = 0;
+	while(!valid) {
+		if ( rng() >0.5 ) {mov.m = 1;} else {mov.m = 2;} //vertical v/s horizontal with P = 0.5
+		mov.r = 2 + (N-2)*rng(); //goes between 2 -> N-1
+		mov.c = 2 + (M-2)*rng();	
+					
+		valid = in_bounds_wall(mov.r,mov.c)&&valid_wall(mov)&&inLocality(mov.r,mov.c);/*&&(shortest_path_Astar(1)!=-1)&&(shortest_path_Astar(2)!=-1);*/
+		if ( toolong > 100 ) {
+			std::vector<Move> v;
+			get_spiral_walls(v);
+			return v[0]; //TODO : Use a better strategy, man.
+		}
+		toolong++;
+	}
+	mov.to = Position(mov.r,mov.c);
+	return mov;
+}
+
+
 Move State::get_biased_random_wall() { //with a mean equal to the other players' position. 
 	Move mov;
 	mov.pn = pn;
