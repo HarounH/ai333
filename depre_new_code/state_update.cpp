@@ -82,10 +82,12 @@ void State::toggle_player() {
 void State::apply_move(Move& m) { //assumes that the move is valid
 	//Doesnt need changes to handle passing.
 	if ( m.m==0 ) {
-		if ( m.c==0 && m.r == 0) {
-			//
-		} else {
-			pos_present = m.to;
+		if ( present_won() ) {
+			// Pass move.
+			m.from = pos_present;
+		}else {
+			pos_present.r = m.r;
+			pos_present.c = m.c;
 		}
 	} else if ( m.m==1 ) {
 		n_present_walls--;
@@ -103,17 +105,11 @@ void State::apply_move(Move& m) { //assumes that the move is valid
 }
 
 void State::unapply_move(Move& m) {
-	//Doesn't need changes to handle passing.
 	causal_moves.pop(); //Requires that the move played be correct.
 	plies--;
 	toggle_player();						// SNair - moved toggle up
 	if ( m.m==0 ) {
-		if (m.r==0 && m.c==0) {
-			
-		} else {
-			pos_present = m.from;
-		}
-		
+		pos_present = m.from;
 	} else if ( m.m==1 ) {
 		n_present_walls++;
 		is_wall_H[m.r][m.c] = false;

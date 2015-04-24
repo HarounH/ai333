@@ -44,8 +44,8 @@ Why? Because i want to remember which table was the best path.
 Move Player::ordinary_mmx( int depth , float time_limit )
 {
 	// locState = gblState;		// init
-
 	max_value( -INFTY, +INFTY , depth, 0, time_limit);								// FIX {do a find and replace for all -INFTY, +INFTY}
+	
 	return best_move;
 }
 

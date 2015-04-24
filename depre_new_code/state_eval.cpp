@@ -33,7 +33,7 @@ double State::evaluate()
  		c = shortest_path(opn);
 		Move temp = causal_moves.top();
 		causal_moves.pop();
- 		temp.my_shortest_path = c;
+ 		temp.op_shortest_path = c;
  		causal_moves.push(temp); 		if ( c==-1 ) {
  			c= BIG_PATH; //This ensures that once you've lost, you're just trying to minimize your path.
  		}
@@ -57,7 +57,7 @@ double State::evaluate()
 		
 	double bigInc;
 
-	if (a>7 or a<-4) bigInc=a*a;
+	if (a>7 or a<-4) bigInc=a*abs(a);
 	else bigInc=0;
 
 

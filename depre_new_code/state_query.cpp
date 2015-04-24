@@ -39,11 +39,11 @@ bool State::valid_wall(Move& m) { //Also calculates the shortest paths. (it does
 			return false;
 		} else {
 			return true;
-			apply_move(m);
-			m.my_shortest_path=shortest_path_Astar(mypn);
-			m.op_shortest_path=shortest_path_Astar(opn);
-			unapply_move(m);
-			return ((m.op_shortest_path>=0)&&(m.my_shortest_path>=0));	
+			// apply_move(m);
+			// m.my_shortest_path=shortest_path_Astar(mypn);
+			// m.op_shortest_path=shortest_path_Astar(opn);
+			// unapply_move(m);
+			// return ((m.op_shortest_path>=0)&&(m.my_shortest_path>=0));	
 		}
 	} else { //Pass or jump.
 		return true;
